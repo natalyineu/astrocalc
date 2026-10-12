@@ -1,0 +1,35 @@
+---
+import Base from '../layouts/Base.astro';
+import AdSlot from '../components/AdSlot.astro';
+import { getT, fmt, list, signInfo, allSigns } from '../lib/content';
+import { pageUrl } from '../lib/routes';
+import { SIGN_IDS } from '../data/core';
+const { locale, page } = Astro.props;
+const t = getT(locale);
+const s = signInfo(locale, page.props.sign);
+const vars = { name: s.name, dates: s.dates, element: s.element, ruler: s.ruler };
+const tiles = SIGN_IDS.map((other) => {
+  const i = SIGN_IDS.indexOf(s.id);
+  const j = SIGN_IDS.indexOf(other);
+  const [x, y] = i > j ? [other, s.id] : [s.id, other];
+  const o = signInfo(locale, other);
+  return { url: pageUrl(locale, `pair:${x}:${y}`), title: fmt(t.signPage.pairTile, { a: s.name, b: o.name }), sub: fmt(t.signPage.pairTileSub, { symbol: o.symbol }) };
+});
+---
+<Base locale={locale} pageId={page.id} title={fmt(t.signPage.title, vars)} description={fmt(t.signPage.description, vars)}>
+  <p class="crumbs"><a href={pageUrl(locale, 'home')}>{t.ui.home}</a> › {s.name}</p>
+  <h1>{s.symbol} {fmt(t.signPage.h1, vars)}</h1>
+  <p class="lead">{s.summary}</p>
+  <div class="card">
+    <p><strong>{t.ui.keywords}:</strong> {list(locale, s.keywords)}</p>
+    <p><strong>{t.ui.strengths}:</strong> {list(locale, s.strengths)}</p>
+    <p><strong>{t.ui.challenges}:</strong> {list(locale, s.challenges)}</p>
+  </div>
+  <AdSlot slot={import.meta.env.PUBLIC_AD_SLOT_CONTENT} />
+  <h2>{fmt(t.signPage.inLove, vars)}</h2>
+  <p>{s.love}</p>
+  <h2>{fmt(t.signPage.compatHeading, vars)}</h2>
+  <div class="grid">
+    {tiles.map((x) => <a class="tile" href={x.url}><strong>{x.title}</strong><span>{x.sub}</span></a>)}
+  </div>
+</Base>

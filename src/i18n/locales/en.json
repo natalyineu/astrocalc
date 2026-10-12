@@ -1,0 +1,248 @@
+{
+  "site": { "name": "AstroCalc", "tagline": "Free astrology calculators" },
+  "ui": {
+    "home": "Home",
+    "about": "About",
+    "privacy": "Privacy Policy",
+    "language": "Language",
+    "faq": "Frequently asked questions",
+    "keywords": "Keywords",
+    "strengths": "Strengths",
+    "challenges": "Challenges",
+    "ruledBy": "ruled by {ruler}",
+    "signSummary": "{dates} · {element} · {modality} · {ruledBy}",
+    "month": "Month",
+    "day": "Day",
+    "birthDate": "Birth date",
+    "birthTime": "Birth time",
+    "dateOfBirth": "Date of birth",
+    "timezone": "Timezone at birth place",
+    "disclaimer": "Astrology is offered for entertainment and self-reflection only.",
+    "browseSigns": "Browse the 12 signs",
+    "checkAnother": "← Check another pair",
+    "readProfile": "Read the full profile",
+    "aboutSign": "About this sign"
+  },
+  "nav": {
+    "zodiac-sign": "Sign",
+    "moon-sign": "Moon",
+    "compatibility": "Compatibility",
+    "life-path": "Numerology",
+    "chinese-zodiac": "Chinese"
+  },
+  "elements": { "fire": "Fire", "earth": "Earth", "air": "Air", "water": "Water" },
+  "modalities": { "cardinal": "Cardinal", "fixed": "Fixed", "mutable": "Mutable" },
+  "planets": {
+    "mars": "Mars", "venus": "Venus", "mercury": "Mercury", "moon": "the Moon", "sun": "the Sun",
+    "jupiter": "Jupiter", "saturn": "Saturn", "uranus": "Uranus", "neptune": "Neptune", "pluto": "Pluto"
+  },
+  "home": {
+    "title": "AstroCalc – Free Astrology Calculators: Zodiac, Moon Sign & Compatibility",
+    "description": "Free astrology calculators: zodiac sign, moon sign, zodiac compatibility, life path number and Chinese zodiac. Fast, accurate and no signup.",
+    "h1": "Free Astrology Calculators",
+    "lead": "Zodiac sign, moon sign, compatibility and numerology, no signup required.",
+    "toolDescriptions": {
+      "zodiac-sign": "Find your sun sign from your birthday",
+      "moon-sign": "See where the Moon was when you were born",
+      "compatibility": "Love and friendship scores for any two signs",
+      "life-path": "Numerology from your date of birth",
+      "chinese-zodiac": "Your animal and element"
+    }
+  },
+  "tools": {
+    "zodiac-sign": {
+      "slug": "zodiac-sign-calculator",
+      "crumb": "Zodiac sign calculator",
+      "title": "Zodiac Sign Calculator – Find Your Sun Sign by Birth Date",
+      "description": "Free zodiac sign calculator. Enter your birth date to find your sun sign, element, modality and ruling planet instantly.",
+      "h1": "Zodiac Sign Calculator",
+      "lead": "Enter your birth date to find your sun sign.",
+      "button": "Find my sign",
+      "resultLabel": "Your zodiac sign is",
+      "invalidTitle": "Invalid date",
+      "invalidText": "That month does not have that many days.",
+      "listHeading": "The 12 zodiac signs and their dates",
+      "faq": [
+        { "q": "How do I find my zodiac sign?", "a": "Your zodiac (sun) sign depends on the date you were born. Enter your birth month and day above and the calculator shows your sign, element and ruling planet." },
+        { "q": "What if I was born on the cusp?", "a": "If you were born within a day or two of a sign change, the exact time and place of birth decide your sun sign. Use a birth chart calculator with your birth time to be sure." },
+        { "q": "Are sun signs the same in the southern hemisphere?", "a": "Yes. Western astrology uses the same dates for the zodiac signs everywhere in the world." }
+      ]
+    },
+    "moon-sign": {
+      "slug": "moon-sign-calculator",
+      "crumb": "Moon sign calculator",
+      "title": "Moon Sign Calculator – Find Your Moon Sign Free",
+      "description": "Free moon sign calculator. Enter your birth date, time and timezone to find which zodiac sign your Moon was in, calculated from astronomical data.",
+      "h1": "Moon Sign Calculator",
+      "lead": "Find the zodiac sign your Moon was in at the moment you were born.",
+      "button": "Calculate my moon sign",
+      "resultLabel": "Your moon sign is",
+      "resultText": "Your Moon was at about {degrees}° {sign}. {element} moon, {modality} energy. Emotionally you tend to be {keywords}.",
+      "aboutHeading": "What your moon sign means",
+      "aboutText": "While your sun sign describes your core identity, your moon sign describes your inner world: how you process feelings, what comforts you and how you react when you are not performing for anyone. Two people with the same sun sign can feel very different if their moon signs differ.",
+      "faq": [
+        { "q": "What is a moon sign?", "a": "Your moon sign is the zodiac sign the Moon was in when you were born. It is associated with emotions, instincts and what makes you feel secure." },
+        { "q": "Do I need my exact birth time?", "a": "The Moon changes sign roughly every two and a half days, so the date is often enough. If you were born on a day the Moon changed sign, the time matters." },
+        { "q": "How accurate is this calculator?", "a": "It uses astronomical ephemeris calculations of the Moon's ecliptic longitude, the same data used by professional astrology software." },
+        { "q": "What is my UTC offset?", "a": "It is the time difference between your birth place and UTC at that moment. For example New York is UTC−5 in winter and UTC−4 in summer, London is UTC+0 in winter and UTC+1 in summer." }
+      ]
+    },
+    "compatibility": {
+      "slug": "zodiac-compatibility",
+      "crumb": "Zodiac compatibility",
+      "title": "Zodiac Compatibility Calculator – Love, Friendship & Trust",
+      "description": "Free zodiac compatibility calculator. Pick two signs to see love, friendship, communication and trust scores for any of the 78 sign pairings.",
+      "h1": "Zodiac Compatibility Calculator",
+      "lead": "Choose two signs to see how well they match.",
+      "firstSign": "First sign",
+      "secondSign": "Second sign",
+      "button": "Check compatibility",
+      "bySignHeading": "Compatibility by sign",
+      "bySignSummary": "{name} compatibility",
+      "pairLink": "{a} and {b}"
+    },
+    "life-path": {
+      "slug": "life-path-number-calculator",
+      "crumb": "Life path number calculator",
+      "title": "Life Path Number Calculator – Numerology by Birth Date",
+      "description": "Free life path number calculator. Enter your date of birth to find your numerology life path number and what it means.",
+      "h1": "Life Path Number Calculator",
+      "lead": "Your life path number is calculated from your full date of birth.",
+      "button": "Calculate",
+      "resultLabel": "Your life path number is",
+      "meaningsHeading": "Life path number meanings",
+      "faq": [
+        { "q": "How do you calculate a life path number?", "a": "Reduce the birth year, month and day separately to single digits, add them together and reduce again. The numbers 11, 22 and 33 are master numbers and are not reduced further." },
+        { "q": "What are master numbers?", "a": "Master numbers 11, 22 and 33 are considered to carry a stronger potential and a stronger challenge than their single-digit versions." },
+        { "q": "Is numerology scientifically proven?", "a": "No. Numerology is a belief system used for reflection and entertainment, not a predictive science." }
+      ]
+    },
+    "chinese-zodiac": {
+      "slug": "chinese-zodiac-calculator",
+      "crumb": "Chinese zodiac calculator",
+      "title": "Chinese Zodiac Calculator – Find Your Animal and Element",
+      "description": "Free Chinese zodiac calculator. Enter your birth date to find your animal sign and element, with the correct Lunar New Year cutoff.",
+      "h1": "Chinese Zodiac Calculator",
+      "lead": "Find your Chinese zodiac animal and element from your birth date.",
+      "button": "Find my animal",
+      "resultLabel": "Your Chinese zodiac sign is",
+      "resultName": "{element} {animal}",
+      "resultYear": "Your Chinese zodiac year is {year}.",
+      "resultYearBefore": "You were born before Lunar New Year in {birthYear}, so your Chinese zodiac year is {year}.",
+      "animalsHeading": "The 12 animals",
+      "animalsText": "The animal cycle repeats every 12 years and combines with five elements for a 60-year cycle. The year changes at Lunar New Year, not on January 1.",
+      "faq": [
+        { "q": "Why is my Chinese zodiac animal different from my birth year?", "a": "The Chinese zodiac year starts on Lunar New Year, which falls between late January and mid February. If you were born before it, your animal is the one from the previous year." },
+        { "q": "What is the Chinese zodiac element?", "a": "Each year also has one of five elements: Wood, Fire, Earth, Metal, Water. Each element lasts two years, which gives a 60-year cycle." }
+      ]
+    }
+  },
+  "chinese": {
+    "animals": ["Rat", "Ox", "Tiger", "Rabbit", "Dragon", "Snake", "Horse", "Goat", "Monkey", "Rooster", "Dog", "Pig"],
+    "elements": ["Wood", "Fire", "Earth", "Metal", "Water"]
+  },
+  "lifePath": {
+    "1": { "title": "The Leader", "text": "Independent, driven and original. Life path 1 people start things, trust their own judgement and learn to balance self-reliance with cooperation." },
+    "2": { "title": "The Peacemaker", "text": "Sensitive, diplomatic and attuned to others. Life path 2 thrives in partnership and learns to speak up for its own needs." },
+    "3": { "title": "The Communicator", "text": "Expressive, creative and sociable. Life path 3 brings joy and ideas, and learns to focus its many talents." },
+    "4": { "title": "The Builder", "text": "Practical, disciplined and dependable. Life path 4 builds lasting foundations and learns to stay flexible." },
+    "5": { "title": "The Adventurer", "text": "Freedom-loving, curious and adaptable. Life path 5 craves variety and learns commitment without feeling caged." },
+    "6": { "title": "The Nurturer", "text": "Caring, responsible and community-minded. Life path 6 looks after others and learns not to carry everyone's burdens." },
+    "7": { "title": "The Seeker", "text": "Analytical, introspective and spiritual. Life path 7 searches for truth and learns to trust and connect." },
+    "8": { "title": "The Powerhouse", "text": "Ambitious, strategic and results-oriented. Life path 8 is drawn to achievement and learns to balance success with values." },
+    "9": { "title": "The Humanitarian", "text": "Compassionate, idealistic and generous. Life path 9 serves a bigger picture and learns to let go." },
+    "11": { "title": "The Visionary (master number)", "text": "Intuitive, inspiring and highly sensitive. Life path 11 carries a strong inner vision and learns to ground it in daily life." },
+    "22": { "title": "The Master Builder (master number)", "text": "Practical visionary with the potential to turn big dreams into reality, and the pressure that comes with it." },
+    "33": { "title": "The Master Teacher (master number)", "text": "Selfless, healing and devoted to uplifting others. Life path 33 learns to care for itself while serving." }
+  },
+  "signs": {
+    "aries": { "name": "Aries", "slug": "aries", "keywords": ["bold", "direct", "energetic"], "strengths": ["courage", "initiative", "honesty"], "challenges": ["impatience", "impulsiveness", "a short fuse"], "love": "Aries loves the chase and wants a partner who can keep up without being controlled." },
+    "taurus": { "name": "Taurus", "slug": "taurus", "keywords": ["steady", "sensual", "loyal"], "strengths": ["reliability", "patience", "practicality"], "challenges": ["stubbornness", "resistance to change", "possessiveness"], "love": "Taurus shows love through consistency, comfort and physical affection." },
+    "gemini": { "name": "Gemini", "slug": "gemini", "keywords": ["curious", "witty", "adaptable"], "strengths": ["communication", "versatility", "humor"], "challenges": ["restlessness", "inconsistency", "overthinking"], "love": "Gemini needs mental connection first; boredom is the fastest way to lose them." },
+    "cancer": { "name": "Cancer", "slug": "cancer", "keywords": ["nurturing", "intuitive", "protective"], "strengths": ["empathy", "loyalty", "emotional depth"], "challenges": ["moodiness", "clinginess", "holding on to the past"], "love": "Cancer builds a home in a relationship and needs to feel emotionally safe." },
+    "leo": { "name": "Leo", "slug": "leo", "keywords": ["generous", "proud", "warm"], "strengths": ["confidence", "creativity", "big-heartedness"], "challenges": ["ego", "need for attention", "stubborn pride"], "love": "Leo loves loudly and wants a partner who is openly appreciative." },
+    "virgo": { "name": "Virgo", "slug": "virgo", "keywords": ["analytical", "helpful", "precise"], "strengths": ["attention to detail", "service", "discipline"], "challenges": ["perfectionism", "self-criticism", "worry"], "love": "Virgo shows love through acts of service and quietly paying attention." },
+    "libra": { "name": "Libra", "slug": "libra", "keywords": ["diplomatic", "charming", "fair"], "strengths": ["harmony", "taste", "social grace"], "challenges": ["indecision", "conflict avoidance", "people-pleasing"], "love": "Libra is a romantic at heart and thrives in partnership." },
+    "scorpio": { "name": "Scorpio", "slug": "scorpio", "keywords": ["intense", "private", "determined"], "strengths": ["loyalty", "perception", "resilience"], "challenges": ["jealousy", "secrecy", "holding grudges"], "love": "Scorpio wants depth or nothing, and trust is earned slowly." },
+    "sagittarius": { "name": "Sagittarius", "slug": "sagittarius", "keywords": ["adventurous", "optimistic", "frank"], "strengths": ["enthusiasm", "openness", "big-picture thinking"], "challenges": ["bluntness", "commitment-phobia", "overpromising"], "love": "Sagittarius needs freedom and a partner who is also a travel companion in life." },
+    "capricorn": { "name": "Capricorn", "slug": "capricorn", "keywords": ["ambitious", "disciplined", "responsible"], "strengths": ["perseverance", "strategy", "dependability"], "challenges": ["workaholism", "pessimism", "emotional reserve"], "love": "Capricorn takes love seriously and shows commitment through long-term action." },
+    "aquarius": { "name": "Aquarius", "slug": "aquarius", "keywords": ["original", "independent", "humanitarian"], "strengths": ["innovation", "objectivity", "loyalty to ideals"], "challenges": ["detachment", "rebelliousness", "emotional distance"], "love": "Aquarius wants friendship and intellectual freedom inside a relationship." },
+    "pisces": { "name": "Pisces", "slug": "pisces", "keywords": ["dreamy", "compassionate", "artistic"], "strengths": ["imagination", "compassion", "adaptability"], "challenges": ["escapism", "boundaries", "oversensitivity"], "love": "Pisces loves without conditions and needs a partner who is gentle and sincere." }
+  },
+  "signPage": {
+    "dir": "signs",
+    "title": "{name} Zodiac Sign: Dates, Traits & Compatibility",
+    "description": "{name} ({dates}): {element} sign ruled by {ruler}. Personality traits, strengths, challenges and best matches.",
+    "h1": "{name} Zodiac Sign",
+    "inLove": "{name} in love",
+    "compatHeading": "{name} compatibility",
+    "pairTile": "{a} + {b}",
+    "pairTileSub": "{symbol} compatibility"
+  },
+  "compat": {
+    "connector": "and",
+    "ratings": { "excellent": "Excellent match", "strong": "Strong match", "good": "Good with effort", "challenging": "Challenging, but possible" },
+    "stats": { "love": "Love", "friendship": "Friendship", "communication": "Communication", "trust": "Trust" },
+    "pairTitle": "{a} and {b} Compatibility: Love, Friendship & Trust",
+    "pairDescription": "{a} and {b} compatibility is {score}%. See love, friendship, communication and trust scores and what this {e1}–{e2} pairing means.",
+    "pairH1": "{a} and {b} Compatibility",
+    "ratingLine": "{rating} · overall score {score}%",
+    "elementHeadingSame": "{e} energy",
+    "elementHeadingMix": "{e1} and {e2} energy",
+    "bringsHeading": "What {name} brings",
+    "bringsText": "{name} is {keywords}. Strengths include {strengths}. In love: {love}",
+    "challengesHeading": "Challenges to watch",
+    "challengesLine": "{name}: {list}.",
+    "faq": [
+      { "q": "Are {a} and {b} compatible?", "a": "{a} and {b} have a compatibility score of {score}% ({rating}). {summary}" },
+      { "q": "What is the biggest challenge for {a} and {b}?", "a": "{a} can struggle with {ca}, while {b} can struggle with {cb}. Recognising these early helps the relationship." },
+      { "q": "Does compatibility depend only on sun signs?", "a": "No. Moon sign, Venus sign and the full birth charts add a lot of nuance. Sun sign compatibility is a fun starting point rather than a verdict." }
+    ],
+    "elementPairs": {
+      "fire-fire": "Two fire signs create heat and excitement fast. Both are passionate and confident, so the relationship runs on energy, but neither likes to back down.",
+      "earth-earth": "Two earth signs build something solid. Shared practicality and loyalty make for a stable, comfortable bond, with the risk of getting stuck in routine.",
+      "air-air": "Two air signs share a mental spark. Conversation never runs dry, but emotional follow-through takes conscious effort.",
+      "water-water": "Two water signs feel each other deeply, often without words. The connection is intense and tender, and moods can amplify each other.",
+      "air-fire": "Air feeds fire. This is one of the most naturally energising pairings: ideas, adventure and enthusiasm flow in both directions.",
+      "earth-water": "Water nourishes earth. Emotional depth meets steadiness, a supportive and growth-oriented match.",
+      "earth-fire": "Fire wants to move and earth wants to build. They can balance each other, but pace and priorities need negotiation.",
+      "air-earth": "Air lives in ideas and earth in the concrete. The two see the world differently, which can feel either refreshing or frustrating.",
+      "fire-water": "Fire and water are opposites in temperament: direct versus sensitive. The chemistry is real, but it needs patience and care to avoid steam.",
+      "air-water": "Air reasons while water feels. They can learn a lot from each other if they translate between logic and emotion."
+    },
+    "modalityPairs": {
+      "cardinal-cardinal": "Both are initiators, so there is drive and no shortage of plans, along with occasional contests over who leads.",
+      "fixed-fixed": "Both are loyal and determined. That brings staying power, and also stubbornness when they disagree.",
+      "mutable-mutable": "Both are flexible and adaptable. Easy to be around, though decisions and follow-through can drift.",
+      "cardinal-fixed": "One starts things and the other sustains them, a practical division of roles when respected.",
+      "cardinal-mutable": "The initiator and the adapter tend to fit well: one sets direction and the other adjusts smoothly.",
+      "fixed-mutable": "The steady one anchors and the flexible one softens. Works well as long as the fixed sign does not take flexibility for granted."
+    }
+  },
+  "pages": {
+    "about": {
+      "slug": "about",
+      "title": "About AstroCalc",
+      "description": "About AstroCalc, free astrology calculators.",
+      "h1": "About",
+      "blocks": [
+        { "p": "AstroCalc offers free astrology calculators: zodiac sign, moon sign, compatibility, numerology and Chinese zodiac. Moon positions are computed from astronomical ephemeris data." },
+        { "p": "Astrology and numerology are provided for entertainment and self-reflection. They are not scientific predictions, and nothing on this site is medical, legal or financial advice." },
+        { "p": "Contact: add your email here before launch." }
+      ]
+    },
+    "privacy": {
+      "slug": "privacy",
+      "title": "Privacy Policy – AstroCalc",
+      "description": "Privacy policy for AstroCalc.",
+      "h1": "Privacy Policy",
+      "blocks": [
+        { "p": "Birth dates and times that you enter into the calculators are processed in your browser and are not sent to or stored on our servers." },
+        { "h2": "Advertising and analytics" },
+        { "p": "We may use third-party vendors, including Google, to show ads and measure traffic. These vendors use cookies to serve ads based on your visits to this and other websites. You can opt out of personalised advertising in Google Ads Settings." },
+        { "h2": "Contact" },
+        { "p": "Questions about this policy: add your email here before launch." }
+      ]
+    }
+  }
+}

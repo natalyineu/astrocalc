@@ -1,0 +1,53 @@
+---
+import Base from '../../layouts/Base.astro';
+import AdSlot from '../../components/AdSlot.astro';
+import Faq from '../../components/Faq.astro';
+import { getT, list } from '../../lib/content';
+import { pageUrl } from '../../lib/routes';
+const { locale, page } = Astro.props;
+const t = getT(locale);
+const tool = t.tools['chinese-zodiac'];
+const data = {
+  label: tool.resultLabel, name: tool.resultName, year: tool.resultYear, yearBefore: tool.resultYearBefore,
+  animals: t.chinese.animals, elements: t.chinese.elements,
+};
+---
+<Base locale={locale} pageId={page.id} title={tool.title} description={tool.description}>
+  <p class="crumbs"><a href={pageUrl(locale, 'home')}>{t.ui.home}</a> › {tool.crumb}</p>
+  <h1>{tool.h1}</h1>
+  <p class="lead">{tool.lead}</p>
+  <div class="card">
+    <form class="calc" id="f">
+      <label>{t.ui.dateOfBirth} <input type="date" id="date" required min="1900-01-01" max="2100-12-31" /></label>
+      <button type="submit">{tool.button}</button>
+    </form>
+    <div class="result" id="result">
+      <p class="muted" id="label"></p>
+      <div class="big" id="name"></div>
+      <p id="desc"></p>
+    </div>
+  </div>
+  <AdSlot slot={import.meta.env.PUBLIC_AD_SLOT_CONTENT} />
+  <h2>{tool.animalsHeading}</h2>
+  <p>{t.chinese.animals.join(' · ')}</p>
+  <p>{tool.animalsText}</p>
+  <Faq heading={t.ui.faq} items={tool.faq} />
+  <script type="application/json" id="data" set:html={JSON.stringify(data)} />
+</Base>
+
+<script>
+  import { chineseZodiac } from '../../lib/astro';
+  const $ = (id: string) => document.getElementById(id)!;
+  const data = JSON.parse($('data').textContent!);
+  $('f').addEventListener('submit', (e) => {
+    e.preventDefault();
+    const [y, m, d] = ($('date') as HTMLInputElement).value.split('-').map(Number);
+    const r = chineseZodiac(y, m, d);
+    $('label').textContent = data.label;
+    $('name').textContent = (data.name as string)
+      .replace('{element}', data.elements[r.element]).replace('{animal}', data.animals[r.animal]);
+    $('desc').textContent = ((r.beforeNewYear ? data.yearBefore : data.year) as string)
+      .replace('{birthYear}', String(y)).replace('{year}', String(r.chineseYear));
+    $('result').classList.add('show');
+  });
+</script>

@@ -1,0 +1,74 @@
+---
+import Base from '../../layouts/Base.astro';
+import AdSlot from '../../components/AdSlot.astro';
+import Faq from '../../components/Faq.astro';
+import { getT, allSigns, signInfo } from '../../lib/content';
+import { monthNames } from '../../lib/content';
+import { pageUrl } from '../../lib/routes';
+const { locale, page } = Astro.props;
+const t = getT(locale);
+const tool = t.tools['zodiac-sign'];
+const signs = allSigns(locale);
+const data = {
+  strings: { resultLabel: tool.resultLabel, invalidTitle: tool.invalidTitle, invalidText: tool.invalidText, keywords: t.ui.keywords },
+  signs: Object.fromEntries(signs.map((s) => [s.id, { name: s.name, symbol: s.symbol, summary: s.summary, url: s.url }])),
+};
+const months = monthNames(locale);
+---
+<Base locale={locale} pageId={page.id} title={tool.title} description={tool.description}>
+  <p class="crumbs"><a href={pageUrl(locale, 'home')}>{t.ui.home}</a> › {tool.crumb}</p>
+  <h1>{tool.h1}</h1>
+  <p class="lead">{tool.lead}</p>
+  <div class="card">
+    <form class="calc" id="f">
+      <div class="row">
+        <label>{t.ui.month}
+          <select id="month">{months.map((m, i) => <option value={i + 1}>{m}</option>)}</select>
+        </label>
+        <label>{t.ui.day}
+          <select id="day">{Array.from({ length: 31 }, (_, i) => <option value={i + 1}>{i + 1}</option>)}</select>
+        </label>
+      </div>
+      <button type="submit">{tool.button}</button>
+    </form>
+    <div class="result" id="result">
+      <p class="muted" id="label"></p>
+      <div class="big" id="name"></div>
+      <p id="desc"></p>
+      <p><a id="more" class="btn" href="#">{t.ui.readProfile}</a></p>
+    </div>
+  </div>
+  <AdSlot slot={import.meta.env.PUBLIC_AD_SLOT_CONTENT} />
+  <h2>{tool.listHeading}</h2>
+  <div class="grid">
+    {signs.map((s) => <a class="tile" href={s.url}><strong>{s.symbol} {s.name}</strong><span>{s.dates}</span></a>)}
+  </div>
+  <Faq heading={t.ui.faq} items={tool.faq} />
+  <script type="application/json" id="data" set:html={JSON.stringify(data)} />
+</Base>
+
+<script>
+  import { sunSign } from '../../lib/astro';
+  const $ = (id: string) => document.getElementById(id)!;
+  const data = JSON.parse($('data').textContent!);
+  const monthLengths = [31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+  $('f').addEventListener('submit', (e) => {
+    e.preventDefault();
+    const m = Number(($('month') as HTMLSelectElement).value);
+    const d = Number(($('day') as HTMLSelectElement).value);
+    $('result').classList.add('show');
+    if (d > monthLengths[m - 1]) {
+      $('label').textContent = '';
+      $('name').textContent = data.strings.invalidTitle;
+      $('desc').textContent = data.strings.invalidText;
+      $('more').style.display = 'none';
+      return;
+    }
+    const s = data.signs[sunSign(m, d)];
+    $('label').textContent = data.strings.resultLabel;
+    $('name').textContent = `${s.symbol} ${s.name}`;
+    $('desc').textContent = s.summary;
+    ($('more') as HTMLAnchorElement).href = s.url;
+    $('more').style.display = '';
+  });
+</script>

@@ -1,0 +1,28 @@
+---
+import Base from '../layouts/Base.astro';
+import AdSlot from '../components/AdSlot.astro';
+import { getT, allSigns } from '../lib/content';
+import { pageUrl } from '../lib/routes';
+import { TOOL_IDS } from '../data/core';
+const { locale } = Astro.props;
+const t = getT(locale);
+const signs = allSigns(locale);
+---
+<Base locale={locale} pageId="home" title={t.home.title} description={t.home.description}>
+  <h1>{t.home.h1}</h1>
+  <p class="lead">{t.home.lead}</p>
+  <div class="grid">
+    {TOOL_IDS.map((id) => (
+      <a class="tile" href={pageUrl(locale, `tool:${id}`)}>
+        <strong>{t.tools[id].h1}</strong><span>{t.home.toolDescriptions[id]}</span>
+      </a>
+    ))}
+  </div>
+  <AdSlot slot={import.meta.env.PUBLIC_AD_SLOT_CONTENT} />
+  <h2>{t.ui.browseSigns}</h2>
+  <div class="grid">
+    {signs.map((s) => (
+      <a class="tile" href={s.url}><strong>{s.symbol} {s.name}</strong><span>{s.dates}</span></a>
+    ))}
+  </div>
+</Base>

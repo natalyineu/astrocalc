@@ -1,12 +1,10 @@
 import { defineConfig } from 'astro/config';
-import sitemap from '@astrojs/sitemap';
 
-// TODO: replace with the real domain once it is bought.
+// Set SITE_URL when building for production (used for canonical, hreflang, sitemap).
 const site = process.env.SITE_URL || 'https://example.com';
 
 export default defineConfig({
   site,
-  integrations: [sitemap()],
-  trailingSlash: 'never',
-  build: { format: 'file' },
+  trailingSlash: 'always',
+  build: { format: 'directory' },
 });

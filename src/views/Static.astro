@@ -1,0 +1,11 @@
+---
+import Base from '../layouts/Base.astro';
+import { getT } from '../lib/content';
+const { locale, page } = Astro.props;
+const t = getT(locale);
+const p = t.pages[page.props.page];
+---
+<Base locale={locale} pageId={page.id} title={p.title} description={p.description}>
+  <h1>{p.h1}</h1>
+  {p.blocks.map((b: { h2?: string; p?: string }) => (b.h2 ? <h2>{b.h2}</h2> : <p>{b.p}</p>))}
+</Base>

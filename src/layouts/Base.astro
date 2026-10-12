@@ -1,0 +1,138 @@
+---
+import { getT, enabledLocales, localeMeta } from '../i18n';
+import { alternates, pageUrl } from '../lib/routes';
+import { TOOL_IDS, SIGN_IDS, SIGN_CORE, STATIC_PAGE_IDS } from '../data/core';
+import { DEFAULT_LOCALE } from '../i18n/config';
+
+interface Props { locale: string; pageId: string; title: string; description: string }
+const { locale, pageId, title, description } = Astro.props;
+const t = getT(locale);
+const meta = localeMeta(locale);
+const site = Astro.site!;
+const abs = (p: string) => new URL(p, site).toString();
+const alts = alternates(pageId);
+const self = alts.find((a) => a.locale === locale)!;
+const xDefault = alts.find((a) => a.locale === DEFAULT_LOCALE) ?? alts[0];
+const adsenseClient = import.meta.env.PUBLIC_ADSENSE_CLIENT;
+const analyticsId = import.meta.env.PUBLIC_GA_ID;
+---
+<!doctype html>
+<html lang={meta.tag} dir={meta.dir ?? 'ltr'}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={abs(self.path)} />
+    {alts.map((a) => <link rel="alternate" hreflang={a.tag} href={abs(a.path)} />)}
+    <link rel="alternate" hreflang="x-default" href={abs(xDefault.path)} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={abs(self.path)} />
+    <meta property="og:site_name" content={t.site.name} />
+    <meta property="og:locale" content={meta.tag.replace('-', '_')} />
+    <meta name="theme-color" content="#4c3a8c" />
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>✨</text></svg>" />
+    {adsenseClient && (
+      <script async src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${adsenseClient}`} crossorigin="anonymous"></script>
+    )}
+    {analyticsId && (
+      <>
+        <script async src={`https://www.googletagmanager.com/gtag/js?id=${analyticsId}`}></script>
+        <script is:inline define:vars={{ analyticsId }}>
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', analyticsId);
+        </script>
+      </>
+    )}
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="wrap bar">
+        <a class="logo" href={pageUrl(locale, 'home')}>✨ {t.site.name}</a>
+        <nav>
+          {TOOL_IDS.map((id) => <a href={pageUrl(locale, `tool:${id}`)}>{t.nav[id]}</a>)}
+        </nav>
+        <select id="lang" aria-label={t.ui.language}>
+          {alts.map((a) => <option value={a.path} selected={a.locale === locale}>{a.native}</option>)}
+        </select>
+      </div>
+    </header>
+    <main class="wrap">
+      <slot />
+    </main>
+    <footer class="site-footer">
+      <div class="wrap">
+        <p class="signs-row">
+          {SIGN_IDS.map((id) => <a href={pageUrl(locale, `sign:${id}`)} title={t.signs[id].name}>{SIGN_CORE[id].symbol}</a>)}
+        </p>
+        <p>
+          {STATIC_PAGE_IDS.map((p, i) => <><a href={pageUrl(locale, `page:${p}`)}>{t.pages[p].h1}</a>{i < STATIC_PAGE_IDS.length - 1 ? ' · ' : ''}</>)}
+        </p>
+        <p class="langs">
+          {alts.map((a) => <a href={a.path} hreflang={a.tag}>{a.native}</a>)}
+        </p>
+        <p class="muted">{t.ui.disclaimer} © {new Date().getFullYear()} {t.site.name}</p>
+      </div>
+    </footer>
+    <script>
+      const sel = document.getElementById('lang') as HTMLSelectElement | null;
+      sel?.addEventListener('change', () => { location.href = sel.value; });
+    </script>
+  </body>
+</html>
+
+<style is:global>
+  :root {
+    --bg: #faf8ff; --card: #ffffff; --ink: #221b3a; --muted: #6d6585;
+    --brand: #5b3fd0; --brand-dark: #3f2a9e; --accent: #f2b84b; --line: #e4def5;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Noto Sans", "Noto Sans CJK SC", "Noto Sans Arabic", "Noto Sans Devanagari", "Noto Sans Thai", sans-serif; background: var(--bg); color: var(--ink); line-height: 1.6; }
+  .wrap { max-width: 860px; margin: 0 auto; padding: 0 16px; }
+  .site-header { background: linear-gradient(135deg, #3f2a9e, #6a4fe0); color: #fff; }
+  .site-header .bar { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px 20px; padding-block: 14px; }
+  .site-header a { color: #fff; text-decoration: none; }
+  .site-header select { width: auto; padding: 6px 10px; font-size: .9rem; }
+  .logo { font-weight: 700; font-size: 1.25rem; }
+  .site-header nav { display: flex; flex-wrap: wrap; gap: 6px 16px; font-size: .95rem; }
+  .site-header nav a { opacity: .9; }
+  .site-header nav a:hover { opacity: 1; text-decoration: underline; }
+  h1 { font-size: 2rem; line-height: 1.2; margin: 1.5rem 0 .5rem; }
+  h2 { font-size: 1.4rem; margin: 2rem 0 .5rem; }
+  h3 { font-size: 1.1rem; margin: 1.2rem 0 .3rem; }
+  a { color: var(--brand); }
+  .lead { font-size: 1.1rem; color: var(--muted); margin-top: 0; }
+  .card { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 20px; margin: 20px 0; box-shadow: 0 2px 10px rgba(91,63,208,.06); }
+  .grid { display: grid; gap: 14px; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); }
+  .tile { display: block; text-decoration: none; color: inherit; background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 14px 16px; transition: transform .1s, box-shadow .1s; }
+  .tile:hover { transform: translateY(-2px); box-shadow: 0 6px 18px rgba(91,63,208,.15); }
+  .tile strong { display: block; }
+  .tile span { color: var(--muted); font-size: .9rem; }
+  form.calc { display: grid; gap: 14px; }
+  .row { display: flex; flex-wrap: wrap; gap: 12px; }
+  label { display: grid; gap: 4px; font-weight: 600; font-size: .9rem; flex: 1 1 140px; }
+  select, input { font: inherit; padding: 10px 12px; border: 1px solid var(--line); border-radius: 10px; background: #fff; color: var(--ink); width: 100%; }
+  button, .btn { font: inherit; font-weight: 700; background: var(--brand); color: #fff; border: 0; border-radius: 10px; padding: 12px 20px; cursor: pointer; text-decoration: none; display: inline-block; text-align: center; }
+  button:hover, .btn:hover { background: var(--brand-dark); }
+  .result { display: none; margin-top: 8px; }
+  .result.show { display: block; }
+  .big { font-size: 2.4rem; font-weight: 800; color: var(--brand-dark); line-height: 1.1; }
+  .muted { color: var(--muted); font-size: .9rem; }
+  .meter { background: var(--line); border-radius: 99px; height: 12px; overflow: hidden; }
+  .meter > i { display: block; height: 100%; background: linear-gradient(90deg, #6a4fe0, var(--accent)); }
+  [dir="rtl"] .meter > i { margin-inline-start: auto; }
+  .stat { display: grid; grid-template-columns: 130px 1fr 44px; gap: 10px; align-items: center; margin: 8px 0; }
+  .site-footer { margin-top: 48px; padding: 24px 0; border-top: 1px solid var(--line); text-align: center; font-size: .95rem; }
+  .signs-row a { text-decoration: none; font-size: 1.4rem; margin: 0 6px; }
+  .langs a { margin: 0 8px; font-size: .9rem; white-space: nowrap; }
+  .ad-slot { margin: 24px 0; min-height: 90px; text-align: center; }
+  .crumbs { font-size: .85rem; color: var(--muted); margin-top: 16px; }
+  .crumbs a { color: var(--muted); }
+  details { border-bottom: 1px solid var(--line); padding: 10px 0; }
+  summary { cursor: pointer; font-weight: 600; }
+  @media (max-width: 520px) { h1 { font-size: 1.6rem; } .stat { grid-template-columns: 100px 1fr 40px; } }
+</style>

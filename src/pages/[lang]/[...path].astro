@@ -1,0 +1,33 @@
+---
+import { allPages } from '../../lib/routes';
+import Home from '../../views/Home.astro';
+import Sign from '../../views/Sign.astro';
+import Pair from '../../views/Pair.astro';
+import Static from '../../views/Static.astro';
+import ZodiacSign from '../../views/tools/ZodiacSign.astro';
+import MoonSign from '../../views/tools/MoonSign.astro';
+import Compatibility from '../../views/tools/Compatibility.astro';
+import LifePath from '../../views/tools/LifePath.astro';
+import ChineseZodiac from '../../views/tools/ChineseZodiac.astro';
+
+// view id -> component. To add a page type, register it here.
+const VIEWS: Record<string, any> = {
+  home: Home, sign: Sign, pair: Pair, static: Static,
+  'tool:zodiac-sign': ZodiacSign,
+  'tool:moon-sign': MoonSign,
+  'tool:compatibility': Compatibility,
+  'tool:life-path': LifePath,
+  'tool:chinese-zodiac': ChineseZodiac,
+};
+
+export function getStaticPaths() {
+  return allPages().map((page) => ({
+    params: { lang: page.locale, path: page.path || undefined },
+    props: { page },
+  }));
+}
+
+const { page } = Astro.props;
+const View = VIEWS[page.view];
+---
+<View locale={page.locale} page={page} />

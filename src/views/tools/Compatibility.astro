@@ -1,0 +1,59 @@
+---
+import Base from '../../layouts/Base.astro';
+import AdSlot from '../../components/AdSlot.astro';
+import { getT, allSigns, fmt } from '../../lib/content';
+import { pageUrl } from '../../lib/routes';
+import { SIGN_IDS } from '../../data/core';
+const { locale, page } = Astro.props;
+const t = getT(locale);
+const tool = t.tools.compatibility;
+const signs = allSigns(locale);
+const pairUrl = (a: string, b: string) => {
+  const [x, y] = SIGN_IDS.indexOf(a as any) > SIGN_IDS.indexOf(b as any) ? [b, a] : [a, b];
+  return pageUrl(locale, `pair:${x}:${y}`);
+};
+const urls: Record<string, string> = {};
+for (const a of SIGN_IDS) for (const b of SIGN_IDS) urls[`${a}|${b}`] = pairUrl(a, b);
+const groups = signs.map((a) => ({
+  title: fmt(tool.bySignSummary, { name: `${a.symbol} ${a.name}` }),
+  links: signs.map((b) => ({ url: urls[`${a.id}|${b.id}`], text: fmt(tool.pairLink, { a: a.name, b: b.name }) })),
+}));
+---
+<Base locale={locale} pageId={page.id} title={tool.title} description={tool.description}>
+  <p class="crumbs"><a href={pageUrl(locale, 'home')}>{t.ui.home}</a> › {tool.crumb}</p>
+  <h1>{tool.h1}</h1>
+  <p class="lead">{tool.lead}</p>
+  <div class="card">
+    <form class="calc" id="f">
+      <div class="row">
+        <label>{tool.firstSign}
+          <select id="a">{signs.map((s) => <option value={s.id}>{s.symbol} {s.name}</option>)}</select>
+        </label>
+        <label>{tool.secondSign}
+          <select id="b">{signs.map((s, i) => <option value={s.id} selected={i === 4}>{s.symbol} {s.name}</option>)}</select>
+        </label>
+      </div>
+      <button type="submit">{tool.button}</button>
+    </form>
+  </div>
+  <AdSlot slot={import.meta.env.PUBLIC_AD_SLOT_CONTENT} />
+  <h2>{tool.bySignHeading}</h2>
+  {groups.map((g) => (
+    <details>
+      <summary>{g.title}</summary>
+      <p>{g.links.map((l, i) => <><a href={l.url}>{l.text}</a>{i < g.links.length - 1 ? ' · ' : ''}</>)}</p>
+    </details>
+  ))}
+  <script type="application/json" id="data" set:html={JSON.stringify(urls)} />
+</Base>
+
+<script>
+  const $ = (id: string) => document.getElementById(id)!;
+  const urls = JSON.parse($('data').textContent!);
+  $('f').addEventListener('submit', (e) => {
+    e.preventDefault();
+    const a = ($('a') as HTMLSelectElement).value;
+    const b = ($('b') as HTMLSelectElement).value;
+    location.href = urls[`${a}|${b}`];
+  });
+</script>

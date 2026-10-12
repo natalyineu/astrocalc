@@ -1,0 +1,55 @@
+---
+import Base from '../layouts/Base.astro';
+import AdSlot from '../components/AdSlot.astro';
+import Faq from '../components/Faq.astro';
+import { getT, fmt, list, signInfo } from '../lib/content';
+import { compatibility } from '../lib/compat';
+import { pageUrl } from '../lib/routes';
+const { locale, page } = Astro.props;
+const t = getT(locale);
+const { a: aId, b: bId } = page.props;
+const A = signInfo(locale, aId);
+const B = signInfo(locale, bId);
+const same = aId === bId;
+const c = compatibility(aId, bId);
+const rating = t.compat.ratings[c.rating];
+const summary = t.compat.elementPairs[c.elementKey];
+const modalityText = t.compat.modalityPairs[c.modalityKey];
+const v = { a: A.name, b: B.name, score: c.overall, rating, summary, ca: A.challenges[0], cb: B.challenges[0], e1: A.element, e2: B.element };
+const faq = t.compat.faq.map((f: { q: string; a: string }) => ({ q: fmt(f.q, v), a: fmt(f.a, v) }));
+const stats = (['love', 'friendship', 'communication', 'trust'] as const).map((k) => ({ label: t.compat.stats[k], value: c[k] }));
+const elementHeading = A.elementId === B.elementId ? fmt(t.compat.elementHeadingSame, { e: A.element }) : fmt(t.compat.elementHeadingMix, v);
+const brings = (s: typeof A) => fmt(t.compat.bringsText, { name: s.name, keywords: list(locale, s.keywords), strengths: list(locale, s.strengths), love: s.love });
+const challenges = (s: typeof A) => fmt(t.compat.challengesLine, { name: s.name, list: list(locale, s.challenges) });
+const title = fmt(t.compat.pairTitle, v);
+---
+<Base locale={locale} pageId={page.id} title={title} description={fmt(t.compat.pairDescription, v)}>
+  <p class="crumbs">
+    <a href={pageUrl(locale, 'home')}>{t.ui.home}</a> ›
+    <a href={pageUrl(locale, 'tool:compatibility')}>{t.tools.compatibility.crumb}</a> › {A.name} / {B.name}
+  </p>
+  <h1>{A.symbol} {fmt(t.compat.pairH1, v)} {B.symbol}</h1>
+  <p class="lead">{fmt(t.compat.ratingLine, v)}</p>
+  <div class="card">
+    <div class="big">{c.overall}%</div>
+    <div class="meter"><i style={`width:${c.overall}%`}></i></div>
+    {stats.map((s) => (
+      <div class="stat">
+        <span>{s.label}</span>
+        <div class="meter"><i style={`width:${s.value}%`}></i></div>
+        <strong>{s.value}%</strong>
+      </div>
+    ))}
+  </div>
+  <AdSlot slot={import.meta.env.PUBLIC_AD_SLOT_CONTENT} />
+  <h2>{elementHeading}</h2>
+  <p>{summary}</p>
+  <p>{modalityText}</p>
+  <h2>{fmt(t.compat.bringsHeading, { name: A.name })}</h2>
+  <p>{brings(A)}</p>
+  {!same && <><h2>{fmt(t.compat.bringsHeading, { name: B.name })}</h2><p>{brings(B)}</p></>}
+  <h2>{t.compat.challengesHeading}</h2>
+  <p>{challenges(A)} {!same && challenges(B)}</p>
+  <Faq heading={t.ui.faq} items={faq} />
+  <p><a href={pageUrl(locale, 'tool:compatibility')}>{t.ui.checkAnother}</a></p>
+</Base>
