@@ -1,0 +1,13 @@
+---
+// Renders an AdSense unit when PUBLIC_ADSENSE_CLIENT and the slot id are set; otherwise nothing.
+interface Props { slot?: string; format?: string }
+const { slot, format = 'auto' } = Astro.props;
+const client = import.meta.env.PUBLIC_ADSENSE_CLIENT;
+const show = Boolean(client && slot);
+---
+{show && (
+  <div class="ad-slot">
+    <ins class="adsbygoogle" style="display:block" data-ad-client={client} data-ad-slot={slot} data-ad-format={format} data-full-width-responsive="true"></ins>
+    <script is:inline>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+  </div>
+)}
