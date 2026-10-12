@@ -1,0 +1,248 @@
+{
+  "site": { "name": "AstroCalc", "tagline": "Kostenlose Astrologie-Rechner" },
+  "ui": {
+    "home": "Startseite",
+    "about": "Über uns",
+    "privacy": "Datenschutzerklärung",
+    "language": "Sprache",
+    "faq": "Häufige Fragen",
+    "keywords": "Schlüsselwörter",
+    "strengths": "Stärken",
+    "challenges": "Herausforderungen",
+    "ruledBy": "Herrscher: {ruler}",
+    "signSummary": "{dates} · {element} · {modality} · {ruledBy}",
+    "month": "Monat",
+    "day": "Tag",
+    "birthDate": "Geburtsdatum",
+    "birthTime": "Geburtszeit",
+    "dateOfBirth": "Geburtsdatum",
+    "timezone": "Zeitzone des Geburtsorts",
+    "disclaimer": "Astrologie dient ausschließlich der Unterhaltung und Selbstreflexion.",
+    "browseSigns": "Alle 12 Sternzeichen ansehen",
+    "checkAnother": "← Anderes Paar prüfen",
+    "readProfile": "Ganzes Profil lesen",
+    "aboutSign": "Über dieses Sternzeichen"
+  },
+  "nav": {
+    "zodiac-sign": "Sternzeichen",
+    "moon-sign": "Mond",
+    "compatibility": "Partnerschaft",
+    "life-path": "Numerologie",
+    "chinese-zodiac": "Chinesisch"
+  },
+  "elements": { "fire": "Feuer", "earth": "Erde", "air": "Luft", "water": "Wasser" },
+  "modalities": { "cardinal": "Kardinal", "fixed": "Fix", "mutable": "Veränderlich" },
+  "planets": {
+    "mars": "Mars", "venus": "Venus", "mercury": "Merkur", "moon": "der Mond", "sun": "die Sonne",
+    "jupiter": "Jupiter", "saturn": "Saturn", "uranus": "Uranus", "neptune": "Neptun", "pluto": "Pluto"
+  },
+  "home": {
+    "title": "AstroCalc – Kostenlose Astrologie-Rechner: Sternzeichen, Mondzeichen & Partnerschaft",
+    "description": "Kostenlose Astrologie-Rechner: Sternzeichen, Mondzeichen, Partnerschafts-Check, Lebenszahl und chinesisches Horoskop. Schnell, genau und ohne Anmeldung.",
+    "h1": "Kostenlose Astrologie-Rechner",
+    "lead": "Sternzeichen, Mondzeichen, Partnerschaft und Numerologie, ganz ohne Anmeldung.",
+    "toolDescriptions": {
+      "zodiac-sign": "Finde dein Sonnenzeichen anhand deines Geburtstags",
+      "moon-sign": "Sieh nach, wo der Mond bei deiner Geburt stand",
+      "compatibility": "Liebes- und Freundschaftswerte für jedes Paar von Sternzeichen",
+      "life-path": "Numerologie aus deinem Geburtsdatum",
+      "chinese-zodiac": "Dein Tier und dein Element"
+    }
+  },
+  "tools": {
+    "zodiac-sign": {
+      "slug": "sternzeichen-rechner",
+      "crumb": "Sternzeichen-Rechner",
+      "title": "Sternzeichen-Rechner – Finde dein Sonnenzeichen nach Geburtsdatum",
+      "description": "Kostenloser Sternzeichen-Rechner. Gib dein Geburtsdatum ein und erfahre sofort dein Sonnenzeichen, Element, deine Qualität und deinen Herrscherplaneten.",
+      "h1": "Sternzeichen-Rechner",
+      "lead": "Gib dein Geburtsdatum ein, um dein Sonnenzeichen zu finden.",
+      "button": "Mein Sternzeichen finden",
+      "resultLabel": "Dein Sternzeichen ist",
+      "invalidTitle": "Ungültiges Datum",
+      "invalidText": "Dieser Monat hat nicht so viele Tage.",
+      "listHeading": "Die 12 Sternzeichen und ihre Daten",
+      "faq": [
+        { "q": "Wie finde ich mein Sternzeichen heraus?", "a": "Dein Sternzeichen (Sonnenzeichen) hängt von deinem Geburtsdatum ab. Gib oben Monat und Tag deiner Geburt ein, und der Rechner zeigt dir dein Zeichen, Element und deinen Herrscherplaneten." },
+        { "q": "Was gilt, wenn ich auf der Kuspe geboren bin?", "a": "Wurdest du ein bis zwei Tage vor oder nach einem Zeichenwechsel geboren, entscheiden die genaue Uhrzeit und der Geburtsort über dein Sonnenzeichen. Nutze einen Geburtshoroskop-Rechner mit deiner Geburtszeit, um sicherzugehen." },
+        { "q": "Sind die Sonnenzeichen auf der Südhalbkugel dieselben?", "a": "Ja. Die westliche Astrologie verwendet überall auf der Welt dieselben Daten für die Sternzeichen." }
+      ]
+    },
+    "moon-sign": {
+      "slug": "mondzeichen-rechner",
+      "crumb": "Mondzeichen-Rechner",
+      "title": "Mondzeichen-Rechner – Finde dein Mondzeichen kostenlos",
+      "description": "Kostenloser Mondzeichen-Rechner. Gib Geburtsdatum, Uhrzeit und Zeitzone ein, um zu sehen, in welchem Tierkreiszeichen der Mond stand, berechnet aus astronomischen Daten.",
+      "h1": "Mondzeichen-Rechner",
+      "lead": "Finde das Tierkreiszeichen, in dem der Mond bei deiner Geburt stand.",
+      "button": "Mein Mondzeichen berechnen",
+      "resultLabel": "Dein Mondzeichen ist",
+      "resultText": "Dein Mond stand bei etwa {degrees}° {sign}. {element}-Mond, {modality}e Energie. Emotional neigst du dazu, {keywords} zu sein.",
+      "aboutHeading": "Was dein Mondzeichen bedeutet",
+      "aboutText": "Während dein Sonnenzeichen deine Kernidentität beschreibt, beschreibt dein Mondzeichen deine innere Welt: wie du Gefühle verarbeitest, was dich tröstet und wie du reagierst, wenn du für niemanden etwas darstellst. Zwei Menschen mit demselben Sonnenzeichen können sehr unterschiedlich empfinden, wenn ihre Mondzeichen verschieden sind.",
+      "faq": [
+        { "q": "Was ist ein Mondzeichen?", "a": "Dein Mondzeichen ist das Tierkreiszeichen, in dem der Mond bei deiner Geburt stand. Es wird mit Gefühlen, Instinkten und dem verbunden, was dir Sicherheit gibt." },
+        { "q": "Brauche ich meine genaue Geburtszeit?", "a": "Der Mond wechselt etwa alle zweieinhalb Tage das Zeichen, deshalb reicht oft das Datum. Wurdest du an einem Tag geboren, an dem der Mond das Zeichen wechselte, kommt es auf die Uhrzeit an." },
+        { "q": "Wie genau ist dieser Rechner?", "a": "Er nutzt astronomische Ephemeridenberechnungen der ekliptikalen Länge des Mondes, dieselben Daten wie professionelle Astrologie-Software." },
+        { "q": "Was ist mein UTC-Offset?", "a": "Das ist der Zeitunterschied zwischen deinem Geburtsort und UTC zum damaligen Zeitpunkt. Berlin ist zum Beispiel im Winter UTC+1 und im Sommer UTC+2, New York im Winter UTC−5 und im Sommer UTC−4." }
+      ]
+    },
+    "compatibility": {
+      "slug": "partnerschaftshoroskop",
+      "crumb": "Partnerschaftshoroskop",
+      "title": "Partnerschaftshoroskop-Rechner – Liebe, Freundschaft & Vertrauen",
+      "description": "Kostenloser Partnerschaftshoroskop-Rechner. Wähle zwei Sternzeichen und sieh die Werte für Liebe, Freundschaft, Kommunikation und Vertrauen aller 78 Kombinationen.",
+      "h1": "Partnerschaftshoroskop-Rechner",
+      "lead": "Wähle zwei Sternzeichen und sieh, wie gut sie zusammenpassen.",
+      "firstSign": "Erstes Sternzeichen",
+      "secondSign": "Zweites Sternzeichen",
+      "button": "Zusammenpassen prüfen",
+      "bySignHeading": "Partnerschaft nach Sternzeichen",
+      "bySignSummary": "{name} Partnerschaft",
+      "pairLink": "{a} und {b}"
+    },
+    "life-path": {
+      "slug": "lebenszahl-rechner",
+      "crumb": "Lebenszahl-Rechner",
+      "title": "Lebenszahl-Rechner – Numerologie nach Geburtsdatum",
+      "description": "Kostenloser Lebenszahl-Rechner. Gib dein Geburtsdatum ein und erfahre deine numerologische Lebenszahl und was sie bedeutet.",
+      "h1": "Lebenszahl-Rechner",
+      "lead": "Deine Lebenszahl wird aus deinem vollständigen Geburtsdatum berechnet.",
+      "button": "Berechnen",
+      "resultLabel": "Deine Lebenszahl ist",
+      "meaningsHeading": "Bedeutung der Lebenszahlen",
+      "faq": [
+        { "q": "Wie berechnet man die Lebenszahl?", "a": "Reduziere Geburtsjahr, -monat und -tag jeweils auf eine einstellige Zahl, addiere sie und reduziere erneut. Die Zahlen 11, 22 und 33 sind Meisterzahlen und werden nicht weiter reduziert." },
+        { "q": "Was sind Meisterzahlen?", "a": "Den Meisterzahlen 11, 22 und 33 wird ein stärkeres Potenzial, aber auch eine stärkere Herausforderung zugeschrieben als ihren einstelligen Varianten." },
+        { "q": "Ist Numerologie wissenschaftlich belegt?", "a": "Nein. Numerologie ist ein Glaubenssystem für Reflexion und Unterhaltung, keine Vorhersagewissenschaft." }
+      ]
+    },
+    "chinese-zodiac": {
+      "slug": "chinesisches-horoskop-rechner",
+      "crumb": "Chinesisches Horoskop",
+      "title": "Chinesisches Horoskop-Rechner – Finde dein Tier und Element",
+      "description": "Kostenloser Rechner für das chinesische Horoskop. Gib dein Geburtsdatum ein und finde dein Tierzeichen und Element, mit dem korrekten Stichtag des Mondneujahrs.",
+      "h1": "Chinesisches Horoskop-Rechner",
+      "lead": "Finde dein chinesisches Tierzeichen und Element anhand deines Geburtsdatums.",
+      "button": "Mein Tier finden",
+      "resultLabel": "Dein chinesisches Tierzeichen ist",
+      "resultName": "{element}-{animal}",
+      "resultYear": "Dein chinesisches Horoskopjahr ist {year}.",
+      "resultYearBefore": "Du wurdest vor dem Mondneujahr {birthYear} geboren, daher ist dein chinesisches Horoskopjahr {year}.",
+      "animalsHeading": "Die 12 Tiere",
+      "animalsText": "Der Tierzyklus wiederholt sich alle 12 Jahre und verbindet sich mit fünf Elementen zu einem 60-Jahres-Zyklus. Das Jahr wechselt zum Mondneujahr, nicht am 1. Januar.",
+      "faq": [
+        { "q": "Warum weicht mein chinesisches Tierzeichen von meinem Geburtsjahr ab?", "a": "Das chinesische Jahr beginnt mit dem Mondneujahr, das zwischen Ende Januar und Mitte Februar liegt. Wurdest du davor geboren, ist dein Tier das des Vorjahres." },
+        { "q": "Was ist das Element im chinesischen Horoskop?", "a": "Jedes Jahr hat außerdem eines von fünf Elementen: Holz, Feuer, Erde, Metall, Wasser. Jedes Element dauert zwei Jahre, was einen 60-Jahres-Zyklus ergibt." }
+      ]
+    }
+  },
+  "chinese": {
+    "animals": ["Ratte", "Büffel", "Tiger", "Hase", "Drache", "Schlange", "Pferd", "Ziege", "Affe", "Hahn", "Hund", "Schwein"],
+    "elements": ["Holz", "Feuer", "Erde", "Metall", "Wasser"]
+  },
+  "lifePath": {
+    "1": { "title": "Der Anführer", "text": "Unabhängig, zielstrebig und originell. Menschen mit Lebenszahl 1 setzen Dinge in Gang, vertrauen ihrem eigenen Urteil und lernen, Eigenständigkeit und Zusammenarbeit auszubalancieren." },
+    "2": { "title": "Der Friedensstifter", "text": "Sensibel, diplomatisch und auf andere eingestimmt. Lebenszahl 2 blüht in Partnerschaft auf und lernt, für die eigenen Bedürfnisse einzustehen." },
+    "3": { "title": "Der Kommunikator", "text": "Ausdrucksstark, kreativ und gesellig. Lebenszahl 3 bringt Freude und Ideen und lernt, ihre vielen Talente zu bündeln." },
+    "4": { "title": "Der Baumeister", "text": "Praktisch, diszipliniert und verlässlich. Lebenszahl 4 baut dauerhafte Grundlagen und lernt, flexibel zu bleiben." },
+    "5": { "title": "Der Abenteurer", "text": "Freiheitsliebend, neugierig und anpassungsfähig. Lebenszahl 5 sehnt sich nach Abwechslung und lernt, sich zu binden, ohne sich eingesperrt zu fühlen." },
+    "6": { "title": "Der Fürsorgliche", "text": "Fürsorglich, verantwortungsbewusst und gemeinschaftsorientiert. Lebenszahl 6 kümmert sich um andere und lernt, nicht die Lasten aller zu tragen." },
+    "7": { "title": "Der Suchende", "text": "Analytisch, nachdenklich und spirituell. Lebenszahl 7 sucht nach Wahrheit und lernt, zu vertrauen und Verbindungen einzugehen." },
+    "8": { "title": "Das Kraftpaket", "text": "Ehrgeizig, strategisch und ergebnisorientiert. Lebenszahl 8 strebt nach Leistung und lernt, Erfolg mit den eigenen Werten in Einklang zu bringen." },
+    "9": { "title": "Der Menschenfreund", "text": "Mitfühlend, idealistisch und großzügig. Lebenszahl 9 dient einem größeren Ganzen und lernt loszulassen." },
+    "11": { "title": "Der Visionär (Meisterzahl)", "text": "Intuitiv, inspirierend und hochsensibel. Lebenszahl 11 trägt eine starke innere Vision und lernt, sie im Alltag zu erden." },
+    "22": { "title": "Der Meisterbaumeister (Meisterzahl)", "text": "Praktischer Visionär mit dem Potenzial, große Träume Wirklichkeit werden zu lassen, und dem Druck, der damit einhergeht." },
+    "33": { "title": "Der Meisterlehrer (Meisterzahl)", "text": "Selbstlos, heilend und dem Aufbau anderer gewidmet. Lebenszahl 33 lernt, auf sich selbst zu achten, während sie dient." }
+  },
+  "signs": {
+    "aries": { "name": "Widder", "slug": "widder", "keywords": ["mutig", "direkt", "energiegeladen"], "strengths": ["Mut", "Initiative", "Ehrlichkeit"], "challenges": ["Ungeduld", "Impulsivität", "ein kurzes Zündholz"], "love": "Der Widder liebt die Jagd und möchte einen Partner, der mithalten kann, ohne ihn zu kontrollieren." },
+    "taurus": { "name": "Stier", "slug": "stier", "keywords": ["beständig", "sinnlich", "treu"], "strengths": ["Verlässlichkeit", "Geduld", "Praxisnähe"], "challenges": ["Sturheit", "Widerstand gegen Veränderung", "Besitzdenken"], "love": "Der Stier zeigt Liebe durch Beständigkeit, Geborgenheit und körperliche Zuneigung." },
+    "gemini": { "name": "Zwillinge", "slug": "zwillinge", "keywords": ["neugierig", "witzig", "anpassungsfähig"], "strengths": ["Kommunikation", "Vielseitigkeit", "Humor"], "challenges": ["Rastlosigkeit", "Unbeständigkeit", "Grübeln"], "love": "Die Zwillinge brauchen zuerst eine geistige Verbindung; Langeweile ist der schnellste Weg, sie zu verlieren." },
+    "cancer": { "name": "Krebs", "slug": "krebs", "keywords": ["fürsorglich", "intuitiv", "beschützend"], "strengths": ["Empathie", "Treue", "emotionale Tiefe"], "challenges": ["Launenhaftigkeit", "Anhänglichkeit", "Festhalten an der Vergangenheit"], "love": "Der Krebs baut in einer Beziehung ein Zuhause auf und muss sich emotional sicher fühlen." },
+    "leo": { "name": "Löwe", "slug": "loewe", "keywords": ["großzügig", "stolz", "herzlich"], "strengths": ["Selbstvertrauen", "Kreativität", "Großherzigkeit"], "challenges": ["Ego", "Bedürfnis nach Aufmerksamkeit", "sturer Stolz"], "love": "Der Löwe liebt laut und wünscht sich einen Partner, der offen Anerkennung zeigt." },
+    "virgo": { "name": "Jungfrau", "slug": "jungfrau", "keywords": ["analytisch", "hilfsbereit", "präzise"], "strengths": ["Liebe zum Detail", "Dienst am anderen", "Disziplin"], "challenges": ["Perfektionismus", "Selbstkritik", "Sorgen"], "love": "Die Jungfrau zeigt Liebe durch hilfreiche Taten und stille Aufmerksamkeit." },
+    "libra": { "name": "Waage", "slug": "waage", "keywords": ["diplomatisch", "charmant", "fair"], "strengths": ["Harmonie", "Geschmack", "soziales Geschick"], "challenges": ["Unentschlossenheit", "Konfliktscheu", "es allen recht machen wollen"], "love": "Die Waage ist im Herzen romantisch und blüht in der Partnerschaft auf." },
+    "scorpio": { "name": "Skorpion", "slug": "skorpion", "keywords": ["intensiv", "verschlossen", "entschlossen"], "strengths": ["Treue", "Wahrnehmung", "Widerstandskraft"], "challenges": ["Eifersucht", "Geheimniskrämerei", "Groll hegen"], "love": "Der Skorpion will Tiefe oder nichts, und Vertrauen muss langsam verdient werden." },
+    "sagittarius": { "name": "Schütze", "slug": "schuetze", "keywords": ["abenteuerlustig", "optimistisch", "offen"], "strengths": ["Begeisterung", "Offenheit", "Blick fürs große Ganze"], "challenges": ["Schonungslosigkeit", "Bindungsangst", "zu viele Versprechen"], "love": "Der Schütze braucht Freiheit und einen Partner, der auch Reisegefährte im Leben ist." },
+    "capricorn": { "name": "Steinbock", "slug": "steinbock", "keywords": ["ehrgeizig", "diszipliniert", "verantwortungsbewusst"], "strengths": ["Ausdauer", "Strategie", "Verlässlichkeit"], "challenges": ["Arbeitssucht", "Pessimismus", "emotionale Zurückhaltung"], "love": "Der Steinbock nimmt Liebe ernst und zeigt Bindung durch langfristiges Handeln." },
+    "aquarius": { "name": "Wassermann", "slug": "wassermann", "keywords": ["originell", "unabhängig", "menschenfreundlich"], "strengths": ["Innovation", "Sachlichkeit", "Treue zu Idealen"], "challenges": ["Distanziertheit", "Rebellion", "emotionale Distanz"], "love": "Der Wassermann wünscht sich Freundschaft und geistige Freiheit innerhalb der Beziehung." },
+    "pisces": { "name": "Fische", "slug": "fische", "keywords": ["verträumt", "mitfühlend", "künstlerisch"], "strengths": ["Fantasie", "Mitgefühl", "Anpassungsfähigkeit"], "challenges": ["Realitätsflucht", "Abgrenzung", "Überempfindlichkeit"], "love": "Die Fische lieben bedingungslos und brauchen einen sanften, aufrichtigen Partner." }
+  },
+  "signPage": {
+    "dir": "sternzeichen",
+    "title": "Sternzeichen {name}: Daten, Eigenschaften & Partnerschaft",
+    "description": "{name} ({dates}): {element}-Zeichen, Herrscher {ruler}. Charaktereigenschaften, Stärken, Herausforderungen und beste Partner.",
+    "h1": "Sternzeichen {name}",
+    "inLove": "{name} in der Liebe",
+    "compatHeading": "{name} Partnerschaft",
+    "pairTile": "{a} + {b}",
+    "pairTileSub": "{symbol} Partnerschaft"
+  },
+  "compat": {
+    "connector": "und",
+    "ratings": { "excellent": "Hervorragende Kombination", "strong": "Starke Kombination", "good": "Gut mit etwas Mühe", "challenging": "Herausfordernd, aber möglich" },
+    "stats": { "love": "Liebe", "friendship": "Freundschaft", "communication": "Kommunikation", "trust": "Vertrauen" },
+    "pairTitle": "{a} und {b} Partnerschaft: Liebe, Freundschaft & Vertrauen",
+    "pairDescription": "{a} und {b} passen zu {score}% zusammen. Sieh die Werte für Liebe, Freundschaft, Kommunikation und Vertrauen und was diese Verbindung von {e1} und {e2} bedeutet.",
+    "pairH1": "{a} und {b} Partnerschaft",
+    "ratingLine": "{rating} · Gesamtwert {score}%",
+    "elementHeadingSame": "{e}-Energie",
+    "elementHeadingMix": "{e1}- und {e2}-Energie",
+    "bringsHeading": "Was {name} mitbringt",
+    "bringsText": "{name} ist {keywords}. Zu den Stärken zählen {strengths}. In der Liebe: {love}",
+    "challengesHeading": "Herausforderungen im Blick",
+    "challengesLine": "{name}: {list}.",
+    "faq": [
+      { "q": "Passen {a} und {b} zusammen?", "a": "{a} und {b} erreichen einen Verträglichkeitswert von {score}% ({rating}). {summary}" },
+      { "q": "Was ist die größte Herausforderung für {a} und {b}?", "a": "{a} kann mit {ca} kämpfen, während {b} mit {cb} kämpfen kann. Wer das früh erkennt, hilft der Beziehung." },
+      { "q": "Hängt die Verträglichkeit nur von den Sonnenzeichen ab?", "a": "Nein. Mondzeichen, Venuszeichen und die vollständigen Geburtshoroskope bringen viele Nuancen. Die Verträglichkeit der Sonnenzeichen ist ein unterhaltsamer Ausgangspunkt, kein Urteil." }
+    ],
+    "elementPairs": {
+      "fire-fire": "Zwei Feuerzeichen erzeugen schnell Hitze und Aufregung. Beide sind leidenschaftlich und selbstbewusst, die Beziehung läuft also auf Energie, aber keiner gibt gern nach.",
+      "earth-earth": "Zwei Erdzeichen bauen etwas Solides auf. Gemeinsame Bodenständigkeit und Treue ergeben eine stabile, behagliche Bindung mit dem Risiko, in der Routine zu erstarren.",
+      "air-air": "Zwei Luftzeichen teilen einen geistigen Funken. Der Gesprächsstoff geht nie aus, doch emotionale Verbindlichkeit erfordert bewusste Anstrengung.",
+      "water-water": "Zwei Wasserzeichen spüren einander tief, oft ohne Worte. Die Verbindung ist intensiv und zärtlich, und Stimmungen können sich gegenseitig verstärken.",
+      "air-fire": "Luft nährt Feuer. Das ist eine der von Natur aus belebendsten Verbindungen: Ideen, Abenteuer und Begeisterung fließen in beide Richtungen.",
+      "earth-water": "Wasser nährt Erde. Emotionale Tiefe trifft auf Beständigkeit, eine unterstützende und wachstumsorientierte Verbindung.",
+      "earth-fire": "Feuer will sich bewegen, Erde will bauen. Sie können sich ausgleichen, doch Tempo und Prioritäten müssen ausgehandelt werden.",
+      "air-earth": "Luft lebt in Ideen, Erde im Konkreten. Beide sehen die Welt unterschiedlich, was erfrischend oder frustrierend sein kann.",
+      "fire-water": "Feuer und Wasser sind im Temperament Gegensätze: direkt gegen empfindsam. Die Chemie ist echt, braucht aber Geduld und Sorgfalt, damit kein Dampf entsteht.",
+      "air-water": "Luft denkt, Wasser fühlt. Beide können viel voneinander lernen, wenn sie zwischen Logik und Gefühl übersetzen."
+    },
+    "modalityPairs": {
+      "cardinal-cardinal": "Beide sind Initiatoren, daher gibt es Antrieb und Pläne im Überfluss, aber auch gelegentliche Machtkämpfe darum, wer führt.",
+      "fixed-fixed": "Beide sind treu und entschlossen. Das bringt Durchhaltevermögen, aber auch Sturheit bei Meinungsverschiedenheiten.",
+      "mutable-mutable": "Beide sind flexibel und anpassungsfähig. Es ist leicht, mit ihnen zusammen zu sein, doch Entscheidungen und Durchhaltevermögen können verwässern.",
+      "cardinal-fixed": "Einer setzt Dinge in Gang, der andere hält sie am Laufen, eine praktische Rollenverteilung, wenn sie respektiert wird.",
+      "cardinal-mutable": "Initiator und Anpasser passen meist gut zusammen: Einer gibt die Richtung vor, der andere stellt sich reibungslos darauf ein.",
+      "fixed-mutable": "Der Beständige gibt Halt, der Flexible mildert. Das funktioniert gut, solange das fixe Zeichen Flexibilität nicht als selbstverständlich nimmt."
+    }
+  },
+  "pages": {
+    "about": {
+      "slug": "ueber-uns",
+      "title": "Über AstroCalc",
+      "description": "Über AstroCalc, kostenlose Astrologie-Rechner.",
+      "h1": "Über uns",
+      "blocks": [
+        { "p": "AstroCalc bietet kostenlose Astrologie-Rechner: Sternzeichen, Mondzeichen, Partnerschaft, Numerologie und chinesisches Horoskop. Die Mondpositionen werden aus astronomischen Ephemeridendaten berechnet." },
+        { "p": "Astrologie und Numerologie werden zur Unterhaltung und Selbstreflexion angeboten. Es sind keine wissenschaftlichen Vorhersagen, und nichts auf dieser Website ist medizinische, rechtliche oder finanzielle Beratung." },
+        { "p": "Kontakt: Füge vor dem Start hier deine E-Mail-Adresse ein." }
+      ]
+    },
+    "privacy": {
+      "slug": "datenschutz",
+      "title": "Datenschutzerklärung – AstroCalc",
+      "description": "Datenschutzerklärung von AstroCalc.",
+      "h1": "Datenschutzerklärung",
+      "blocks": [
+        { "p": "Geburtsdaten und Geburtszeiten, die du in die Rechner eingibst, werden in deinem Browser verarbeitet und weder an unsere Server gesendet noch dort gespeichert." },
+        { "h2": "Werbung und Analyse" },
+        { "p": "Wir können Drittanbieter, darunter Google, nutzen, um Anzeigen zu schalten und den Datenverkehr zu messen. Diese Anbieter verwenden Cookies, um Anzeigen auf Basis deiner Besuche dieser und anderer Websites auszuliefern. Personalisierte Werbung kannst du in den Google-Anzeigeneinstellungen deaktivieren." },
+        { "h2": "Kontakt" },
+        { "p": "Fragen zu dieser Erklärung: Füge vor dem Start hier deine E-Mail-Adresse ein." }
+      ]
+    }
+  }
+}
