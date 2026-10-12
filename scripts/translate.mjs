@@ -1,4 +1,6 @@
-// Usage: ANTHROPIC_API_KEY=... node scripts/translate.mjs <code> [--force]
+// Usage: OPENROUTER_API_KEY=... node scripts/translate.mjs <code> [--force]
+//    or: ANTHROPIC_API_KEY=...  node scripts/translate.mjs <code> [--force]
+// TRANSLATE_MODEL overrides the model (OpenRouter default: deepseek/deepseek-chat-v3.1).
 // Translates every key missing from src/i18n/locales/<code>.json using the English source.
 // Re-run any time you add keys to en.json: only missing keys are sent.
 import { readLocale, writeLocale, flatten, unflatten, placeholders, isSlugKey, slugOk } from './lib.mjs';
@@ -8,9 +10,10 @@ const code = process.argv[2];
 const force = process.argv.includes('--force');
 const meta = LOCALES.find((l) => l.code === code);
 if (!meta || code === 'en') { console.error('Usage: translate.mjs <locale code from src/i18n/config.ts, not en>'); process.exit(1); }
+const orKey = process.env.OPENROUTER_API_KEY;
 const apiKey = process.env.ANTHROPIC_API_KEY;
-if (!apiKey) { console.error('Set ANTHROPIC_API_KEY'); process.exit(1); }
-const MODEL = process.env.TRANSLATE_MODEL || 'claude-sonnet-5-5';
+if (!orKey && !apiKey) { console.error('Set OPENROUTER_API_KEY or ANTHROPIC_API_KEY'); process.exit(1); }
+const MODEL = process.env.TRANSLATE_MODEL || (orKey ? 'deepseek/deepseek-chat-v3.1' : 'claude-haiku-5-5');
 
 const enTree = readLocale('en');
 const en = flatten(enTree);
@@ -27,21 +30,32 @@ Rules:
 - Keep symbols such as "·", "→", "←", "–", "%" and "°".
 - Do not translate the site name "AstroCalc".`;
 
-async function ask(batch) {
-  const body = {
-    model: MODEL, max_tokens: 8000, system: SYSTEM,
-    messages: [{ role: 'user', content: JSON.stringify(Object.fromEntries(batch.map((k) => [k, en[k]]))) }],
-  };
-  for (let attempt = 1; attempt <= 3; attempt++) {
-    const res = await fetch('https://api.anthropic.com/v1/messages', {
+async function call(user) {
+  if (orKey) {
+    const res = await fetch('https://openrouter.ai/api/v1/chat/completions', {
       method: 'POST',
-      headers: { 'content-type': 'application/json', 'x-api-key': apiKey, 'anthropic-version': '2023-06-01' },
-      body: JSON.stringify(body),
+      headers: { 'content-type': 'application/json', authorization: `Bearer ${orKey}` },
+      body: JSON.stringify({ model: MODEL, max_tokens: 8000, messages: [{ role: 'system', content: SYSTEM }, { role: 'user', content: user }] }),
     });
-    if (!res.ok) { console.error(`API ${res.status}: ${await res.text()}`); continue; }
-    const text = (await res.json()).content.map((c) => c.text || '').join('');
-    try { return JSON.parse(text.slice(text.indexOf('{'), text.lastIndexOf('}') + 1)); }
-    catch { console.error('Unparseable response, retrying'); }
+    if (!res.ok) throw new Error(`API ${res.status}: ${await res.text()}`);
+    return (await res.json()).choices[0].message.content;
+  }
+  const res = await fetch('https://api.anthropic.com/v1/messages', {
+    method: 'POST',
+    headers: { 'content-type': 'application/json', 'x-api-key': apiKey, 'anthropic-version': '2023-06-01' },
+    body: JSON.stringify({ model: MODEL, max_tokens: 8000, system: SYSTEM, messages: [{ role: 'user', content: user }] }),
+  });
+  if (!res.ok) throw new Error(`API ${res.status}: ${await res.text()}`);
+  return (await res.json()).content.map((c) => c.text || '').join('');
+}
+
+async function ask(batch) {
+  const user = JSON.stringify(Object.fromEntries(batch.map((k) => [k, en[k]])));
+  for (let attempt = 1; attempt <= 3; attempt++) {
+    try {
+      const text = await call(user);
+      return JSON.parse(text.slice(text.indexOf('{'), text.lastIndexOf('}') + 1));
+    } catch (e) { console.error(`Attempt ${attempt} failed: ${e.message}`); }
   }
   throw new Error('Translation batch failed');
 }

@@ -1,0 +1,248 @@
+{
+  "site": { "name": "AstroCalc", "tagline": "Calculadoras de astrología gratis" },
+  "ui": {
+    "home": "Inicio",
+    "about": "Acerca de",
+    "privacy": "Política de privacidad",
+    "language": "Idioma",
+    "faq": "Preguntas frecuentes",
+    "keywords": "Palabras clave",
+    "strengths": "Fortalezas",
+    "challenges": "Desafíos",
+    "ruledBy": "regido por {ruler}",
+    "signSummary": "{dates} · {element} · {modality} · {ruledBy}",
+    "month": "Mes",
+    "day": "Día",
+    "birthDate": "Fecha de nacimiento",
+    "birthTime": "Hora de nacimiento",
+    "dateOfBirth": "Fecha de nacimiento",
+    "timezone": "Zona horaria del lugar de nacimiento",
+    "disclaimer": "La astrología se ofrece solo como entretenimiento y para la reflexión personal.",
+    "browseSigns": "Explora los 12 signos",
+    "checkAnother": "← Consultar otra pareja",
+    "readProfile": "Leer el perfil completo",
+    "aboutSign": "Sobre este signo"
+  },
+  "nav": {
+    "zodiac-sign": "Signo",
+    "moon-sign": "Luna",
+    "compatibility": "Compatibilidad",
+    "life-path": "Numerología",
+    "chinese-zodiac": "Chino"
+  },
+  "elements": { "fire": "Fuego", "earth": "Tierra", "air": "Aire", "water": "Agua" },
+  "modalities": { "cardinal": "Cardinal", "fixed": "Fijo", "mutable": "Mutable" },
+  "planets": {
+    "mars": "Marte", "venus": "Venus", "mercury": "Mercurio", "moon": "la Luna", "sun": "el Sol",
+    "jupiter": "Júpiter", "saturn": "Saturno", "uranus": "Urano", "neptune": "Neptuno", "pluto": "Plutón"
+  },
+  "home": {
+    "title": "AstroCalc – Calculadoras de astrología gratis: signo zodiacal, signo lunar y compatibilidad",
+    "description": "Calculadoras de astrología gratis: signo zodiacal, signo lunar, compatibilidad zodiacal, número del camino de vida y horóscopo chino. Rápidas, precisas y sin registro.",
+    "h1": "Calculadoras de astrología gratis",
+    "lead": "Signo zodiacal, signo lunar, compatibilidad y numerología, sin necesidad de registrarte.",
+    "toolDescriptions": {
+      "zodiac-sign": "Descubre tu signo solar con tu fecha de nacimiento",
+      "moon-sign": "Mira dónde estaba la Luna cuando naciste",
+      "compatibility": "Puntuaciones de amor y amistad para cualquier pareja de signos",
+      "life-path": "Numerología a partir de tu fecha de nacimiento",
+      "chinese-zodiac": "Tu animal y tu elemento"
+    }
+  },
+  "tools": {
+    "zodiac-sign": {
+      "slug": "calculadora-signo-zodiacal",
+      "crumb": "Calculadora de signo zodiacal",
+      "title": "Calculadora de signo zodiacal – Descubre tu signo solar por fecha de nacimiento",
+      "description": "Calculadora de signo zodiacal gratis. Introduce tu fecha de nacimiento y conoce al instante tu signo solar, elemento, modalidad y planeta regente.",
+      "h1": "Calculadora de signo zodiacal",
+      "lead": "Introduce tu fecha de nacimiento para descubrir tu signo solar.",
+      "button": "Descubrir mi signo",
+      "resultLabel": "Tu signo zodiacal es",
+      "invalidTitle": "Fecha no válida",
+      "invalidText": "Ese mes no tiene tantos días.",
+      "listHeading": "Los 12 signos del zodiaco y sus fechas",
+      "faq": [
+        { "q": "¿Cómo averiguo mi signo zodiacal?", "a": "Tu signo zodiacal (solar) depende de la fecha en que naciste. Introduce arriba tu mes y día de nacimiento y la calculadora te mostrará tu signo, elemento y planeta regente." },
+        { "q": "¿Qué pasa si nací en la cúspide?", "a": "Si naciste uno o dos días antes o después del cambio de signo, la hora y el lugar exactos de nacimiento deciden tu signo solar. Usa una calculadora de carta natal con tu hora de nacimiento para estar seguro." },
+        { "q": "¿Los signos solares son iguales en el hemisferio sur?", "a": "Sí. La astrología occidental usa las mismas fechas para los signos del zodiaco en todo el mundo." }
+      ]
+    },
+    "moon-sign": {
+      "slug": "calculadora-signo-lunar",
+      "crumb": "Calculadora de signo lunar",
+      "title": "Calculadora de signo lunar – Descubre tu signo lunar gratis",
+      "description": "Calculadora de signo lunar gratis. Introduce tu fecha, hora y zona horaria de nacimiento para saber en qué signo estaba la Luna, calculado con datos astronómicos.",
+      "h1": "Calculadora de signo lunar",
+      "lead": "Descubre en qué signo del zodiaco estaba la Luna en el momento de tu nacimiento.",
+      "button": "Calcular mi signo lunar",
+      "resultLabel": "Tu signo lunar es",
+      "resultText": "Tu Luna estaba a unos {degrees}° de {sign}. Luna de {element}, energía {modality}. Emocionalmente sueles ser {keywords}.",
+      "aboutHeading": "Qué significa tu signo lunar",
+      "aboutText": "Mientras que tu signo solar describe tu identidad central, tu signo lunar describe tu mundo interior: cómo procesas los sentimientos, qué te reconforta y cómo reaccionas cuando no estás actuando para nadie. Dos personas con el mismo signo solar pueden sentir de forma muy distinta si sus signos lunares son diferentes.",
+      "faq": [
+        { "q": "¿Qué es un signo lunar?", "a": "Tu signo lunar es el signo del zodiaco en el que estaba la Luna cuando naciste. Se asocia con las emociones, los instintos y lo que te hace sentir seguro." },
+        { "q": "¿Necesito mi hora exacta de nacimiento?", "a": "La Luna cambia de signo aproximadamente cada dos días y medio, así que a menudo basta con la fecha. Si naciste un día en que la Luna cambió de signo, la hora importa." },
+        { "q": "¿Qué tan precisa es esta calculadora?", "a": "Usa cálculos de efemérides astronómicas de la longitud eclíptica de la Luna, los mismos datos que emplea el software profesional de astrología." },
+        { "q": "¿Cuál es mi desfase UTC?", "a": "Es la diferencia horaria entre tu lugar de nacimiento y UTC en ese momento. Por ejemplo, Nueva York es UTC−5 en invierno y UTC−4 en verano; Madrid es UTC+1 en invierno y UTC+2 en verano." }
+      ]
+    },
+    "compatibility": {
+      "slug": "compatibilidad-zodiacal",
+      "crumb": "Compatibilidad zodiacal",
+      "title": "Calculadora de compatibilidad zodiacal – Amor, amistad y confianza",
+      "description": "Calculadora de compatibilidad zodiacal gratis. Elige dos signos y mira las puntuaciones de amor, amistad, comunicación y confianza de cualquiera de las 78 combinaciones.",
+      "h1": "Calculadora de compatibilidad zodiacal",
+      "lead": "Elige dos signos para ver qué tan bien combinan.",
+      "firstSign": "Primer signo",
+      "secondSign": "Segundo signo",
+      "button": "Ver compatibilidad",
+      "bySignHeading": "Compatibilidad por signo",
+      "bySignSummary": "Compatibilidad de {name}",
+      "pairLink": "{a} y {b}"
+    },
+    "life-path": {
+      "slug": "calculadora-numero-camino-de-vida",
+      "crumb": "Calculadora del número del camino de vida",
+      "title": "Calculadora del número del camino de vida – Numerología por fecha de nacimiento",
+      "description": "Calculadora del número del camino de vida gratis. Introduce tu fecha de nacimiento para conocer tu número de numerología y lo que significa.",
+      "h1": "Calculadora del número del camino de vida",
+      "lead": "Tu número del camino de vida se calcula a partir de tu fecha de nacimiento completa.",
+      "button": "Calcular",
+      "resultLabel": "Tu número del camino de vida es",
+      "meaningsHeading": "Significado de los números del camino de vida",
+      "faq": [
+        { "q": "¿Cómo se calcula el número del camino de vida?", "a": "Reduce por separado el año, el mes y el día de nacimiento a un solo dígito, súmalos y vuelve a reducir. Los números 11, 22 y 33 son números maestros y no se reducen más." },
+        { "q": "¿Qué son los números maestros?", "a": "Se considera que los números maestros 11, 22 y 33 tienen un potencial mayor, y también un desafío mayor, que sus versiones de un solo dígito." },
+        { "q": "¿Está probada científicamente la numerología?", "a": "No. La numerología es un sistema de creencias que se usa para la reflexión y el entretenimiento, no una ciencia predictiva." }
+      ]
+    },
+    "chinese-zodiac": {
+      "slug": "calculadora-zodiaco-chino",
+      "crumb": "Calculadora del zodiaco chino",
+      "title": "Calculadora del zodiaco chino – Descubre tu animal y tu elemento",
+      "description": "Calculadora del zodiaco chino gratis. Introduce tu fecha de nacimiento para conocer tu animal y tu elemento, con el corte correcto del Año Nuevo Lunar.",
+      "h1": "Calculadora del zodiaco chino",
+      "lead": "Descubre tu animal y tu elemento del zodiaco chino a partir de tu fecha de nacimiento.",
+      "button": "Descubrir mi animal",
+      "resultLabel": "Tu signo del zodiaco chino es",
+      "resultName": "{animal} de {element}",
+      "resultYear": "Tu año del zodiaco chino es {year}.",
+      "resultYearBefore": "Naciste antes del Año Nuevo Lunar de {birthYear}, así que tu año del zodiaco chino es {year}.",
+      "animalsHeading": "Los 12 animales",
+      "animalsText": "El ciclo de animales se repite cada 12 años y se combina con cinco elementos para formar un ciclo de 60 años. El año cambia con el Año Nuevo Lunar, no el 1 de enero.",
+      "faq": [
+        { "q": "¿Por qué mi animal del zodiaco chino no corresponde a mi año de nacimiento?", "a": "El año del zodiaco chino empieza con el Año Nuevo Lunar, que cae entre finales de enero y mediados de febrero. Si naciste antes, tu animal es el del año anterior." },
+        { "q": "¿Qué es el elemento del zodiaco chino?", "a": "Cada año también tiene uno de cinco elementos: Madera, Fuego, Tierra, Metal y Agua. Cada elemento dura dos años, lo que da un ciclo de 60 años." }
+      ]
+    }
+  },
+  "chinese": {
+    "animals": ["Rata", "Buey", "Tigre", "Conejo", "Dragón", "Serpiente", "Caballo", "Cabra", "Mono", "Gallo", "Perro", "Cerdo"],
+    "elements": ["Madera", "Fuego", "Tierra", "Metal", "Agua"]
+  },
+  "lifePath": {
+    "1": { "title": "El Líder", "text": "Independiente, decidido y original. Las personas del camino de vida 1 inician proyectos, confían en su propio criterio y aprenden a equilibrar la autosuficiencia con la cooperación." },
+    "2": { "title": "El Pacificador", "text": "Sensible, diplomático y atento a los demás. El camino de vida 2 florece en pareja y aprende a expresar sus propias necesidades." },
+    "3": { "title": "El Comunicador", "text": "Expresivo, creativo y sociable. El camino de vida 3 aporta alegría e ideas, y aprende a enfocar sus muchos talentos." },
+    "4": { "title": "El Constructor", "text": "Práctico, disciplinado y confiable. El camino de vida 4 construye cimientos duraderos y aprende a mantenerse flexible." },
+    "5": { "title": "El Aventurero", "text": "Amante de la libertad, curioso y adaptable. El camino de vida 5 necesita variedad y aprende a comprometerse sin sentirse enjaulado." },
+    "6": { "title": "El Protector", "text": "Cariñoso, responsable y comprometido con su comunidad. El camino de vida 6 cuida de los demás y aprende a no cargar con las cargas de todos." },
+    "7": { "title": "El Buscador", "text": "Analítico, introspectivo y espiritual. El camino de vida 7 busca la verdad y aprende a confiar y a conectar." },
+    "8": { "title": "El Estratega", "text": "Ambicioso, estratégico y orientado a resultados. El camino de vida 8 se siente atraído por el logro y aprende a equilibrar el éxito con sus valores." },
+    "9": { "title": "El Humanitario", "text": "Compasivo, idealista y generoso. El camino de vida 9 sirve a un propósito mayor y aprende a soltar." },
+    "11": { "title": "El Visionario (número maestro)", "text": "Intuitivo, inspirador y muy sensible. El camino de vida 11 lleva una fuerte visión interior y aprende a aterrizarla en la vida diaria." },
+    "22": { "title": "El Gran Constructor (número maestro)", "text": "Visionario práctico con el potencial de convertir grandes sueños en realidad, y con la presión que eso conlleva." },
+    "33": { "title": "El Gran Maestro (número maestro)", "text": "Desinteresado, sanador y dedicado a elevar a los demás. El camino de vida 33 aprende a cuidarse a sí mismo mientras sirve." }
+  },
+  "signs": {
+    "aries": { "name": "Aries", "slug": "aries", "keywords": ["audaz", "directo", "enérgico"], "strengths": ["valentía", "iniciativa", "honestidad"], "challenges": ["impaciencia", "impulsividad", "un carácter explosivo"], "love": "A Aries le encanta la conquista y quiere una pareja que pueda seguirle el ritmo sin controlarlo." },
+    "taurus": { "name": "Tauro", "slug": "tauro", "keywords": ["estable", "sensual", "leal"], "strengths": ["fiabilidad", "paciencia", "practicidad"], "challenges": ["terquedad", "resistencia al cambio", "posesividad"], "love": "Tauro demuestra su amor con constancia, comodidad y afecto físico." },
+    "gemini": { "name": "Géminis", "slug": "geminis", "keywords": ["curioso", "ingenioso", "adaptable"], "strengths": ["comunicación", "versatilidad", "sentido del humor"], "challenges": ["inquietud", "inconstancia", "darle demasiadas vueltas a todo"], "love": "Géminis necesita primero una conexión mental; el aburrimiento es la forma más rápida de perderlo." },
+    "cancer": { "name": "Cáncer", "slug": "cancer", "keywords": ["protector", "intuitivo", "cuidadoso"], "strengths": ["empatía", "lealtad", "profundidad emocional"], "challenges": ["cambios de humor", "apego excesivo", "aferrarse al pasado"], "love": "Cáncer construye un hogar dentro de la relación y necesita sentirse emocionalmente seguro." },
+    "leo": { "name": "Leo", "slug": "leo", "keywords": ["generoso", "orgulloso", "cálido"], "strengths": ["confianza", "creatividad", "gran corazón"], "challenges": ["ego", "necesidad de atención", "orgullo terco"], "love": "Leo ama con intensidad y quiere una pareja que sepa apreciarlo abiertamente." },
+    "virgo": { "name": "Virgo", "slug": "virgo", "keywords": ["analítico", "servicial", "preciso"], "strengths": ["atención al detalle", "entrega", "disciplina"], "challenges": ["perfeccionismo", "autocrítica", "preocupación"], "love": "Virgo muestra su amor con actos de servicio y prestando atención en silencio." },
+    "libra": { "name": "Libra", "slug": "libra", "keywords": ["diplomático", "encantador", "justo"], "strengths": ["armonía", "buen gusto", "don de gentes"], "challenges": ["indecisión", "evitar el conflicto", "querer complacer a todos"], "love": "Libra es un romántico de corazón y florece en pareja." },
+    "scorpio": { "name": "Escorpio", "slug": "escorpio", "keywords": ["intenso", "reservado", "decidido"], "strengths": ["lealtad", "perspicacia", "resiliencia"], "challenges": ["celos", "hermetismo", "guardar rencor"], "love": "Escorpio quiere profundidad o nada, y la confianza se gana despacio." },
+    "sagittarius": { "name": "Sagitario", "slug": "sagitario", "keywords": ["aventurero", "optimista", "franco"], "strengths": ["entusiasmo", "apertura", "visión de conjunto"], "challenges": ["brusquedad", "miedo al compromiso", "prometer demasiado"], "love": "Sagitario necesita libertad y una pareja que sea también compañera de viaje en la vida." },
+    "capricorn": { "name": "Capricornio", "slug": "capricornio", "keywords": ["ambicioso", "disciplinado", "responsable"], "strengths": ["perseverancia", "estrategia", "confiabilidad"], "challenges": ["adicción al trabajo", "pesimismo", "reserva emocional"], "love": "Capricornio se toma el amor en serio y demuestra su compromiso con acciones a largo plazo." },
+    "aquarius": { "name": "Acuario", "slug": "acuario", "keywords": ["original", "independiente", "humanitario"], "strengths": ["innovación", "objetividad", "lealtad a sus ideales"], "challenges": ["desapego", "rebeldía", "distancia emocional"], "love": "Acuario busca amistad y libertad intelectual dentro de la relación." },
+    "pisces": { "name": "Piscis", "slug": "piscis", "keywords": ["soñador", "compasivo", "artístico"], "strengths": ["imaginación", "compasión", "adaptabilidad"], "challenges": ["escapismo", "límites difusos", "hipersensibilidad"], "love": "Piscis ama sin condiciones y necesita una pareja amable y sincera." }
+  },
+  "signPage": {
+    "dir": "signos",
+    "title": "Signo zodiacal {name}: fechas, personalidad y compatibilidad",
+    "description": "{name} ({dates}): signo de {element} regido por {ruler}. Rasgos de personalidad, fortalezas, desafíos y mejores parejas.",
+    "h1": "Signo zodiacal {name}",
+    "inLove": "{name} en el amor",
+    "compatHeading": "Compatibilidad de {name}",
+    "pairTile": "{a} + {b}",
+    "pairTileSub": "Compatibilidad {symbol}"
+  },
+  "compat": {
+    "connector": "y",
+    "ratings": { "excellent": "Combinación excelente", "strong": "Combinación fuerte", "good": "Buena con esfuerzo", "challenging": "Difícil, pero posible" },
+    "stats": { "love": "Amor", "friendship": "Amistad", "communication": "Comunicación", "trust": "Confianza" },
+    "pairTitle": "Compatibilidad de {a} y {b}: amor, amistad y confianza",
+    "pairDescription": "La compatibilidad de {a} y {b} es del {score}%. Mira las puntuaciones de amor, amistad, comunicación y confianza y qué significa esta pareja de {e1} y {e2}.",
+    "pairH1": "Compatibilidad de {a} y {b}",
+    "ratingLine": "{rating} · puntuación total {score}%",
+    "elementHeadingSame": "Energía de {e}",
+    "elementHeadingMix": "Energía de {e1} y {e2}",
+    "bringsHeading": "Lo que aporta {name}",
+    "bringsText": "{name} es {keywords}. Entre sus fortalezas están {strengths}. En el amor: {love}",
+    "challengesHeading": "Desafíos a tener en cuenta",
+    "challengesLine": "{name}: {list}.",
+    "faq": [
+      { "q": "¿Son compatibles {a} y {b}?", "a": "{a} y {b} tienen una puntuación de compatibilidad del {score}% ({rating}). {summary}" },
+      { "q": "¿Cuál es el mayor desafío para {a} y {b}?", "a": "A {a} le puede costar lidiar con {ca}, mientras que a {b} le puede costar lidiar con {cb}. Reconocerlo pronto ayuda a la relación." },
+      { "q": "¿La compatibilidad depende solo de los signos solares?", "a": "No. El signo lunar, el signo de Venus y las cartas natales completas aportan muchos matices. La compatibilidad de signos solares es un punto de partida divertido, no un veredicto." }
+    ],
+    "elementPairs": {
+      "fire-fire": "Dos signos de fuego generan calor y emoción enseguida. Ambos son apasionados y seguros de sí mismos, así que la relación funciona con energía, pero a ninguno le gusta ceder.",
+      "earth-earth": "Dos signos de tierra construyen algo sólido. La practicidad y la lealtad compartidas dan un vínculo estable y cómodo, con el riesgo de caer en la rutina.",
+      "air-air": "Dos signos de aire comparten una chispa mental. La conversación nunca se agota, pero el compromiso emocional exige un esfuerzo consciente.",
+      "water-water": "Dos signos de agua se sienten profundamente, a menudo sin palabras. La conexión es intensa y tierna, y los estados de ánimo pueden amplificarse mutuamente.",
+      "air-fire": "El aire alimenta al fuego. Es una de las parejas más energizantes por naturaleza: las ideas, la aventura y el entusiasmo fluyen en ambos sentidos.",
+      "earth-water": "El agua nutre a la tierra. La profundidad emocional se une a la estabilidad en una pareja de apoyo y crecimiento.",
+      "earth-fire": "El fuego quiere moverse y la tierra quiere construir. Pueden equilibrarse, pero el ritmo y las prioridades requieren negociación.",
+      "air-earth": "El aire vive en las ideas y la tierra en lo concreto. Ven el mundo de forma distinta, lo que puede resultar refrescante o frustrante.",
+      "fire-water": "El fuego y el agua son opuestos de temperamento: directo frente a sensible. La química es real, pero necesita paciencia y cuidado para evitar el vapor.",
+      "air-water": "El aire razona y el agua siente. Pueden aprender mucho el uno del otro si saben traducir entre la lógica y la emoción."
+    },
+    "modalityPairs": {
+      "cardinal-cardinal": "Ambos son iniciadores, así que hay empuje y no faltan planes, junto con alguna disputa ocasional por quién lidera.",
+      "fixed-fixed": "Ambos son leales y decididos. Eso aporta permanencia, y también terquedad cuando no están de acuerdo.",
+      "mutable-mutable": "Ambos son flexibles y adaptables. Es fácil estar con ellos, aunque las decisiones y la constancia pueden desdibujarse.",
+      "cardinal-fixed": "Uno inicia las cosas y el otro las sostiene: un reparto práctico de roles cuando se respeta.",
+      "cardinal-mutable": "El iniciador y el adaptable suelen encajar bien: uno marca el rumbo y el otro se ajusta con soltura.",
+      "fixed-mutable": "El estable ancla y el flexible suaviza. Funciona bien mientras el signo fijo no dé por sentada la flexibilidad."
+    }
+  },
+  "pages": {
+    "about": {
+      "slug": "acerca-de",
+      "title": "Acerca de AstroCalc",
+      "description": "Acerca de AstroCalc, calculadoras de astrología gratis.",
+      "h1": "Acerca de",
+      "blocks": [
+        { "p": "AstroCalc ofrece calculadoras de astrología gratis: signo zodiacal, signo lunar, compatibilidad, numerología y zodiaco chino. Las posiciones de la Luna se calculan con datos de efemérides astronómicas." },
+        { "p": "La astrología y la numerología se ofrecen para el entretenimiento y la reflexión personal. No son predicciones científicas, y nada en este sitio constituye asesoramiento médico, legal o financiero." },
+        { "p": "Contacto: añade aquí tu correo electrónico antes del lanzamiento." }
+      ]
+    },
+    "privacy": {
+      "slug": "privacidad",
+      "title": "Política de privacidad – AstroCalc",
+      "description": "Política de privacidad de AstroCalc.",
+      "h1": "Política de privacidad",
+      "blocks": [
+        { "p": "Las fechas y horas de nacimiento que introduces en las calculadoras se procesan en tu navegador y no se envían ni se almacenan en nuestros servidores." },
+        { "h2": "Publicidad y analítica" },
+        { "p": "Podemos utilizar proveedores externos, incluido Google, para mostrar anuncios y medir el tráfico. Estos proveedores usan cookies para mostrar anuncios basados en tus visitas a este y otros sitios web. Puedes desactivar la publicidad personalizada en la Configuración de anuncios de Google." },
+        { "h2": "Contacto" },
+        { "p": "Preguntas sobre esta política: añade aquí tu correo electrónico antes del lanzamiento." }
+      ]
+    }
+  }
+}
