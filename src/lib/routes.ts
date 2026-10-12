@@ -44,7 +44,8 @@ export function allPages(): Page[] {
   return (pages = out);
 }
 
-const toUrl = (locale: string, path: string) => `/${locale}/${path}${path ? '/' : ''}`;
+const BASE = import.meta.env.BASE_URL.replace(/\/$/, '');
+const toUrl = (locale: string, path: string) => `${BASE}/${locale}/${path}${path ? '/' : ''}`;
 
 /** Localized URL of a page id; falls back to the English page if the locale lacks it. */
 export function pageUrl(locale: string, id: string): string {

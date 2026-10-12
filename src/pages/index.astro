@@ -12,7 +12,7 @@ const site = Astro.site!;
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>AstroCalc – Free Astrology Calculators</title>
     <meta name="description" content="Free astrology calculators in many languages." />
-    <link rel="canonical" href={new URL('/', site).toString()} />
+    <link rel="canonical" href={new URL(import.meta.env.BASE_URL, site).toString()} />
     {locales.map((l) => <link rel="alternate" hreflang={l.tag} href={new URL(pageUrl(l.code, 'home'), site).toString()} />)}
     <link rel="alternate" hreflang="x-default" href={new URL(pageUrl(DEFAULT_LOCALE, 'home'), site).toString()} />
     <style>
