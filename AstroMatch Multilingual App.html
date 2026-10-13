@@ -1,0 +1,962 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AstroMatch — Cosmic Compatibility Matrix</title>
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Lucide Icons CDN -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@600;700;800&display=swap');
+    
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background-color: #05040a;
+      color: #f1f5f9;
+      overflow-x: hidden;
+    }
+
+    .font-display {
+      font-family: 'Space Grotesk', sans-serif;
+    }
+
+    /* Cosmic Background & Starfield Grid */
+    .cosmic-grid {
+      background-image: radial-gradient(rgba(255, 255, 255, 0.08) 1px, transparent 1px);
+      background-size: 28px 28px;
+    }
+
+    /* Custom Glassmorphism */
+    .glass-panel {
+      background: rgba(18, 16, 33, 0.72);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    
+    .glass-card-hover {
+      transition: all 0.3s ease;
+    }
+    .glass-card-hover:hover {
+      border-color: rgba(192, 132, 252, 0.35);
+      box-shadow: 0 10px 30px -10px rgba(168, 85, 247, 0.2);
+    }
+
+    /* Orbit spinning animations */
+    @keyframes spin-slow {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+    @keyframes spin-reverse {
+      from { transform: rotate(360deg); }
+      to { transform: rotate(0deg); }
+    }
+    .animate-spin-slow {
+      animation: spin-slow 14s linear infinite;
+    }
+    .animate-spin-reverse {
+      animation: spin-reverse 9s linear infinite;
+    }
+  </style>
+</head>
+<body class="min-h-screen relative selection:bg-fuchsia-500 selection:text-white flex flex-col justify-between">
+
+  <div class="fixed inset-0 pointer-events-none z-0 overflow-hidden">
+    <div class="cosmic-grid absolute inset-0 opacity-40"></div>
+    <div class="absolute -top-32 -left-32 w-96 h-96 bg-purple-600/15 rounded-full blur-[140px]"></div>
+    <div class="absolute top-1/3 -right-32 w-[30rem] h-[30rem] bg-fuchsia-600/15 rounded-full blur-[150px]"></div>
+    <div class="absolute -bottom-32 left-1/4 w-[28rem] h-[28rem] bg-indigo-600/15 rounded-full blur-[140px]"></div>
+  </div>
+
+  <header class="relative z-40 border-b border-white/10 glass-panel sticky top-0 px-4 py-3.5">
+    <div class="max-w-4xl mx-auto flex items-center justify-between">
+      
+      <!-- Brand Logo -->
+      <div class="flex items-center gap-2.5 cursor-pointer" onclick="resetApp()">
+        <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-fuchsia-600 via-purple-600 to-indigo-600 flex items-center justify-center shadow-lg shadow-purple-500/25">
+          <i data-lucide="sparkles" class="w-5 h-5 text-white"></i>
+        </div>
+        <div>
+          <span class="font-display font-extrabold text-lg tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-white via-purple-200 to-fuchsia-300">
+            AstroMatch
+          </span>
+          <span class="block text-[9px] text-purple-300/80 font-mono tracking-widest uppercase">
+            Global Synastry Engine
+          </span>
+        </div>
+      </div>
+
+      <!-- Language Selector -->
+      <div class="flex items-center gap-1 bg-black/40 border border-white/10 rounded-full p-1 text-xs">
+        <i data-lucide="globe" class="w-3.5 h-3.5 ml-2 mr-1 text-purple-400"></i>
+        <button onclick="setLanguage('en')" id="btn-lang-en" class="px-2.5 py-1 rounded-full font-semibold transition-all">EN</button>
+        <button onclick="setLanguage('es')" id="btn-lang-es" class="px-2.5 py-1 rounded-full font-semibold transition-all">ES</button>
+        <button onclick="setLanguage('de')" id="btn-lang-de" class="px-2.5 py-1 rounded-full font-semibold transition-all">DE</button>
+        <button onclick="setLanguage('ru')" id="btn-lang-ru" class="px-2.5 py-1 rounded-full font-semibold transition-all">RU</button>
+      </div>
+
+    </div>
+  </header>
+
+  <main class="relative z-10 max-w-3xl w-full mx-auto px-4 py-8 flex-1">
+    
+    <!-- Hero Banner -->
+    <div class="text-center space-y-3 mb-8">
+      <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/5 border border-white/10 text-xs font-medium text-fuchsia-300">
+        <i data-lucide="heart" class="w-3.5 h-3.5 text-pink-400 fill-pink-400"></i>
+        <span id="txt-badge">Universal Synastry Calculator</span>
+      </div>
+      <h1 id="txt-title" class="font-display text-3xl md:text-5xl font-extrabold tracking-tight bg-clip-text text-transparent bg-gradient-to-b from-white via-slate-100 to-slate-400">
+        How compatible are you in the stars?
+      </h1>
+      <p id="txt-subtitle" class="text-sm md:text-base text-slate-400 max-w-lg mx-auto">
+        Discover the depth of your romantic connection, elemental chemistry, and karmic bonds.
+      </p>
+    </div>
+
+    <!-- STEP 1: INPUT VIEW -->
+    <div id="view-input" class="space-y-6">
+      
+      <!-- Input Cards Grid -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 relative">
+        
+        <!-- Center Interlocking Badge (Desktop) -->
+        <div class="hidden md:flex absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-gradient-to-tr from-fuchsia-600 to-indigo-600 border-2 border-[#05040a] items-center justify-center text-white shadow-xl shadow-fuchsia-500/20 z-20">
+          <i data-lucide="sparkles" class="w-4 h-4"></i>
+        </div>
+
+        <!-- Partner 1 Card -->
+        <div class="glass-panel glass-card-hover rounded-2xl p-5 space-y-4">
+          <div class="flex items-center justify-between">
+            <span id="txt-partner1-tag" class="text-xs uppercase font-mono tracking-wider text-purple-400 font-bold flex items-center gap-1.5">
+              <i data-lucide="user" class="w-3.5 h-3.5"></i> First Partner
+            </span>
+            <div id="p1-badge" class="hidden text-xs px-2.5 py-0.5 rounded-full border border-purple-500/30 bg-purple-500/10 text-purple-300 font-mono"></div>
+          </div>
+
+          <div>
+            <label id="txt-name1-label" class="text-xs text-slate-400 block mb-1">Name (optional)</label>
+            <input 
+              type="text" 
+              id="p1-name" 
+              placeholder="e.g. Alex" 
+              class="w-full bg-black/40 border border-white/10 focus:border-purple-500 rounded-xl px-3.5 py-2.5 text-sm text-slate-100 outline-none transition"
+            >
+          </div>
+
+          <div>
+            <label id="txt-dob1-label" class="text-xs text-slate-400 block mb-1">Date of Birth *</label>
+            <input 
+              type="date" 
+              id="p1-dob" 
+              value="1998-04-12" 
+              onchange="onDateChange()" 
+              class="w-full bg-black/40 border border-white/10 focus:border-purple-500 rounded-xl px-3.5 py-2.5 text-sm text-slate-100 outline-none transition cursor-pointer"
+            >
+          </div>
+
+          <!-- Zodiac Preview P1 -->
+          <div id="p1-sign-preview" class="p-3 rounded-xl bg-purple-950/25 border border-purple-500/20 flex items-center gap-3">
+            <span id="p1-symbol" class="text-3xl font-display">♈</span>
+            <div>
+              <div id="p1-sign-name" class="text-sm font-bold text-white">Aries</div>
+              <div id="p1-sign-element" class="text-xs text-purple-300/80">Fire Element</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Partner 2 Card -->
+        <div class="glass-panel glass-card-hover rounded-2xl p-5 space-y-4">
+          <div class="flex items-center justify-between">
+            <span id="txt-partner2-tag" class="text-xs uppercase font-mono tracking-wider text-fuchsia-400 font-bold flex items-center gap-1.5">
+              <i data-lucide="user" class="w-3.5 h-3.5"></i> Second Partner
+            </span>
+            <div id="p2-badge" class="hidden text-xs px-2.5 py-0.5 rounded-full border border-fuchsia-500/30 bg-fuchsia-500/10 text-fuchsia-300 font-mono"></div>
+          </div>
+
+          <div>
+            <label id="txt-name2-label" class="text-xs text-slate-400 block mb-1">Name (optional)</label>
+            <input 
+              type="text" 
+              id="p2-name" 
+              placeholder="e.g. Sam" 
+              class="w-full bg-black/40 border border-white/10 focus:border-fuchsia-500 rounded-xl px-3.5 py-2.5 text-sm text-slate-100 outline-none transition"
+            >
+          </div>
+
+          <div>
+            <label id="txt-dob2-label" class="text-xs text-slate-400 block mb-1">Date of Birth *</label>
+            <input 
+              type="date" 
+              id="p2-dob" 
+              value="2000-08-25" 
+              onchange="onDateChange()" 
+              class="w-full bg-black/40 border border-white/10 focus:border-fuchsia-500 rounded-xl px-3.5 py-2.5 text-sm text-slate-100 outline-none transition cursor-pointer"
+            >
+          </div>
+
+          <!-- Zodiac Preview P2 -->
+          <div id="p2-sign-preview" class="p-3 rounded-xl bg-fuchsia-950/25 border border-fuchsia-500/20 flex items-center gap-3">
+            <span id="p2-symbol" class="text-3xl font-display">♍</span>
+            <div>
+              <div id="p2-sign-name" class="text-sm font-bold text-white">Virgo</div>
+              <div id="p2-sign-element" class="text-xs text-fuchsia-300/80">Earth Element</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Main Action Button -->
+      <button 
+        onclick="startCalculateProcess()" 
+        class="w-full py-4 rounded-2xl bg-gradient-to-r from-purple-600 via-fuchsia-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white font-bold text-base md:text-lg shadow-xl shadow-fuchsia-600/25 hover:shadow-fuchsia-600/40 hover:scale-[1.01] active:scale-[0.99] transition-all flex items-center justify-center gap-2"
+      >
+        <i data-lucide="sparkles" class="w-5 h-5"></i>
+        <span id="txt-btn-calculate">Calculate Cosmic Match</span>
+        <i data-lucide="arrow-right" class="w-5 h-5 ml-1"></i>
+      </button>
+
+      <!-- Viral Social Counters -->
+      <div class="grid grid-cols-3 gap-3 pt-4 border-t border-white/5 text-center">
+        <div class="p-3 rounded-xl bg-white/5 border border-white/5">
+          <div class="text-lg md:text-xl font-bold font-display text-purple-300">420,000+</div>
+          <div id="txt-stat-pairs" class="text-[11px] text-slate-400">Calculated Pairs</div>
+        </div>
+        <div class="p-3 rounded-xl bg-white/5 border border-white/5">
+          <div class="text-lg md:text-xl font-bold font-display text-fuchsia-300">98.2%</div>
+          <div id="txt-stat-accuracy" class="text-[11px] text-slate-400">Match Accuracy</div>
+        </div>
+        <div class="p-3 rounded-xl bg-white/5 border border-white/5">
+          <div class="text-lg md:text-xl font-bold font-display text-indigo-300">#1 Global</div>
+          <div id="txt-stat-viral" class="text-[11px] text-slate-400">Stories Trend</div>
+        </div>
+      </div>
+
+    </div>
+
+    <div id="view-calculating" class="hidden py-16 text-center space-y-6">
+      <div class="relative w-44 h-44 mx-auto flex items-center justify-center">
+        <div class="absolute inset-0 rounded-full border-2 border-purple-500/20 border-dashed animate-spin-slow"></div>
+        <div class="absolute inset-3 rounded-full border border-fuchsia-500/30 animate-pulse"></div>
+        <div class="absolute inset-7 rounded-full border-2 border-indigo-400/40 border-t-transparent animate-spin-reverse"></div>
+        
+        <div class="relative z-10 text-center font-display">
+          <div id="calc-percent" class="text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-purple-200 to-fuchsia-200">18%</div>
+          <div class="text-[10px] text-purple-300 tracking-widest uppercase font-mono">Synastry</div>
+        </div>
+      </div>
+
+      <div class="space-y-2 max-w-sm mx-auto">
+        <h3 id="calc-status" class="text-lg font-bold text-white">Aligning natal celestial orbits...</h3>
+        <p class="text-xs text-slate-400 font-mono">Calculating zodiac resonance & elemental matrix</p>
+      </div>
+
+      <div class="w-60 h-2 bg-white/10 rounded-full mx-auto overflow-hidden">
+        <div id="calc-progress-bar" class="h-full bg-gradient-to-r from-purple-500 via-fuchsia-500 to-indigo-500 transition-all duration-300" style="width: 18%"></div>
+      </div>
+    </div>
+
+    <div id="view-results" class="hidden space-y-8">
+      
+      <!-- Top Action Bar -->
+      <div class="flex items-center justify-between">
+        <button onclick="resetApp()" class="text-xs text-slate-400 hover:text-white flex items-center gap-1.5 transition">
+          <i data-lucide="rotate-ccw" class="w-3.5 h-3.5"></i>
+          <span id="txt-btn-recalc">New Calculation</span>
+        </button>
+
+        <button onclick="openStoryModal()" class="text-xs px-3.5 py-1.5 rounded-xl bg-fuchsia-600/20 border border-fuchsia-500/40 text-fuchsia-200 hover:bg-fuchsia-600/30 flex items-center gap-1.5 font-semibold transition">
+          <i data-lucide="share-2" class="w-3.5 h-3.5"></i>
+          <span id="txt-btn-story">Story Card (9:16)</span>
+        </button>
+      </div>
+
+      <!-- MAIN SCORE DISPLAY -->
+      <div class="relative glass-panel border border-fuchsia-500/30 rounded-3xl p-6 md:p-8 text-center shadow-2xl overflow-hidden">
+        <div class="absolute top-0 left-1/2 -translate-x-1/2 w-80 h-24 bg-fuchsia-500/20 blur-3xl rounded-full pointer-events-none"></div>
+
+        <div id="res-pair-header" class="text-sm font-semibold text-slate-300 mb-3 flex items-center justify-center gap-2">
+          <!-- Populated by JS -->
+        </div>
+
+        <div class="my-4">
+          <div class="inline-block relative">
+            <div id="res-overall-score" class="font-display text-7xl md:text-8xl font-black bg-clip-text text-transparent bg-gradient-to-r from-purple-200 via-fuchsia-200 to-pink-200">
+              89%
+            </div>
+          </div>
+          <div class="mt-2">
+            <span id="res-badge" class="inline-flex items-center gap-1.5 px-4 py-1 rounded-full bg-gradient-to-r from-purple-500/20 to-fuchsia-500/20 border border-purple-500/30 text-purple-200 font-semibold text-xs md:text-sm">
+              <i data-lucide="stars" class="w-4 h-4 text-fuchsia-400"></i>
+              Karmic Harmony
+            </span>
+          </div>
+        </div>
+
+        <p id="res-overview-text" class="text-xs md:text-sm text-slate-300 max-w-lg mx-auto leading-relaxed">
+          High vibrational compatibility where elemental fire meets intellectual air.
+        </p>
+      </div>
+
+      <!-- 4 DIMENSIONAL BARS -->
+      <div class="glass-panel rounded-2xl p-5 md:p-6 space-y-4">
+        <h3 id="txt-aspects-heading" class="text-xs font-bold uppercase tracking-wider text-slate-300 flex items-center gap-2">
+          <i data-lucide="compass" class="w-4 h-4 text-purple-400"></i> Compatibility Breakdown
+        </h3>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          
+          <div class="bg-black/30 border border-white/5 rounded-xl p-3.5 space-y-2">
+            <div class="flex items-center justify-between text-xs">
+              <span class="flex items-center gap-1.5 font-medium text-pink-300">
+                <i data-lucide="heart" class="w-3.5 h-3.5 fill-pink-400 text-pink-400"></i>
+                <span id="txt-dim-love">Romantic Bond</span>
+              </span>
+              <span id="res-love-val" class="font-mono font-bold text-white">92%</span>
+            </div>
+            <div class="w-full h-2 bg-white/10 rounded-full overflow-hidden">
+              <div id="res-love-bar" class="h-full bg-gradient-to-r from-pink-500 to-rose-400 rounded-full transition-all duration-1000" style="width: 92%"></div>
+            </div>
+          </div>
+
+          <div class="bg-black/30 border border-white/5 rounded-xl p-3.5 space-y-2">
+            <div class="flex items-center justify-between text-xs">
+              <span class="flex items-center gap-1.5 font-medium text-orange-300">
+                <i data-lucide="flame" class="w-3.5 h-3.5 fill-orange-400 text-orange-400"></i>
+                <span id="txt-dim-passion">Sexual Chemistry</span>
+              </span>
+              <span id="res-passion-val" class="font-mono font-bold text-white">88%</span>
+            </div>
+            <div class="w-full h-2 bg-white/10 rounded-full overflow-hidden">
+              <div id="res-passion-bar" class="h-full bg-gradient-to-r from-orange-500 to-amber-400 rounded-full transition-all duration-1000" style="width: 88%"></div>
+            </div>
+          </div>
+
+          <div class="bg-black/30 border border-white/5 rounded-xl p-3.5 space-y-2">
+            <div class="flex items-center justify-between text-xs">
+              <span class="flex items-center gap-1.5 font-medium text-emerald-300">
+                <i data-lucide="shield-check" class="w-3.5 h-3.5 text-emerald-400"></i>
+                <span id="txt-dim-trust">Everyday Harmony</span>
+              </span>
+              <span id="res-trust-val" class="font-mono font-bold text-white">84%</span>
+            </div>
+            <div class="w-full h-2 bg-white/10 rounded-full overflow-hidden">
+              <div id="res-trust-bar" class="h-full bg-gradient-to-r from-emerald-500 to-teal-400 rounded-full transition-all duration-1000" style="width: 84%"></div>
+            </div>
+          </div>
+
+          <div class="bg-black/30 border border-white/5 rounded-xl p-3.5 space-y-2">
+            <div class="flex items-center justify-between text-xs">
+              <span class="flex items-center gap-1.5 font-medium text-cyan-300">
+                <i data-lucide="message-circle" class="w-3.5 h-3.5 text-cyan-400"></i>
+                <span id="txt-dim-mind">Mental Synergy</span>
+              </span>
+              <span id="res-mind-val" class="font-mono font-bold text-white">95%</span>
+            </div>
+            <div class="w-full h-2 bg-white/10 rounded-full overflow-hidden">
+              <div id="res-mind-bar" class="h-full bg-gradient-to-r from-cyan-500 to-blue-400 rounded-full transition-all duration-1000" style="width: 95%"></div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- DETAILED INSIGHTS CARDS -->
+      <div class="space-y-3">
+        <div class="glass-panel border-purple-500/25 rounded-2xl p-4 flex items-start gap-3.5">
+          <div class="p-2.5 rounded-xl bg-purple-500/20 text-purple-300 shrink-0">
+            <i data-lucide="zap" class="w-5 h-5"></i>
+          </div>
+          <div>
+            <h4 id="txt-insight-super-title" class="text-sm font-bold text-purple-200">Pair's Superpower</h4>
+            <p id="res-insight-super" class="text-xs md:text-sm text-slate-300 mt-1 leading-relaxed"></p>
+          </div>
+        </div>
+
+        <div class="glass-panel border-amber-500/25 rounded-2xl p-4 flex items-start gap-3.5">
+          <div class="p-2.5 rounded-xl bg-amber-500/20 text-amber-300 shrink-0">
+            <i data-lucide="alert-triangle" class="w-5 h-5"></i>
+          </div>
+          <div>
+            <h4 id="txt-insight-risk-title" class="text-sm font-bold text-amber-200">Vulnerable Zone</h4>
+            <p id="res-insight-risk" class="text-xs md:text-sm text-slate-300 mt-1 leading-relaxed"></p>
+          </div>
+        </div>
+
+        <div class="glass-panel border-cyan-500/25 rounded-2xl p-4 flex items-start gap-3.5">
+          <div class="p-2.5 rounded-xl bg-cyan-500/20 text-cyan-300 shrink-0">
+            <i data-lucide="sparkles" class="w-5 h-5"></i>
+          </div>
+          <div>
+            <h4 id="txt-insight-advice-title" class="text-sm font-bold text-cyan-200">Universe's Advice</h4>
+            <p id="res-insight-advice" class="text-xs md:text-sm text-slate-300 mt-1 leading-relaxed"></p>
+          </div>
+        </div>
+      </div>
+
+      <div class="glass-panel border-white/10 rounded-2xl p-6">
+        <h3 id="txt-monetize-heading" class="text-sm font-bold text-slate-200 mb-4 flex items-center gap-2">
+          <i data-lucide="sparkles" class="w-4 h-4 text-amber-400"></i> Love this free tool?
+        </h3>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          
+          <!-- Ko-fi / Buy Me a Coffee Support -->
+          <div class="bg-black/40 border border-white/5 rounded-xl p-4 flex flex-col justify-between">
+            <div>
+              <div class="flex items-center gap-2 text-amber-300 font-semibold text-sm mb-1">
+                <i data-lucide="coffee" class="w-4 h-4"></i>
+                <span id="txt-coffee-title">Buy us a cosmic coffee</span>
+              </div>
+              <p id="txt-coffee-desc" class="text-xs text-slate-400 mb-4">
+                Support independent servers & development. Any tip is deeply appreciated!
+              </p>
+            </div>
+            <a href="https://ko-fi.com" target="_blank" class="w-full bg-amber-500/10 hover:bg-amber-500/20 text-amber-300 border border-amber-500/30 text-xs font-semibold py-2.5 px-4 rounded-xl flex items-center justify-center gap-2 transition-all">
+              <i data-lucide="coffee" class="w-3.5 h-3.5"></i>
+              <span id="txt-coffee-btn">Tip on Ko-fi ($3)</span>
+            </a>
+          </div>
+
+          <!-- Telegram / Discord Community Growth -->
+          <div class="bg-black/40 border border-white/5 rounded-xl p-4 flex flex-col justify-between">
+            <div>
+              <div class="flex items-center gap-2 text-indigo-300 font-semibold text-sm mb-1">
+                <i data-lucide="users" class="w-4 h-4"></i>
+                <span id="txt-community-title">Daily Astrological Insights</span>
+              </div>
+              <p id="txt-community-desc" class="text-xs text-slate-400 mb-4">
+                Get weekly transit breakdowns and personalized syncs in our community.
+              </p>
+            </div>
+            <a href="https://t.me" target="_blank" class="w-full bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white text-xs font-semibold py-2.5 px-4 rounded-xl flex items-center justify-center gap-2 transition-all shadow-lg shadow-indigo-600/20">
+              <i data-lucide="users" class="w-3.5 h-3.5"></i>
+              <span id="txt-community-btn">Join Community</span>
+            </a>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+
+  </main>
+
+  <div id="modal-story" class="fixed inset-0 bg-black/85 backdrop-blur-md z-50 hidden items-center justify-center p-4">
+    <div class="relative max-w-xs w-full glass-panel border-white/20 rounded-3xl p-5 text-center shadow-2xl space-y-4">
+      
+      <button onclick="closeStoryModal()" class="absolute top-4 right-4 p-1 rounded-full bg-white/10 text-slate-300 hover:text-white">
+        <i data-lucide="x" class="w-4 h-4"></i>
+      </button>
+
+      <!-- 9:16 Card Container -->
+      <div class="aspect-[9/16] w-full rounded-2xl bg-gradient-to-b from-[#1c1538] via-[#0f0d22] to-[#070611] border border-fuchsia-500/40 p-5 flex flex-col justify-between text-center relative overflow-hidden shadow-inner">
+        <div class="absolute top-0 left-0 right-0 h-20 bg-gradient-to-b from-fuchsia-500/20 to-transparent pointer-events-none"></div>
+
+        <!-- Story Header -->
+        <div class="relative z-10 pt-2">
+          <div class="inline-flex items-center gap-1 text-[10px] font-mono tracking-widest text-purple-300 uppercase bg-white/5 px-2.5 py-1 rounded-full border border-white/10">
+            <i data-lucide="sparkles" class="w-3 h-3 text-pink-400"></i> AstroMatch Synastry
+          </div>
+          <h3 id="story-pair-names" class="text-sm font-bold text-white mt-2">Alex + Sam</h3>
+          <div id="story-pair-signs" class="text-[11px] text-slate-400 font-mono">Aries ♈ & Virgo ♍</div>
+        </div>
+
+        <!-- Story Center Gauge -->
+        <div class="my-auto relative z-10">
+          <div id="story-score" class="font-display text-6xl font-black text-transparent bg-clip-text bg-gradient-to-tr from-pink-300 via-purple-200 to-indigo-200">
+            89%
+          </div>
+          <div id="story-badge" class="text-xs font-semibold text-purple-200 mt-1">
+            Karmic Harmony
+          </div>
+
+          <div class="grid grid-cols-2 gap-2 mt-4 text-[10px] text-slate-300">
+            <div class="bg-white/5 rounded-lg p-1.5 border border-white/5">
+              Love: <span id="story-love" class="text-pink-300 font-bold">92%</span>
+            </div>
+            <div class="bg-white/5 rounded-lg p-1.5 border border-white/5">
+              Passion: <span id="story-passion" class="text-orange-300 font-bold">88%</span>
+            </div>
+            <div class="bg-white/5 rounded-lg p-1.5 border border-white/5">
+              Trust: <span id="story-trust" class="text-emerald-300 font-bold">84%</span>
+            </div>
+            <div class="bg-white/5 rounded-lg p-1.5 border border-white/5">
+              Mind: <span id="story-mind" class="text-cyan-300 font-bold">95%</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Story Footer Branding -->
+        <div class="relative z-10 pt-2 border-t border-white/10 text-center">
+          <div class="text-[9px] text-slate-400 font-mono">Calculate yours at:</div>
+          <div class="text-[11px] font-bold text-fuchsia-300 tracking-wider">AstroMatch.app</div>
+        </div>
+      </div>
+
+      <!-- Action buttons -->
+      <div class="space-y-2">
+        <button onclick="copyCurrentLink()" class="w-full py-2.5 rounded-xl bg-gradient-to-r from-purple-600 to-fuchsia-600 text-white font-semibold text-xs flex items-center justify-center gap-2 transition">
+          <i data-lucide="share-2" class="w-3.5 h-3.5"></i>
+          <span id="txt-modal-copy">Copy Link to Share</span>
+        </button>
+        <p class="text-[10px] text-slate-500">
+          Screenshot this 9:16 card to post on Instagram Stories or TikTok
+        </p>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="relative z-10 border-t border-white/5 py-6 text-center text-xs text-slate-600 font-mono">
+    © 2026 AstroMatch Engine • Universal Synastry Calculator
+  </footer>
+
+  <script>
+    // Full 4-language i18n dictionary
+    const TRANSLATIONS = {
+      en: {
+        badge: "Universal Synastry Calculator",
+        title: "How compatible are you in the stars?",
+        subtitle: "Discover the depth of your romantic connection, elemental chemistry, and karmic bonds.",
+        partner1: "First Partner",
+        partner2: "Second Partner",
+        nameLabel: "Name (optional)",
+        dobLabel: "Date of Birth *",
+        namePlaceholder1: "e.g. Alex",
+        namePlaceholder2: "e.g. Sam",
+        btnCalculate: "Calculate Cosmic Match",
+        statPairs: "Calculated Pairs",
+        statAccuracy: "Match Accuracy",
+        statViral: "Stories Trend",
+        btnRecalc: "New Calculation",
+        btnStory: "Story Card (9:16)",
+        aspectsHeading: "Compatibility Breakdown",
+        dimLove: "Romantic Bond",
+        dimPassion: "Sexual Chemistry",
+        dimTrust: "Everyday Harmony",
+        dimMind: "Mental Synergy",
+        insightSuper: "Pair's Superpower",
+        insightRisk: "Vulnerable Zone",
+        insightAdvice: "Universe's Advice",
+        monetizeHeading: "Love this free tool?",
+        coffeeTitle: "Buy us a cosmic coffee",
+        coffeeDesc: "Support independent servers & development. Any tip is deeply appreciated!",
+        coffeeBtn: "Tip on Ko-fi ($3)",
+        communityTitle: "Daily Astrological Insights",
+        communityDesc: "Get weekly transit breakdowns and personalized syncs in our community.",
+        communityBtn: "Join Community",
+        modalCopy: "Copy Link to Share",
+        badgeKarmic: "Karmic Harmony",
+        badgeMirror: "Elemental Mirror",
+        badgeMagnet: "Opposites Magnet",
+        signs: ["Aries", "Taurus", "Gemini", "Cancer", "Leo", "Virgo", "Libra", "Scorpio", "Sagittarius", "Capricorn", "Aquarius", "Pisces"],
+        elements: { Fire: "Fire Element", Earth: "Earth Element", Air: "Air Element", Water: "Water Element" },
+        superpowerDesc: "Unspoken intuitive connection and mutual spiritual elevation.",
+        riskDesc: "Difficulty finding common pace when emotions and logic clash.",
+        adviceDesc: "Practice active listening: clear conversations dissolve any stellar tension."
+      },
+      es: {
+        badge: "Calculadora Universal de Sinastría",
+        title: "¿Qué tan compatibles son en las estrellas?",
+        subtitle: "Descubre la profundidad de tu conexión romántica, química elemental y lazos kármicos.",
+        partner1: "Primer Compañero",
+        partner2: "Segundo Compañero",
+        nameLabel: "Nombre (opcional)",
+        dobLabel: "Fecha de Nacimiento *",
+        namePlaceholder1: "ej. Alejandro",
+        namePlaceholder2: "ej. Sofía",
+        btnCalculate: "Calcular Conexión Cósmica",
+        statPairs: "Parejas Calculadas",
+        statAccuracy: "Precisión Estelar",
+        statViral: "Tendencia Stories",
+        btnRecalc: "Nuevo Cálculo",
+        btnStory: "Tarjeta Stories (9:16)",
+        aspectsHeading: "Desglose de Compatibilidad",
+        dimLove: "Vínculo Romántico",
+        dimPassion: "Química Sexual",
+        dimTrust: "Armonía Cotidiana",
+        dimMind: "Sinergia Mental",
+        insightSuper: "Superpoder de la Pareja",
+        insightRisk: "Zona Vulnerable",
+        insightAdvice: "Consejo del Universo",
+        monetizeHeading: "¿Te gustó esta herramienta?",
+        coffeeTitle: "Invítanos a un café cósmico",
+        coffeeDesc: "Apoya a creadores independientes y servidores. ¡Cualquier propina ayuda!",
+        coffeeBtn: "Apoyar en Ko-fi ($3)",
+        communityTitle: "Horóscopo y Comunidad Diaria",
+        communityDesc: "Recibe análisis semanales y sincronicidades en nuestra comunidad.",
+        communityBtn: "Unirse a la Comunidad",
+        modalCopy: "Copiar Enlace",
+        badgeKarmic: "Armonía Kármica",
+        badgeMirror: "Espejo Elemental",
+        badgeMagnet: "Imán de Opuestos",
+        signs: ["Aries", "Tauro", "Géminis", "Cáncer", "Leo", "Virgo", "Libra", "Escorpio", "Sagitario", "Capricornio", "Acuario", "Piscis"],
+        elements: { Fire: "Elemento Fuego", Earth: "Elemento Tierra", Air: "Elemento Aire", Water: "Elemento Agua" },
+        superpowerDesc: "Conexión intuitiva inmediata y mutuo crecimiento emocional.",
+        riskDesc: "Diferencia de ritmos cuando el fuego impulsivo choca con la cautela.",
+        adviceDesc: "Hablen con total honestidad: el diálogo sincero alinea cualquier órbita."
+      },
+      de: {
+        badge: "Universeller Synastrie-Rechner",
+        title: "Wie kompatibel seid ihr in den Sternen?",
+        subtitle: "Entdecke die Tiefe eurer romantischen Bindung, Elementar-Chemie und karmischen Bande.",
+        partner1: "Erster Partner",
+        partner2: "Zweiter Partner",
+        nameLabel: "Name (optional)",
+        dobLabel: "Geburtsdatum *",
+        namePlaceholder1: "z.B. Lukas",
+        namePlaceholder2: "z.B. Emma",
+        btnCalculate: "Kosmisches Match Berechnen",
+        statPairs: "Berechnete Paare",
+        statAccuracy: "Präzision",
+        statViral: "Stories Trend",
+        btnRecalc: "Neue Berechnung",
+        btnStory: "Story-Karte (9:16)",
+        aspectsHeading: "Kompatibilitäts-Analyse",
+        dimLove: "Romantische Bindung",
+        dimPassion: "Sexuelle Chemie",
+        dimTrust: "Alltagsharmonie",
+        dimMind: "Mentale Synergie",
+        insightSuper: "Superkraft des Paares",
+        insightRisk: "Verletzliche Zone",
+        insightAdvice: "Rat des Universums",
+        monetizeHeading: "Gefällt dir das Tool?",
+        coffeeTitle: "Spendiere einen kosmischen Kaffee",
+        coffeeDesc: "Unterstütze Server und unabhängige Entwickler. Jeder Support zählt!",
+        coffeeBtn: "Auf Ko-fi unterstützen ($3)",
+        communityTitle: "Tägliche astrologische Einblicke",
+        communityDesc: "Erhalte wöchentliche Transit-Guides in unserer Community.",
+        communityBtn: "Community beitreten",
+        modalCopy: "Link Kopieren",
+        badgeKarmic: "Karmische Harmonie",
+        badgeMirror: "Elementarer Spiegel",
+        badgeMagnet: "Magnet der Gegensätze",
+        signs: ["Widder", "Stier", "Zwillinge", "Krebs", "Löwe", "Jungfrau", "Waage", "Skorpion", "Schütze", "Steinbock", "Wassermann", "Fische"],
+        elements: { Fire: "Element Feuer", Earth: "Element Erde", Air: "Element Luft", Water: "Element Wasser" },
+        superpowerDesc: "Stille intuitive Verbundenheit und gegenseitige Inspiration.",
+        riskDesc: "Unterschiedliche Tempi bei emotionalen und logischen Entscheidungen.",
+        adviceDesc: "Offene Gespräche lösen 90% aller kosmischen Spannungen."
+      },
+      ru: {
+        badge: "Универсальный Синастрический Калькулятор",
+        title: "Насколько вы совместимы по звездам?",
+        subtitle: "Узнайте правду об отношениях: огонь страсти, стихийную гармонию и кармические связи.",
+        partner1: "Первый партнер",
+        partner2: "Второй партнер",
+        nameLabel: "Имя (необязательно)",
+        dobLabel: "Дата рождения *",
+        namePlaceholder1: "например, Алекс",
+        namePlaceholder2: "например, София",
+        btnCalculate: "Рассчитать Совместимость",
+        statPairs: "Рассчитанных пар",
+        statAccuracy: "Точность расчета",
+        statViral: "Трендовый тест",
+        btnRecalc: "Новый расчёт",
+        btnStory: "Карточка Stories (9:16)",
+        aspectsHeading: "Аспекты совместимости",
+        dimLove: "Романтическая связь",
+        dimPassion: "Страсть и химия",
+        dimTrust: "Быт и доверие",
+        dimMind: "Интеллектуальная связь",
+        insightSuper: "Суперсила вашей пары",
+        insightRisk: "Главная точка конфликта",
+        insightAdvice: "Совет Вселенной",
+        monetizeHeading: "Понравился бесплатный сервис?",
+        coffeeTitle: "Угостить создателей кофе",
+        coffeeDesc: "Поддержите независимый проект и оплату серверов. Любой донат ценен!",
+        coffeeBtn: "Поддержать на Ko-fi ($3)",
+        communityTitle: "Ежедневные астро-инсайты",
+        communityDesc: "Получайте регулярные разборы транзитов в нашем Telegram комьюнити.",
+        communityBtn: "Присоединиться к комьюнити",
+        modalCopy: "Скопировать ссылку",
+        badgeKarmic: "Кармическая Гармония",
+        badgeMirror: "Единая Стихия",
+        badgeMagnet: "Магнит Противоположностей",
+        signs: ["Овен", "Телец", "Близнецы", "Рак", "Лев", "Дева", "Весы", "Скорпион", "Стрелец", "Козерог", "Водолей", "Рыбы"],
+        elements: { Fire: "Стихия Огня", Earth: "Стихия Земли", Air: "Стихия Воздуха", Water: "Стихия Воды" },
+        superpowerDesc: "Тонкое интуитивное понимание без слов и взаимное усиление целей.",
+        riskDesc: "Разный ритм реагирования: один вспыхивает сразу, второй держит в себе.",
+        adviceDesc: "Говорите открыто: искренний диалог снимает любое напряжение орбит."
+      }
+    };
+
+    // Zodiac Calendar Bounds and Element Assignments
+    const ZODIAC_DATA = [
+      { symbol: "♈", elementKey: "Fire", range: [3, 21, 4, 19] },
+      { symbol: "♉", elementKey: "Earth", range: [4, 20, 5, 20] },
+      { symbol: "♊", elementKey: "Air", range: [5, 21, 6, 20] },
+      { symbol: "♋", elementKey: "Water", range: [6, 21, 7, 22] },
+      { symbol: "♌", elementKey: "Fire", range: [7, 23, 8, 22] },
+      { symbol: "♍", elementKey: "Earth", range: [8, 23, 9, 22] },
+      { symbol: "♎", elementKey: "Air", range: [9, 23, 10, 22] },
+      { symbol: "♏", elementKey: "Water", range: [10, 23, 11, 21] },
+      { symbol: "♐", elementKey: "Fire", range: [11, 22, 12, 21] },
+      { symbol: "♑", elementKey: "Earth", range: [12, 22, 1, 19] },
+      { symbol: "♒", elementKey: "Air", range: [1, 20, 2, 18] },
+      { symbol: "♓", elementKey: "Water", range: [2, 19, 3, 20] }
+    ];
+
+    let currentLang = 'en';
+    let currentCalculation = null;
+
+    // Detect Zodiac index from Date String
+    function getZodiacIndex(dateString) {
+      if (!dateString) return 0;
+      const d = new Date(dateString);
+      if (isNaN(d.getTime())) return 0;
+      const m = d.getMonth() + 1;
+      const day = d.getDate();
+
+      for (let i = 0; i < ZODIAC_DATA.length; i++) {
+        const [sm, sd, em, ed] = ZODIAC_DATA[i].range;
+        if (i === 9) { // Capricorn
+          if ((m === 12 && day >= 22) || (m === 1 && day <= 19)) return 9;
+        } else {
+          if ((m === sm && day >= sd) || (m === em && day <= ed)) return i;
+        }
+      }
+      return 0;
+    }
+
+    // Refresh UI texts across languages
+    function setLanguage(lang) {
+      currentLang = lang;
+      const t = TRANSLATIONS[lang];
+
+      // Update lang buttons state
+      ['en', 'es', 'de', 'ru'].forEach(l => {
+        const btn = document.getElementById(`btn-lang-${l}`);
+        if (l === lang) {
+          btn.className = "px-2.5 py-1 rounded-full font-semibold transition-all bg-fuchsia-600 text-white shadow";
+        } else {
+          btn.className = "px-2.5 py-1 rounded-full font-semibold transition-all text-slate-400 hover:text-slate-200";
+        }
+      });
+
+      // Update static UI text
+      document.getElementById('txt-badge').innerText = t.badge;
+      document.getElementById('txt-title').innerText = t.title;
+      document.getElementById('txt-subtitle').innerText = t.subtitle;
+      document.getElementById('txt-partner1-tag').innerHTML = `<i data-lucide="user" class="w-3.5 h-3.5"></i> ${t.partner1}`;
+      document.getElementById('txt-partner2-tag').innerHTML = `<i data-lucide="user" class="w-3.5 h-3.5"></i> ${t.partner2}`;
+      document.getElementById('txt-name1-label').innerText = t.nameLabel;
+      document.getElementById('txt-name2-label').innerText = t.nameLabel;
+      document.getElementById('txt-dob1-label').innerText = t.dobLabel;
+      document.getElementById('txt-dob2-label').innerText = t.dobLabel;
+      document.getElementById('p1-name').placeholder = t.namePlaceholder1;
+      document.getElementById('p2-name').placeholder = t.namePlaceholder2;
+      document.getElementById('txt-btn-calculate').innerText = t.btnCalculate;
+
+      document.getElementById('txt-stat-pairs').innerText = t.statPairs;
+      document.getElementById('txt-stat-accuracy').innerText = t.statAccuracy;
+      document.getElementById('txt-stat-viral').innerText = t.statViral;
+
+      document.getElementById('txt-btn-recalc').innerText = t.btnRecalc;
+      document.getElementById('txt-btn-story').innerText = t.btnStory;
+      document.getElementById('txt-aspects-heading').innerHTML = `<i data-lucide="compass" class="w-4 h-4 text-purple-400"></i> ${t.aspectsHeading}`;
+
+      document.getElementById('txt-dim-love').innerText = t.dimLove;
+      document.getElementById('txt-dim-passion').innerText = t.dimPassion;
+      document.getElementById('txt-dim-trust').innerText = t.dimTrust;
+      document.getElementById('txt-dim-mind').innerText = t.dimMind;
+
+      document.getElementById('txt-insight-super-title').innerText = t.insightSuper;
+      document.getElementById('txt-insight-risk-title').innerText = t.insightRisk;
+      document.getElementById('txt-insight-advice-title').innerText = t.insightAdvice;
+
+      document.getElementById('txt-monetize-heading').innerHTML = `<i data-lucide="sparkles" class="w-4 h-4 text-amber-400"></i> ${t.monetizeHeading}`;
+      document.getElementById('txt-coffee-title').innerText = t.coffeeTitle;
+      document.getElementById('txt-coffee-desc').innerText = t.coffeeDesc;
+      document.getElementById('txt-coffee-btn').innerText = t.coffeeBtn;
+      document.getElementById('txt-community-title').innerText = t.communityTitle;
+      document.getElementById('txt-community-desc').innerText = t.communityDesc;
+      document.getElementById('txt-community-btn').innerText = t.communityBtn;
+      document.getElementById('txt-modal-copy').innerText = t.modalCopy;
+
+      onDateChange();
+      if (currentCalculation) renderResults(currentCalculation);
+      lucide.createIcons();
+    }
+
+    // Reactively update zodiac badges on date change
+    function onDateChange() {
+      const d1 = document.getElementById('p1-dob').value;
+      const d2 = document.getElementById('p2-dob').value;
+      const t = TRANSLATIONS[currentLang];
+
+      const z1 = getZodiacIndex(d1);
+      const z2 = getZodiacIndex(d2);
+
+      const sign1 = ZODIAC_DATA[z1];
+      const sign2 = ZODIAC_DATA[z2];
+
+      document.getElementById('p1-symbol').innerText = sign1.symbol;
+      document.getElementById('p1-sign-name').innerText = t.signs[z1];
+      document.getElementById('p1-sign-element').innerText = t.elements[sign1.elementKey];
+
+      document.getElementById('p2-symbol').innerText = sign2.symbol;
+      document.getElementById('p2-sign-name').innerText = t.signs[z2];
+      document.getElementById('p2-sign-element').innerText = t.elements[sign2.elementKey];
+    }
+
+    // Trigger calculation simulation
+    function startCalculateProcess() {
+      const p1Date = document.getElementById('p1-dob').value;
+      const p2Date = document.getElementById('p2-dob').value;
+      if (!p1Date || !p2Date) return;
+
+      document.getElementById('view-input').classList.add('hidden');
+      document.getElementById('view-calculating').classList.remove('hidden');
+
+      let progress = 18;
+      const bar = document.getElementById('calc-progress-bar');
+      const pct = document.getElementById('calc-percent');
+      const status = document.getElementById('calc-status');
+
+      const interval = setInterval(() => {
+        progress += 20;
+        if (progress > 100) progress = 100;
+        bar.style.width = progress + '%';
+        pct.innerText = progress + '%';
+
+        if (progress === 58) {
+          status.innerText = "Harmonizing elemental synergies...";
+        } else if (progress === 98 || progress === 100) {
+          status.innerText = "Building karmic synastry matrix...";
+        }
+
+        if (progress >= 100) {
+          clearInterval(interval);
+          setTimeout(() => {
+            document.getElementById('view-calculating').classList.add('hidden');
+            document.getElementById('view-results').classList.remove('hidden');
+            computeAndDisplaySynastry();
+          }, 400);
+        }
+      }, 250);
+    }
+
+    // Compute synastry values and render
+    function computeAndDisplaySynastry() {
+      const p1Date = document.getElementById('p1-dob').value;
+      const p2Date = document.getElementById('p2-dob').value;
+      const z1 = getZodiacIndex(p1Date);
+      const z2 = getZodiacIndex(p2Date);
+
+      const s1 = ZODIAC_DATA[z1];
+      const s2 = ZODIAC_DATA[z2];
+
+      const seed = (z1 + 1) * 7 + (z2 + 1) * 11;
+      const base = 70 + (seed % 27);
+
+      const p1NameInput = document.getElementById('p1-name').value.trim();
+      const p2NameInput = document.getElementById('p2-name').value.trim();
+
+      currentCalculation = {
+        z1, z2,
+        overall: Math.min(99, base),
+        love: Math.min(98, 72 + (seed * 3) % 26),
+        passion: Math.min(99, 68 + (seed * 5) % 31),
+        trust: Math.min(97, 65 + (seed * 2) % 33),
+        mind: Math.min(98, 74 + (seed * 7) % 24),
+        name1: p1NameInput,
+        name2: p2NameInput,
+        sameElement: s1.elementKey === s2.elementKey
+      };
+
+      renderResults(currentCalculation);
+    }
+
+    function renderResults(data) {
+      const t = TRANSLATIONS[currentLang];
+      const n1 = data.name1 || t.signs[data.z1];
+      const n2 = data.name2 || t.signs[data.z2];
+
+      document.getElementById('res-pair-header').innerHTML = `
+        <span class="text-white font-bold">${n1}</span>
+        <span class="text-xs px-2 py-0.5 rounded bg-white/10 text-purple-300 font-mono">${ZODIAC_DATA[data.z1].symbol}</span>
+        <span class="text-fuchsia-400 font-bold">+</span>
+        <span class="text-white font-bold">${n2}</span>
+        <span class="text-xs px-2 py-0.5 rounded bg-white/10 text-fuchsia-300 font-mono">${ZODIAC_DATA[data.z2].symbol}</span>
+      `;
+
+      document.getElementById('res-overall-score').innerText = data.overall + '%';
+      
+      const badgeText = data.sameElement ? t.badgeMirror : data.overall > 85 ? t.badgeKarmic : t.badgeMagnet;
+      document.getElementById('res-badge').innerHTML = `<i data-lucide="stars" class="w-4 h-4 text-fuchsia-400"></i> ${badgeText}`;
+
+      // Progress bars
+      document.getElementById('res-love-val').innerText = data.love + '%';
+      document.getElementById('res-love-bar').style.width = data.love + '%';
+
+      document.getElementById('res-passion-val').innerText = data.passion + '%';
+      document.getElementById('res-passion-bar').style.width = data.passion + '%';
+
+      document.getElementById('res-trust-val').innerText = data.trust + '%';
+      document.getElementById('res-trust-bar').style.width = data.trust + '%';
+
+      document.getElementById('res-mind-val').innerText = data.mind + '%';
+      document.getElementById('res-mind-bar').style.width = data.mind + '%';
+
+      // Insight texts
+      document.getElementById('res-insight-super').innerText = t.superpowerDesc;
+      document.getElementById('res-insight-risk').innerText = t.riskDesc;
+      document.getElementById('res-insight-advice').innerText = t.adviceDesc;
+
+      // Prepare Stories card modal texts
+      document.getElementById('story-pair-names').innerText = `${n1} + ${n2}`;
+      document.getElementById('story-pair-signs').innerText = `${t.signs[data.z1]} ${ZODIAC_DATA[data.z1].symbol} & ${t.signs[data.z2]} ${ZODIAC_DATA[data.z2].symbol}`;
+      document.getElementById('story-score').innerText = data.overall + '%';
+      document.getElementById('story-badge').innerText = badgeText;
+      document.getElementById('story-love').innerText = data.love + '%';
+      document.getElementById('story-passion').innerText = data.passion + '%';
+      document.getElementById('story-trust').innerText = data.trust + '%';
+      document.getElementById('story-mind').innerText = data.mind + '%';
+
+      lucide.createIcons();
+    }
+
+    function resetApp() {
+      document.getElementById('view-results').classList.add('hidden');
+      document.getElementById('view-calculating').classList.add('hidden');
+      document.getElementById('view-input').classList.remove('hidden');
+      closeStoryModal();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function openStoryModal() {
+      const modal = document.getElementById('modal-story');
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+    }
+
+    function closeStoryModal() {
+      const modal = document.getElementById('modal-story');
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
+    }
+
+    function copyCurrentLink() {
+      if (navigator.clipboard) {
+        navigator.clipboard.writeText(window.location.href);
+      }
+      const btn = document.getElementById('txt-modal-copy');
+      const original = btn.innerText;
+      btn.innerText = "✓ Link Copied!";
+      setTimeout(() => { btn.innerText = original; }, 2000);
+    }
+
+    // Initialize default states on page load
+    window.onload = function() {
+      setLanguage('en');
+    };
+  </script>
+</body>
+</html>
