@@ -24,6 +24,7 @@ jobs:
         env:
           SITE_URL: https://natalyineu.github.io
           BASE: /astrocalc
+          PUBLIC_THEME_SWITCHER: '1'
       - uses: actions/upload-pages-artifact@v3
         with:
           path: dist
