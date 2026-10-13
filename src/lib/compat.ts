@@ -16,9 +16,9 @@ const clamp = (n: number) => Math.max(20, Math.min(98, Math.round(n)));
 
 export interface Compat {
   a: SignId; b: SignId;
-  overall: number; love: number; friendship: number; communication: number; trust: number;
+  overall: number; love: number; passion: number; friendship: number; communication: number; trust: number;
   rating: 'excellent' | 'strong' | 'good' | 'challenging';
-  elementKey: string; modalityKey: string;
+  elementKey: string; modalityKey: string; opposite: boolean;
 }
 
 /** Language-neutral scores; text comes from the locale files via the keys returned. */
@@ -28,7 +28,8 @@ export function compatibility(a: SignId, b: SignId): Compat {
   const elementKey = pairKey(ca.element, cb.element);
   const modalityKey = pairKey(ca.modality, cb.modality);
   let base = ELEMENT_BASE[elementKey];
-  if (Math.abs(SIGN_IDS.indexOf(a) - SIGN_IDS.indexOf(b)) === 6) base += 8; // opposites attract
+  const opposite = Math.abs(SIGN_IDS.indexOf(a) - SIGN_IDS.indexOf(b)) === 6;
+  if (opposite) base += 8; // opposites attract
   if (modalityKey === 'fixed-fixed' && a !== b) base -= 3;
 
   const j = (salt: string, span = 7) => (hash(`${x}-${y}-${salt}`) % (span * 2 + 1)) - span;
@@ -37,10 +38,11 @@ export function compatibility(a: SignId, b: SignId): Compat {
   return {
     a, b, overall,
     love: clamp(base + j('love') + (has('water') ? 3 : 0)),
+    passion: clamp(base + j('passion') + (has('fire') ? 4 : 0) + (opposite ? 3 : 0)),
     friendship: clamp(base + j('friend') + (has('air') ? 3 : 0)),
     communication: clamp(base + j('comm') + (ca.element === 'air' && cb.element === 'air' ? 4 : 0)),
     trust: clamp(base + j('trust') + (ca.modality === 'fixed' || cb.modality === 'fixed' ? 3 : 0)),
     rating: overall >= 85 ? 'excellent' : overall >= 72 ? 'strong' : overall >= 58 ? 'good' : 'challenging',
-    elementKey, modalityKey,
+    elementKey, modalityKey, opposite,
   };
 }

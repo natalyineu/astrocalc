@@ -1,0 +1,501 @@
+---
+// Two-date synastry calculator (design reference: docs/reference/astromatch-reference.html).
+// All strings come from the locale files (`match`, `compat`, `signs`, `elements`).
+import { getT, allSigns, fmt } from '../lib/content';
+import { pageUrl } from '../lib/routes';
+import { SIGN_IDS, SIGN_CORE } from '../data/core';
+import { enabledLocales } from '../i18n';
+
+const { locale } = Astro.props;
+const t = getT(locale);
+const m = t.match;
+const kofi = import.meta.env.PUBLIC_KOFI_URL;
+const telegram = import.meta.env.PUBLIC_TELEGRAM_URL;
+const signs = allSigns(locale);
+
+const pairUrls: Record<string, string> = {};
+for (const a of SIGN_IDS) for (const b of SIGN_IDS) {
+  const [x, y] = SIGN_IDS.indexOf(a) > SIGN_IDS.indexOf(b) ? [b, a] : [a, b];
+  pairUrls[`${a}|${b}`] = pageUrl(locale, `pair:${x}:${y}`);
+}
+const data = {
+  ui: m,
+  site: t.site.name,
+  pairUrls,
+  signs: Object.fromEntries(signs.map((s) => [s.id, {
+    name: s.name, symbol: s.symbol, element: SIGN_CORE[s.id].element, modality: SIGN_CORE[s.id].modality,
+    elementName: s.element, challenges: s.challenges,
+  }])),
+  ratings: t.compat.ratings,
+  elementPairs: t.compat.elementPairs,
+  modalityPairs: t.compat.modalityPairs,
+  challengesLine: t.compat.challengesLine,
+  elementLabel: m.elementLabel,
+  ranges: Object.fromEntries(SIGN_IDS.map((id) => [id, [SIGN_CORE[id].start, SIGN_CORE[id].end]])),
+};
+const stats = [
+  { v: '78', l: m.stat1 },
+  { v: String(enabledLocales().length), l: m.stat2 },
+  { v: m.stat3Value, l: m.stat3 },
+];
+const dims = [
+  { k: 'love', label: m.dimLove, icon: '♥', cls: 'love' },
+  { k: 'passion', label: m.dimPassion, icon: '🔥', cls: 'passion' },
+  { k: 'trust', label: m.dimTrust, icon: '🛡', cls: 'trust' },
+  { k: 'mind', label: m.dimMind, icon: '💬', cls: 'mind' },
+];
+const first = signs[0];
+const sixth = signs[5];
+---
+<section class="m-app" id="match-app" aria-labelledby="m-title">
+  <div class="m-hero">
+    <span class="m-pill">♥ {m.badge}</span>
+    <h2 id="m-title">{m.title}</h2>
+    <p>{m.subtitle}</p>
+  </div>
+
+  <div id="m-input" class="m-stack">
+    <div class="m-cards">
+      <span class="m-join" aria-hidden="true">✦</span>
+      {[1, 2].map((n) => (
+        <div class={`m-card m-p${n}`}>
+          <div class="m-tag">● {n === 1 ? m.partner1 : m.partner2}</div>
+          <label>{m.nameLabel}
+            <input type="text" id={`n${n}`} placeholder={n === 1 ? m.namePlaceholder1 : m.namePlaceholder2} maxlength="24" autocomplete="off" />
+          </label>
+          <label>{m.dobLabel}
+            <input type="date" id={`d${n}`} value={n === 1 ? '1998-04-12' : '2000-08-25'} min="1900-01-01" max="2100-12-31" required />
+          </label>
+          <div class="m-sign">
+            <span class="m-sym" id={`sym${n}`}>{n === 1 ? first.symbol : sixth.symbol}</span>
+            <div>
+              <div class="m-sname" id={`sn${n}`}>{n === 1 ? first.name : sixth.name}</div>
+              <div class="m-sel" id={`se${n}`}></div>
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
+    <button type="button" class="m-go" id="m-go">✦ {m.btnCalculate} →</button>
+    <div class="m-stats">
+      {stats.map((s) => <div><b>{s.v}</b><span>{s.l}</span></div>)}
+    </div>
+  </div>
+
+  <div id="m-calc" class="m-calc" hidden aria-live="polite">
+    <div class="m-orbit">
+      <i class="o1"></i><i class="o2"></i><i class="o3"></i>
+      <div class="m-orbit-c"><b id="m-pct">18%</b><span>{m.calcWord}</span></div>
+    </div>
+    <h3 id="m-status">{m.calc1}</h3>
+    <p>{m.calcSub}</p>
+    <div class="m-bar"><i id="m-bar-fill" style="width:18%"></i></div>
+  </div>
+
+  <div id="m-res" class="m-stack" hidden>
+    <div class="m-actions">
+      <button type="button" class="m-ghost" id="m-new">↺ {m.btnRecalc}</button>
+      <button type="button" class="m-ghost m-accent" id="m-story-open">⤴ {m.btnStory}</button>
+    </div>
+
+    <div class="m-score">
+      <div class="m-names" id="r-names"></div>
+      <div class="m-big" id="r-score">0%</div>
+      <span class="m-badge" id="r-badge"></span>
+    </div>
+
+    <div class="m-panel">
+      <h3>✧ {m.aspectsHeading}</h3>
+      <div class="m-dims">
+        {dims.map((d) => (
+          <div class={`m-dim ${d.cls}`}>
+            <div><span>{d.icon} {d.label}</span><b id={`r-${d.k}-v`}>0%</b></div>
+            <div class="m-track"><i id={`r-${d.k}-b`} style="width:0%"></i></div>
+          </div>
+        ))}
+      </div>
+    </div>
+
+    <div class="m-ins ins-super"><span>⚡</span><div><h4>{m.insightSuper}</h4><p id="r-super"></p></div></div>
+    <div class="m-ins ins-risk"><span>⚠</span><div><h4>{m.insightRisk}</h4><p id="r-risk"></p></div></div>
+    <div class="m-ins ins-advice"><span>✦</span><div><h4>{m.insightAdvice}</h4><p id="r-advice"></p></div></div>
+
+    <a class="m-more" id="r-more" href="#"></a>
+
+    {(kofi || telegram) && (
+      <div class="m-panel">
+        <h3>✦ {m.supportHeading}</h3>
+        <div class="m-support">
+          {kofi && (
+            <div class="m-sup coffee">
+              <h4>☕ {m.coffeeTitle}</h4><p>{m.coffeeDesc}</p>
+              <a href={kofi} target="_blank" rel="noopener">☕ {m.coffeeBtn}</a>
+            </div>
+          )}
+          {telegram && (
+            <div class="m-sup community">
+              <h4>👥 {m.communityTitle}</h4><p>{m.communityDesc}</p>
+              <a href={telegram} target="_blank" rel="noopener">👥 {m.communityBtn}</a>
+            </div>
+          )}
+        </div>
+      </div>
+    )}
+  </div>
+
+  <div id="m-modal" class="m-modal" hidden role="dialog" aria-modal="true">
+    <div class="m-modal-box">
+      <button type="button" class="m-x" id="m-story-close" aria-label="×">×</button>
+      <div class="m-story">
+        <div class="m-story-top">
+          <span class="m-pill">✦ <span id="s-title"></span></span>
+          <h3 id="s-names"></h3>
+          <div class="m-mono" id="s-signs"></div>
+        </div>
+        <div class="m-story-mid">
+          <div class="m-story-score" id="s-score"></div>
+          <div class="m-story-badge" id="s-badge"></div>
+          <div class="m-story-grid">
+            <div>{m.storyLove}: <b id="s-love"></b></div>
+            <div>{m.storyPassion}: <b id="s-passion"></b></div>
+            <div>{m.storyTrust}: <b id="s-trust"></b></div>
+            <div>{m.storyMind}: <b id="s-mind"></b></div>
+          </div>
+        </div>
+        <div class="m-story-foot">
+          <div class="m-mono">{m.storyFooter}</div>
+          <b id="s-host"></b>
+        </div>
+      </div>
+      <div class="m-modal-btns">
+        <button type="button" class="m-go" id="m-copy">⤴ <span>{m.modalCopy}</span></button>
+        <button type="button" class="m-ghost" id="m-dl">⬇ {m.modalDownload}</button>
+        <p>{m.modalHint}</p>
+      </div>
+    </div>
+  </div>
+
+  <script type="application/json" id="match-data" set:html={JSON.stringify(data)} />
+</section>
+
+<script>
+  import { compatibility } from '../lib/compat';
+  import { SIGN_IDS, type SignId } from '../data/core';
+
+  const D = JSON.parse(document.getElementById('match-data')!.textContent!);
+  const T = D.ui;
+  const $ = <E extends HTMLElement = HTMLElement>(id: string) => document.getElementById(id) as E;
+
+  function signOf(value: string): SignId | null {
+    const mt = /^(\d{4})-(\d{2})-(\d{2})$/.exec(value);
+    if (!mt) return null;
+    const key = Number(mt[2]) * 100 + Number(mt[3]);
+    for (const id of SIGN_IDS) {
+      const [s, e] = D.ranges[id];
+      const a = s[0] * 100 + s[1], b = e[0] * 100 + e[1];
+      if (a <= b ? key >= a && key <= b : key >= a || key <= b) return id;
+    }
+    return null;
+  }
+
+  function preview() {
+    for (const n of [1, 2]) {
+      const id = signOf($<HTMLInputElement>(`d${n}`).value);
+      if (!id) continue;
+      const s = D.signs[id];
+      $(`sym${n}`).textContent = s.symbol;
+      $(`sn${n}`).textContent = s.name;
+      $(`se${n}`).textContent = D.elementLabel.replace('{element}', s.elementName);
+    }
+  }
+  $('d1').addEventListener('change', preview);
+  $('d2').addEventListener('change', preview);
+  preview();
+
+  let last: any = null;
+  const show = (id: string) => ['m-input', 'm-calc', 'm-res'].forEach((x) => { $(x).hidden = x !== id; });
+
+  function compute() {
+    const a = signOf($<HTMLInputElement>('d1').value), b = signOf($<HTMLInputElement>('d2').value);
+    if (!a || !b) return null;
+    const c = compatibility(a, b);
+    const sa = D.signs[a], sb = D.signs[b];
+    const badge = sa.element === sb.element ? T.badgeMirror
+      : c.opposite ? T.badgeMagnet
+      : c.overall >= 85 ? T.badgeKarmic : D.ratings[c.rating];
+    const line = (s: any) => D.challengesLine.replace('{name}', s.name).replace('{list}', s.challenges.join(', '));
+    return {
+      a, b, c, badge,
+      n1: $<HTMLInputElement>('n1').value.trim() || sa.name,
+      n2: $<HTMLInputElement>('n2').value.trim() || sb.name,
+      mind: c.communication,
+      superText: D.elementPairs[c.elementKey],
+      riskText: a === b ? line(sa) : `${line(sa)} ${line(sb)}`,
+      adviceText: D.modalityPairs[c.modalityKey],
+      url: D.pairUrls[`${a}|${b}`],
+    };
+  }
+
+  function render(r: any) {
+    const sa = D.signs[r.a], sb = D.signs[r.b];
+    const nm = $('r-names'); nm.replaceChildren();
+    const mk = (cls: string, text: string) => { const e = document.createElement('span'); e.className = cls; e.textContent = text; nm.append(e); };
+    mk('nm', r.n1); mk('sy', sa.symbol); mk('pl', '+'); mk('nm', r.n2); mk('sy', sb.symbol);
+    $('r-score').textContent = r.c.overall + '%';
+    $('r-badge').textContent = '✦ ' + r.badge;
+    const vals: Record<string, number> = { love: r.c.love, passion: r.c.passion, trust: r.c.trust, mind: r.mind };
+    for (const k of Object.keys(vals)) {
+      $(`r-${k}-v`).textContent = vals[k] + '%';
+      const bar = $(`r-${k}-b`); bar.style.width = '0%';
+      requestAnimationFrame(() => requestAnimationFrame(() => { bar.style.width = vals[k] + '%'; }));
+    }
+    $('r-super').textContent = r.superText;
+    $('r-risk').textContent = r.riskText;
+    $('r-advice').textContent = r.adviceText;
+    const more = $<HTMLAnchorElement>('r-more');
+    more.href = r.url;
+    more.textContent = T.readMore.replace('{a}', sa.name).replace('{b}', sb.name);
+
+    $('s-title').textContent = T.modalTitle.replace('{site}', D.site);
+    $('s-names').textContent = `${r.n1} + ${r.n2}`;
+    $('s-signs').textContent = `${sa.name} ${sa.symbol} & ${sb.name} ${sb.symbol}`;
+    $('s-score').textContent = r.c.overall + '%';
+    $('s-badge').textContent = r.badge;
+    $('s-love').textContent = vals.love + '%'; $('s-passion').textContent = vals.passion + '%';
+    $('s-trust').textContent = vals.trust + '%'; $('s-mind').textContent = vals.mind + '%';
+    $('s-host').textContent = location.host;
+  }
+
+  function shareUrl() {
+    const u = new URL(location.href);
+    u.search = '';
+    u.searchParams.set('a', $<HTMLInputElement>('d1').value);
+    u.searchParams.set('b', $<HTMLInputElement>('d2').value);
+    const n1 = $<HTMLInputElement>('n1').value.trim(), n2 = $<HTMLInputElement>('n2').value.trim();
+    if (n1) u.searchParams.set('n1', n1);
+    if (n2) u.searchParams.set('n2', n2);
+    u.hash = 'match-app';
+    return u.toString();
+  }
+
+  function start() {
+    const r = compute();
+    if (!r) return;
+    show('m-calc');
+    let p = 18;
+    const bar = $('m-bar-fill'), pct = $('m-pct'), status = $('m-status');
+    bar.style.width = '18%'; pct.textContent = '18%'; status.textContent = T.calc1;
+    const timer = setInterval(() => {
+      p = Math.min(100, p + 20);
+      bar.style.width = p + '%'; pct.textContent = p + '%';
+      if (p === 58) status.textContent = T.calc2;
+      if (p >= 98) status.textContent = T.calc3;
+      if (p >= 100) {
+        clearInterval(timer);
+        setTimeout(() => { last = r; render(r); show('m-res'); history.replaceState(null, '', shareUrl()); $('m-res').scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 400);
+      }
+    }, 250);
+  }
+  $('m-go').addEventListener('click', start);
+  $('m-new').addEventListener('click', () => {
+    show('m-input'); closeModal(); history.replaceState(null, '', location.pathname);
+    $('match-app').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+
+  const modal = $('m-modal');
+  function closeModal() { modal.hidden = true; }
+  $('m-story-open').addEventListener('click', () => { modal.hidden = false; });
+  $('m-story-close').addEventListener('click', closeModal);
+  modal.addEventListener('click', (e) => { if (e.target === modal) closeModal(); });
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeModal(); });
+
+  $('m-copy').addEventListener('click', async () => {
+    const label = $('m-copy').querySelector('span')!;
+    const original = label.textContent;
+    try { await navigator.clipboard.writeText(shareUrl()); label.textContent = T.modalCopied; } catch { label.textContent = shareUrl(); }
+    setTimeout(() => { label.textContent = original; }, 2000);
+  });
+
+  // 1080x1920 story image drawn on a canvas, no external libraries.
+  $('m-dl').addEventListener('click', () => {
+    if (!last) return;
+    const W = 1080, H = 1920;
+    const cv = document.createElement('canvas'); cv.width = W; cv.height = H;
+    const g = cv.getContext('2d')!;
+    const bg = g.createLinearGradient(0, 0, 0, H);
+    bg.addColorStop(0, '#1c1538'); bg.addColorStop(0.5, '#0f0d22'); bg.addColorStop(1, '#070611');
+    g.fillStyle = bg; g.fillRect(0, 0, W, H);
+    const glow = g.createRadialGradient(W / 2, 260, 20, W / 2, 260, 700);
+    glow.addColorStop(0, 'rgba(192,38,211,0.35)'); glow.addColorStop(1, 'rgba(192,38,211,0)');
+    g.fillStyle = glow; g.fillRect(0, 0, W, H);
+    g.strokeStyle = 'rgba(217,70,239,0.4)'; g.lineWidth = 6; g.strokeRect(30, 30, W - 60, H - 60);
+    const font = 'system-ui, -apple-system, "Segoe UI", Roboto, "Noto Sans", sans-serif';
+    g.textAlign = 'center';
+    const text = (s: string, y: number, size: number, color: string, weight = '700') => {
+      g.font = `${weight} ${size}px ${font}`; g.fillStyle = color; g.fillText(s, W / 2, y);
+    };
+    const r = last, sa = D.signs[r.a], sb = D.signs[r.b];
+    text('✦ ' + T.modalTitle.replace('{site}', D.site).toUpperCase(), 190, 38, '#d8b4fe');
+    text(`${r.n1} + ${r.n2}`, 300, 72, '#ffffff');
+    text(`${sa.name} ${sa.symbol} & ${sb.name} ${sb.symbol}`, 380, 44, '#94a3b8', '500');
+    const sg = g.createLinearGradient(300, 600, 780, 900);
+    sg.addColorStop(0, '#f9a8d4'); sg.addColorStop(0.5, '#e9d5ff'); sg.addColorStop(1, '#c7d2fe');
+    g.font = `900 320px ${font}`; g.fillStyle = sg; g.fillText(r.c.overall + '%', W / 2, 800);
+    text(r.badge, 900, 56, '#e9d5ff', '600');
+    const cells: [string, number, string][] = [
+      [T.storyLove, r.c.love, '#f9a8d4'], [T.storyPassion, r.c.passion, '#fdba74'],
+      [T.storyTrust, r.c.trust, '#6ee7b7'], [T.storyMind, r.mind, '#67e8f9'],
+    ];
+    cells.forEach(([label, v, color], i) => {
+      const x = 130 + (i % 2) * 450, y = 1040 + Math.floor(i / 2) * 150;
+      g.fillStyle = 'rgba(255,255,255,0.07)'; g.beginPath(); g.roundRect(x, y, 400, 120, 28); g.fill();
+      g.textAlign = 'left'; g.font = `500 40px ${font}`; g.fillStyle = '#cbd5e1'; g.fillText(label + ':', x + 34, y + 76);
+      g.textAlign = 'right'; g.font = `800 44px ${font}`; g.fillStyle = color; g.fillText(v + '%', x + 368, y + 76);
+      g.textAlign = 'center';
+    });
+    g.strokeStyle = 'rgba(255,255,255,0.12)'; g.lineWidth = 2;
+    g.beginPath(); g.moveTo(130, 1660); g.lineTo(W - 130, 1660); g.stroke();
+    text(T.storyFooter, 1730, 36, '#94a3b8', '500');
+    text(location.host, 1805, 56, '#f0abfc');
+    cv.toBlob((blob) => {
+      if (!blob) return;
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob); a.download = 'synastry.png'; a.click();
+      setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+    }, 'image/png');
+  });
+
+  // Shared link: ?a=YYYY-MM-DD&b=YYYY-MM-DD&n1=..&n2=.. restores the result.
+  const q = new URLSearchParams(location.search);
+  if (q.get('a') && q.get('b')) {
+    $<HTMLInputElement>('d1').value = q.get('a')!;
+    $<HTMLInputElement>('d2').value = q.get('b')!;
+    $<HTMLInputElement>('n1').value = (q.get('n1') || '').slice(0, 24);
+    $<HTMLInputElement>('n2').value = (q.get('n2') || '').slice(0, 24);
+    preview();
+    const r = compute();
+    if (r) { last = r; render(r); show('m-res'); }
+  }
+</script>
+
+<style is:global>
+  .m-app { margin: 8px 0 28px; }
+  .m-hero { text-align: center; margin: 8px 0 22px; }
+  .m-hero h2 { font-size: clamp(1.7rem, 5vw, 2.7rem); line-height: 1.12; margin: 12px 0 8px; background: linear-gradient(180deg, #fff, #cbd5e1); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+  [data-theme="millennial"] .m-hero h2, [data-theme="genx"] .m-hero h2, [data-theme="boomer"] .m-hero h2 { background: none; -webkit-text-fill-color: currentColor; }
+  .m-hero p { color: var(--muted); max-width: 34rem; margin: 0 auto; }
+  .m-pill { display: inline-flex; align-items: center; gap: 6px; padding: 5px 14px; border-radius: 999px; border: 1px solid var(--line); background: #ffffff0d; color: #f0abfc; font-size: .8rem; font-weight: 600; }
+  [data-theme="millennial"] .m-pill, [data-theme="boomer"] .m-pill { color: var(--brand-dark); }
+  .m-stack { display: grid; gap: 18px; }
+  .m-stack[hidden], .m-calc[hidden], .m-modal[hidden] { display: none !important; }
+  .m-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; position: relative; }
+  .m-join { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center; color: #fff; background: linear-gradient(135deg, #c026d3, #4f46e5); border: 2px solid #05040a; z-index: 2; box-shadow: 0 10px 24px #c026d333; }
+  .m-card { background: var(--card); border: 1px solid var(--card-border); border-radius: var(--radius); padding: 20px; display: grid; gap: 14px; backdrop-filter: blur(14px); transition: border-color .3s, box-shadow .3s; }
+  .m-card:hover { border-color: #c084fc59; box-shadow: 0 10px 30px -10px #a855f733; }
+  .m-card label { display: grid; gap: 6px; font-size: .8rem; color: var(--muted); }
+  .m-card input:focus { outline: none; border-color: #c084fc; }
+  .m-p2 input:focus { border-color: #e879f9; }
+  .m-tag { font-family: ui-monospace, Menlo, Consolas, monospace; font-size: .72rem; letter-spacing: .08em; text-transform: uppercase; font-weight: 700; color: #c084fc; }
+  .m-p2 .m-tag { color: #e879f9; }
+  .m-sign { display: flex; align-items: center; gap: 12px; padding: 12px; border-radius: 14px; background: #581c8730; border: 1px solid #a855f733; }
+  .m-p2 .m-sign { background: #70185c30; border-color: #d946ef33; }
+  .m-sym { font-size: 2rem; line-height: 1; font-family: var(--heading-font); }
+  .m-sname { font-weight: 700; }
+  .m-sel { font-size: .8rem; color: var(--muted); }
+  .m-go { width: 100%; padding: 16px; font-size: 1.08rem; border-radius: var(--btn-radius); }
+  .m-go:active { transform: scale(.99); }
+  .m-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; padding-top: 16px; border-top: 1px solid var(--line); text-align: center; }
+  .m-stats div { background: var(--tile-bg); border: 1px solid var(--line); border-radius: 14px; padding: 10px 6px; }
+  .m-stats b { display: block; font-family: var(--heading-font); font-size: 1.25rem; color: var(--big); }
+  .m-stats span { font-size: .72rem; color: var(--muted); }
+
+  .m-calc { text-align: center; padding: 48px 0; display: grid; gap: 18px; justify-items: center; }
+  .m-orbit { position: relative; width: 176px; height: 176px; display: grid; place-items: center; }
+  .m-orbit i { position: absolute; border-radius: 50%; }
+  .m-orbit .o1 { inset: 0; border: 2px dashed #a855f740; animation: m-spin 14s linear infinite; }
+  .m-orbit .o2 { inset: 12px; border: 1px solid #d946ef4d; animation: m-pulse 2s ease-in-out infinite; }
+  .m-orbit .o3 { inset: 28px; border: 2px solid #818cf866; border-top-color: transparent; animation: m-spin 9s linear infinite reverse; }
+  .m-orbit-c b { display: block; font-family: var(--heading-font); font-size: 2rem; background: linear-gradient(90deg, #e9d5ff, #f5d0fe); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+  .m-orbit-c span { font-family: ui-monospace, Menlo, monospace; font-size: .62rem; letter-spacing: .15em; text-transform: uppercase; color: #d8b4fe; }
+  .m-calc h3 { margin: 0; }
+  .m-calc p { margin: 0; color: var(--muted); font-size: .8rem; font-family: ui-monospace, Menlo, monospace; }
+  .m-bar { width: 240px; height: 8px; border-radius: 99px; background: #ffffff1a; overflow: hidden; }
+  .m-bar i { display: block; height: 100%; background: linear-gradient(90deg, #a855f7, #d946ef, #6366f1); transition: width .3s; }
+  @keyframes m-spin { to { transform: rotate(360deg); } }
+  @keyframes m-pulse { 50% { opacity: .35; } }
+
+  .m-actions { display: flex; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
+  .m-ghost { background: transparent; color: var(--muted); border: 1px solid var(--line); border-radius: 12px; padding: 8px 14px; font-size: .85rem; box-shadow: none; font-weight: 600; }
+  .m-ghost.m-accent { background: #c026d333; color: #f5d0fe; border-color: #d946ef66; }
+  .m-score { position: relative; text-align: center; padding: 28px 18px; border-radius: 26px; border: 1px solid #d946ef4d; background: var(--card); box-shadow: 0 24px 60px -24px #c026d355; overflow: hidden; }
+  .m-score::before { content: ""; position: absolute; top: 0; left: 50%; width: 320px; height: 96px; transform: translateX(-50%); background: #d946ef33; filter: blur(48px); pointer-events: none; }
+  .m-names { display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 8px; font-weight: 700; margin-bottom: 8px; position: relative; }
+  .m-names .sy { font-size: .8rem; padding: 2px 8px; border-radius: 6px; background: #ffffff1a; color: #d8b4fe; font-family: ui-monospace, monospace; }
+  .m-names .pl { color: #e879f9; }
+  .m-big { position: relative; font-family: var(--heading-font); font-weight: 900; font-size: clamp(4.5rem, 20vw, 6.5rem); line-height: 1.05; background: linear-gradient(90deg, #e9d5ff, #f5d0fe, #fbcfe8); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+  [data-theme="millennial"] .m-big, [data-theme="genx"] .m-big, [data-theme="boomer"] .m-big { background: none; -webkit-text-fill-color: var(--big); }
+  .m-badge { display: inline-block; margin-top: 6px; padding: 5px 16px; border-radius: 999px; font-weight: 600; font-size: .85rem; color: #e9d5ff; background: linear-gradient(90deg, #a855f733, #d946ef33); border: 1px solid #a855f74d; position: relative; }
+  [data-theme="millennial"] .m-badge, [data-theme="boomer"] .m-badge { color: var(--brand-dark); }
+  .m-panel { background: var(--card); border: 1px solid var(--card-border); border-radius: var(--radius); padding: 20px; display: grid; gap: 14px; }
+  .m-panel h3 { margin: 0; font-size: .78rem; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); }
+  .m-dims { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .m-dim { background: #0000004d; border: 1px solid #ffffff0d; border-radius: 14px; padding: 12px 14px; display: grid; gap: 8px; }
+  [data-theme="millennial"] .m-dim, [data-theme="boomer"] .m-dim { background: var(--tile-bg); border-color: var(--line); }
+  .m-dim > div:first-child { display: flex; justify-content: space-between; font-size: .85rem; font-weight: 600; }
+  .m-dim b { font-family: ui-monospace, monospace; color: var(--ink); }
+  .m-track { height: 8px; border-radius: 99px; background: #ffffff1a; overflow: hidden; }
+  .m-track i { display: block; height: 100%; border-radius: 99px; transition: width 1s ease; }
+  .m-dim.love > div:first-child span { color: #f9a8d4; } .m-dim.love .m-track i { background: linear-gradient(90deg, #ec4899, #fb7185); }
+  .m-dim.passion > div:first-child span { color: #fdba74; } .m-dim.passion .m-track i { background: linear-gradient(90deg, #f97316, #fbbf24); }
+  .m-dim.trust > div:first-child span { color: #6ee7b7; } .m-dim.trust .m-track i { background: linear-gradient(90deg, #10b981, #2dd4bf); }
+  .m-dim.mind > div:first-child span { color: #67e8f9; } .m-dim.mind .m-track i { background: linear-gradient(90deg, #06b6d4, #60a5fa); }
+  .m-ins { display: flex; gap: 14px; align-items: flex-start; background: var(--card); border: 1px solid var(--card-border); border-radius: var(--radius); padding: 16px; }
+  .m-ins > span { width: 42px; height: 42px; flex: none; display: grid; place-items: center; border-radius: 12px; font-size: 1.1rem; }
+  .m-ins h4 { margin: 0; font-size: .95rem; } .m-ins p { margin: 4px 0 0; font-size: .9rem; color: var(--muted); }
+  .ins-super { border-color: #a855f740; } .ins-super > span { background: #a855f733; color: #d8b4fe; } .ins-super h4 { color: #e9d5ff; }
+  .ins-risk { border-color: #f59e0b40; } .ins-risk > span { background: #f59e0b33; color: #fcd34d; } .ins-risk h4 { color: #fde68a; }
+  .ins-advice { border-color: #06b6d440; } .ins-advice > span { background: #06b6d433; color: #67e8f9; } .ins-advice h4 { color: #a5f3fc; }
+  [data-theme="millennial"] .ins-super h4, [data-theme="millennial"] .ins-risk h4, [data-theme="millennial"] .ins-advice h4,
+  [data-theme="boomer"] .ins-super h4, [data-theme="boomer"] .ins-risk h4, [data-theme="boomer"] .ins-advice h4 { color: var(--ink); }
+  .m-more { text-align: center; font-weight: 600; padding: 12px; border: 1px dashed var(--line); border-radius: 14px; text-decoration: none; }
+  .m-support { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .m-sup { background: #00000066; border: 1px solid #ffffff0d; border-radius: 14px; padding: 16px; display: grid; gap: 10px; align-content: space-between; }
+  [data-theme="millennial"] .m-sup, [data-theme="boomer"] .m-sup { background: var(--tile-bg); border-color: var(--line); }
+  .m-sup h4 { margin: 0; font-size: .95rem; } .m-sup p { margin: 0; font-size: .8rem; color: var(--muted); }
+  .m-sup a { text-align: center; font-size: .8rem; font-weight: 600; padding: 10px 14px; border-radius: 12px; text-decoration: none; }
+  .m-sup.coffee h4 { color: #fcd34d; } .m-sup.coffee a { color: #fcd34d; background: #f59e0b1a; border: 1px solid #f59e0b4d; }
+  .m-sup.community h4 { color: #a5b4fc; } .m-sup.community a { color: #fff; background: linear-gradient(90deg, #4f46e5, #9333ea); }
+
+  .m-modal { position: fixed; inset: 0; z-index: 100; background: #000000d9; backdrop-filter: blur(8px); display: grid; place-items: center; padding: 16px; overflow-y: auto; }
+  .m-modal-box { position: relative; width: min(340px, 100%); background: #121021f2; border: 1px solid #ffffff33; border-radius: 26px; padding: 18px; display: grid; gap: 14px; text-align: center; color: #f1f5f9; }
+  .m-x { position: absolute; top: 12px; right: 12px; z-index: 3; width: 30px; height: 30px; padding: 0; border-radius: 50%; background: #ffffff1a; color: #fff; border: 0; box-shadow: none; line-height: 1; }
+  .m-story { aspect-ratio: 9 / 16; border-radius: 18px; border: 1px solid #d946ef66; background: linear-gradient(180deg, #1c1538, #0f0d22 55%, #070611); padding: 18px; display: flex; flex-direction: column; justify-content: space-between; position: relative; overflow: hidden; color: #f1f5f9; }
+  .m-story::before { content: ""; position: absolute; inset: 0 0 auto; height: 80px; background: linear-gradient(180deg, #d946ef33, transparent); pointer-events: none; }
+  .m-story > * { position: relative; }
+  .m-story .m-pill { font-size: .62rem; letter-spacing: .12em; text-transform: uppercase; font-family: ui-monospace, monospace; color: #d8b4fe; padding: 4px 10px; }
+  .m-story h3 { margin: 8px 0 2px; font-size: .95rem; color: #fff; }
+  .m-mono { font-family: ui-monospace, Menlo, monospace; font-size: .68rem; color: #94a3b8; }
+  .m-story-score { font-family: var(--heading-font); font-weight: 900; font-size: 3.8rem; line-height: 1.05; background: linear-gradient(135deg, #f9a8d4, #e9d5ff, #c7d2fe); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+  .m-story-badge { font-size: .8rem; font-weight: 600; color: #e9d5ff; margin-top: 2px; }
+  .m-story-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-top: 14px; font-size: .66rem; color: #cbd5e1; }
+  .m-story-grid div { background: #ffffff12; border: 1px solid #ffffff0d; border-radius: 8px; padding: 6px; }
+  .m-story-grid b:nth-of-type(1) { color: inherit; }
+  .m-story-foot { border-top: 1px solid #ffffff1a; padding-top: 8px; }
+  .m-story-foot b { font-size: .75rem; color: #f0abfc; letter-spacing: .04em; }
+  .m-modal-btns { display: grid; gap: 8px; }
+  .m-modal-btns p { margin: 0; font-size: .68rem; color: #94a3b8; }
+  .m-modal .m-ghost { color: #e2e8f0; }
+
+  /* header: logo mark + language pills (reference design) */
+  .logo-mark { display: inline-grid; place-items: center; width: 34px; height: 34px; margin-inline-end: 8px; border-radius: 11px; background: linear-gradient(135deg, #c026d3, #9333ea, #4f46e5); color: #fff; font-size: 1rem; box-shadow: 0 8px 20px -6px #a855f777; vertical-align: middle; }
+  .lang-pills { display: inline-flex; gap: 2px; padding: 3px; border: 1px solid var(--line); border-radius: 999px; background: #0006; }
+  .lang-pills a { padding: 4px 9px; border-radius: 999px; font-size: .72rem; font-weight: 700; color: var(--muted); text-decoration: none; letter-spacing: .03em; }
+  .lang-pills a[aria-current="true"] { background: #c026d3; color: #fff; box-shadow: 0 2px 8px #c026d355; }
+  [data-theme="millennial"] .lang-pills, [data-theme="boomer"] .lang-pills { background: var(--tile-bg); }
+  .site-header .lang-pills a { color: var(--muted); } .site-header .lang-pills a[aria-current="true"] { color: #fff; }
+
+  @media (max-width: 640px) {
+    .m-cards, .m-dims, .m-support { grid-template-columns: 1fr; }
+    .m-join { display: none; }
+  }
+</style>

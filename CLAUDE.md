@@ -33,6 +33,10 @@ Build for production: `SITE_URL=https://<domain> PUBLIC_THEME=<theme> npm run bu
 - `src/pages/index.astro`: language chooser (x-default is English). `sitemap.xml.ts` and `robots.txt.ts` are endpoints.
 - `src/layouts/Base.astro`: head (canonical, hreflang, og, AdSense and GA via env), header, footer, all CSS.
   Themes are CSS-variable sets under `[data-theme="genz|millennial|genx|boomer|cosmic"]`.
+- `src/components/MatchApp.astro`: the two-date synastry calculator (home page and compatibility page), ported from
+  `docs/reference/astromatch-reference.html`: sign preview, animated calculation, score, 4 bars, 3 insight cards,
+  9:16 story card (canvas PNG download), shareable link `?a=&b=&n1=&n2=`. Strings live in `match.*` of each locale;
+  insights reuse `compat.elementPairs`, `compat.modalityPairs`, sign challenges. Scores come from `lib/compat.ts`.
 - Calculator pages embed their strings as JSON in `<script type="application/json" id="data">` and a module
   script reads it. Never hard-code user-visible text in views or scripts; it must come from the locale files.
 
@@ -56,7 +60,8 @@ Build for production: `SITE_URL=https://<domain> PUBLIC_THEME=<theme> npm run bu
 - Copy for pages must be useful and unique-ish (Google penalises thin AI content). Prefer richer templates
   over more pages when quality is low.
 - No secrets in the repo. AdSense and analytics ids are build-time env vars:
-  `PUBLIC_ADSENSE_CLIENT`, `PUBLIC_AD_SLOT_CONTENT`, `PUBLIC_GA_ID`, `PUBLIC_THEME`, `PUBLIC_THEME_SWITCHER`.
+  `PUBLIC_ADSENSE_CLIENT`, `PUBLIC_AD_SLOT_CONTENT`, `PUBLIC_GA_ID`, `PUBLIC_THEME`, `PUBLIC_THEME_SWITCHER`,
+  `PUBLIC_KOFI_URL`, `PUBLIC_TELEGRAM_URL` (the support block in the calculator is hidden until set).
 - Git author for this repo must be `natalyineu` with the GitHub noreply email
   (`git config --local user.name natalyineu`). Never commit with a work email.
 
@@ -64,7 +69,7 @@ Build for production: `SITE_URL=https://<domain> PUBLIC_THEME=<theme> npm run bu
 
 - Done: 5 calculators, 12 sign pages, 78 compatibility pairs, about/privacy; i18n architecture with hreflang
   sitemap; English locale complete (~100 pages); 5 visual themes with a dev switcher; scripts for translation.
-- Locales present: `en` only. Spanish was drafted in the chat but not saved; redo with `translate.mjs es` or by hand.
+- Locales present: en, es, ru, pt, de, fr (es/ru/pt/de/fr translated by hand, not yet proofread by native speakers).
 - Placeholders to fill before launch: contact email in `pages.about` / `pages.privacy` of each locale.
 - Not decided: final theme (owner is comparing; default is `astromatch` (matches docs/reference/astromatch-reference.html)), domain name, hosting.
 

@@ -1,6 +1,7 @@
 ---
 import Base from '../../layouts/Base.astro';
 import AdSlot from '../../components/AdSlot.astro';
+import MatchApp from '../../components/MatchApp.astro';
 import { getT, allSigns, fmt } from '../../lib/content';
 import { pageUrl } from '../../lib/routes';
 import { SIGN_IDS } from '../../data/core';
@@ -23,19 +24,7 @@ const groups = signs.map((a) => ({
   <p class="crumbs"><a href={pageUrl(locale, 'home')}>{t.ui.home}</a> › {tool.crumb}</p>
   <h1>{tool.h1}</h1>
   <p class="lead">{tool.lead}</p>
-  <div class="card">
-    <form class="calc" id="f">
-      <div class="row">
-        <label>{tool.firstSign}
-          <select id="a">{signs.map((s) => <option value={s.id}>{s.symbol} {s.name}</option>)}</select>
-        </label>
-        <label>{tool.secondSign}
-          <select id="b">{signs.map((s, i) => <option value={s.id} selected={i === 4}>{s.symbol} {s.name}</option>)}</select>
-        </label>
-      </div>
-      <button type="submit">{tool.button}</button>
-    </form>
-  </div>
+  <MatchApp locale={locale} />
   <AdSlot slot={import.meta.env.PUBLIC_AD_SLOT_CONTENT} />
   <h2>{tool.bySignHeading}</h2>
   {groups.map((g) => (
@@ -44,16 +33,5 @@ const groups = signs.map((a) => ({
       <p>{g.links.map((l, i) => <><a href={l.url}>{l.text}</a>{i < g.links.length - 1 ? ' · ' : ''}</>)}</p>
     </details>
   ))}
-  <script type="application/json" id="data" set:html={JSON.stringify(urls)} />
 </Base>
 
-<script>
-  const $ = (id: string) => document.getElementById(id)!;
-  const urls = JSON.parse($('data').textContent!);
-  $('f').addEventListener('submit', (e) => {
-    e.preventDefault();
-    const a = ($('a') as HTMLSelectElement).value;
-    const b = ($('b') as HTMLSelectElement).value;
-    location.href = urls[`${a}|${b}`];
-  });
-</script>

@@ -62,13 +62,13 @@ const themes = [
   <body>
     <header class="site-header">
       <div class="wrap bar">
-        <a class="logo" href={pageUrl(locale, 'home')}>✨ {t.site.name}</a>
+        <a class="logo" href={pageUrl(locale, 'home')}><span class="logo-mark" aria-hidden="true">✦</span>{t.site.name}</a>
         <nav>
           {TOOL_IDS.map((id) => <a href={pageUrl(locale, `tool:${id}`)}>{t.nav[id]}</a>)}
         </nav>
-        <select id="lang" aria-label={t.ui.language}>
-          {alts.map((a) => <option value={a.path} selected={a.locale === locale}>{a.native}</option>)}
-        </select>
+        <div class="lang-pills" role="group" aria-label={t.ui.language}>
+          {alts.map((a) => <a href={a.path} hreflang={a.tag} lang={a.tag} title={a.native} aria-current={a.locale === locale ? 'true' : undefined}>{a.locale.toUpperCase()}</a>)}
+        </div>
       </div>
     </header>
     <main class="wrap">
@@ -99,8 +99,6 @@ const themes = [
           document.documentElement.dataset.theme = b.dataset.themeId!;
           try { localStorage.setItem('theme', b.dataset.themeId!); } catch {}
         }));
-      const sel = document.getElementById('lang') as HTMLSelectElement | null;
-      sel?.addEventListener('change', () => { location.href = sel.value; });
     </script>
   </body>
 </html>
