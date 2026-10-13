@@ -15,10 +15,10 @@ const self = alts.find((a) => a.locale === locale)!;
 const xDefault = alts.find((a) => a.locale === DEFAULT_LOCALE) ?? alts[0];
 const adsenseClient = import.meta.env.PUBLIC_ADSENSE_CLIENT;
 const analyticsId = import.meta.env.PUBLIC_GA_ID;
-const defaultTheme = import.meta.env.PUBLIC_THEME || 'cosmic';
+const defaultTheme = import.meta.env.PUBLIC_THEME || 'astromatch';
 const showSwitcher = import.meta.env.DEV || import.meta.env.PUBLIC_THEME_SWITCHER === '1';
 const themes = [
-  ['genz', 'Gen Z'], ['millennial', 'Millennial'], ['genx', 'Gen X'], ['boomer', 'Boomer'], ['cosmic', 'Cosmic'],
+  ['genz', 'Gen Z'], ['millennial', 'Millennial'], ['genx', 'Gen X'], ['boomer', 'Boomer'], ['cosmic', 'Cosmic'], ['astromatch', 'AstroMatch'],
 ];
 ---
 <!doctype html>
@@ -177,6 +177,27 @@ const themes = [
     --fs: 15px; --lh: 1.5; --input-bg: #fff; --input-ink: #000;
     --meter-fill: repeating-linear-gradient(90deg, #000080 0 10px, #0000b0 10px 12px); --meter-bg: #fff;
     --big: #000080; --tile-bg: #c0c0c0;
+  }
+  [data-theme="astromatch"] {
+    --page-bg:
+      radial-gradient(rgba(255,255,255,.08) 1px, transparent 1px),
+      radial-gradient(40rem 40rem at -5% -8%, #9333ea26 0%, transparent 70%),
+      radial-gradient(42rem 42rem at 105% 35%, #c026d326 0%, transparent 70%),
+      radial-gradient(40rem 40rem at 25% 108%, #4f46e526 0%, transparent 70%), #05040a;
+    --page-bg-size: 28px 28px, auto, auto, auto, auto;
+    --card: #121021b8; --card-border: #ffffff14;
+    --ink: #f1f5f9; --muted: #94a3b8; --link: #d8b4fe;
+    --brand: #c084fc; --brand-dark: #e9d5ff; --accent: #f0abfc; --line: #ffffff14;
+    --header-bg: #121021b8; --header-ink: #f5d0fe; --header-border: 1px solid #ffffff1a;
+    --btn-bg: linear-gradient(90deg, #9333ea, #c026d3, #4f46e5); --btn-ink: #fff; --btn-radius: 16px; --btn-border: 0;
+    --btn-shadow: 0 10px 30px -8px #c026d359;
+    --radius: 18px; --shadow: 0 10px 30px -12px #a855f733;
+    --font: "Plus Jakarta Sans", "Avenir Next", "Segoe UI", Roboto, "Noto Sans", system-ui, sans-serif;
+    --heading-font: "Space Grotesk", "Plus Jakarta Sans", "Avenir Next", "Segoe UI", system-ui, sans-serif;
+    --heading-weight: 800; --heading-style: normal; --heading-transform: none; --heading-spacing: -0.02em;
+    --fs: 16px; --lh: 1.65; --input-bg: #00000066; --input-ink: #f1f5f9;
+    --meter-fill: linear-gradient(90deg, #ec4899, #c026d3, #6366f1); --meter-bg: #ffffff1a;
+    --big: #e9d5ff; --tile-bg: #ffffff0d;
   }
   [data-theme="boomer"] {
     --page-bg: #fffdf7; --page-bg-size: auto;

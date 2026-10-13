@@ -66,7 +66,7 @@ Build for production: `SITE_URL=https://<domain> PUBLIC_THEME=<theme> npm run bu
   sitemap; English locale complete (~100 pages); 5 visual themes with a dev switcher; scripts for translation.
 - Locales present: `en` only. Spanish was drafted in the chat but not saved; redo with `translate.mjs es` or by hand.
 - Placeholders to fill before launch: contact email in `pages.about` / `pages.privacy` of each locale.
-- Not decided: final theme (owner is comparing; default is `cosmic`), domain name, hosting.
+- Not decided: final theme (owner is comparing; default is `astromatch` (matches docs/reference/astromatch-reference.html)), domain name, hosting.
 
 ## Next steps (in order)
 
