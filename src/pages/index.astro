@@ -1,35 +1,10 @@
 ---
-import { enabledLocales, getT } from '../i18n';
+import { allPages } from '../lib/routes';
 import { DEFAULT_LOCALE } from '../i18n/config';
-import { pageUrl } from '../lib/routes';
-const locales = enabledLocales();
-const site = Astro.site!;
+import Home from '../views/Home.astro';
+
+// Site root renders the default-language home (canonical points to /<default>/), so the
+// theme switcher and language links are available from the very first page.
+const page = allPages().find((p) => p.locale === DEFAULT_LOCALE && p.id === 'home')!;
 ---
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>AstroCalc – Free Astrology Calculators</title>
-    <meta name="description" content="Free astrology calculators in many languages." />
-    <link rel="canonical" href={new URL(import.meta.env.BASE_URL, site).toString()} />
-    {locales.map((l) => <link rel="alternate" hreflang={l.tag} href={new URL(pageUrl(l.code, 'home'), site).toString()} />)}
-    <link rel="alternate" hreflang="x-default" href={new URL(pageUrl(DEFAULT_LOCALE, 'home'), site).toString()} />
-    <style>
-      body { font-family: -apple-system, "Segoe UI", Roboto, sans-serif; background: #faf8ff; color: #221b3a; margin: 0; }
-      main { max-width: 720px; margin: 0 auto; padding: 48px 16px; text-align: center; }
-      h1 { font-size: 2rem; }
-      ul { list-style: none; padding: 0; display: grid; gap: 12px; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); }
-      a { display: block; padding: 14px; border: 1px solid #e4def5; border-radius: 12px; background: #fff; color: #5b3fd0; text-decoration: none; font-weight: 600; }
-      a:hover { box-shadow: 0 6px 18px rgba(91,63,208,.15); }
-    </style>
-  </head>
-  <body>
-    <main>
-      <h1>✨ AstroCalc</h1>
-      <ul>
-        {locales.map((l) => <li><a href={pageUrl(l.code, 'home')} hreflang={l.tag}>{l.native}</a></li>)}
-      </ul>
-    </main>
-  </body>
-</html>
+<Home locale={DEFAULT_LOCALE} page={page} />
