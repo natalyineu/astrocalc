@@ -246,6 +246,8 @@
     }
   },
   "match": {
+    "brandSub": "Global synastry engine",
+    "superText": "{a} brings {sa}; {b} brings {sb}.",
     "badge": "Universal Synastry Calculator",
     "title": "How compatible are you in the stars?",
     "subtitle": "Discover the depth of your romantic connection, elemental chemistry and karmic bonds.",
@@ -293,7 +295,7 @@
     "supportHeading": "Love this free tool?",
     "coffeeTitle": "Buy us a cosmic coffee",
     "coffeeDesc": "Support independent servers and development. Any tip is deeply appreciated!",
-    "coffeeBtn": "Tip on Ko-fi",
+    "coffeeBtn": "Tip on Ko-fi ($3)",
     "communityTitle": "Daily astrological insights",
     "communityDesc": "Get weekly transit breakdowns and personalized syncs in our community.",
     "communityBtn": "Join the community"

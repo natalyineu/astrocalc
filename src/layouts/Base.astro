@@ -3,6 +3,9 @@ import { getT, enabledLocales, localeMeta } from '../i18n';
 import { alternates, pageUrl } from '../lib/routes';
 import { TOOL_IDS, SIGN_IDS, SIGN_CORE, STATIC_PAGE_IDS } from '../data/core';
 import { DEFAULT_LOCALE } from '../i18n/config';
+import Icon from '../components/Icon.astro';
+import '@fontsource-variable/plus-jakarta-sans';
+import '@fontsource-variable/space-grotesk';
 
 interface Props { locale: string; pageId: string; title: string; description: string }
 const { locale, pageId, title, description } = Astro.props;
@@ -62,11 +65,15 @@ const themes = [
   <body>
     <header class="site-header">
       <div class="wrap bar">
-        <a class="logo" href={pageUrl(locale, 'home')}><span class="logo-mark" aria-hidden="true">✦</span>{t.site.name}</a>
+        <a class="logo" href={pageUrl(locale, 'home')}>
+          <span class="logo-mark"><Icon name="sparkles" size={20} /></span>
+          <span class="logo-text"><span class="logo-name">{t.site.name}</span><span class="logo-sub">{t.match.brandSub}</span></span>
+        </a>
         <nav>
           {TOOL_IDS.map((id) => <a href={pageUrl(locale, `tool:${id}`)}>{t.nav[id]}</a>)}
         </nav>
         <div class="lang-pills" role="group" aria-label={t.ui.language}>
+          <span class="lang-globe"><Icon name="globe" size={14} /></span>
           {alts.map((a) => <a href={a.path} hreflang={a.tag} lang={a.tag} title={a.native} aria-current={a.locale === locale ? 'true' : undefined}>{a.locale.toUpperCase()}</a>)}
         </div>
       </div>
@@ -85,7 +92,8 @@ const themes = [
         <p class="langs">
           {alts.map((a) => <a href={a.path} hreflang={a.tag}>{a.native}</a>)}
         </p>
-        <p class="muted">{t.ui.disclaimer} © {new Date().getFullYear()} {t.site.name}</p>
+        <p class="muted">{t.ui.disclaimer}</p>
+        <p class="foot-mono">© {new Date().getFullYear()} {t.site.name} • {t.match.badge}</p>
       </div>
     </footer>
     {showSwitcher && (
@@ -190,8 +198,8 @@ const themes = [
     --btn-bg: linear-gradient(90deg, #9333ea, #c026d3, #4f46e5); --btn-ink: #fff; --btn-radius: 16px; --btn-border: 0;
     --btn-shadow: 0 10px 30px -8px #c026d359;
     --radius: 18px; --shadow: 0 10px 30px -12px #a855f733;
-    --font: "Plus Jakarta Sans", "Avenir Next", "Segoe UI", Roboto, "Noto Sans", system-ui, sans-serif;
-    --heading-font: "Space Grotesk", "Plus Jakarta Sans", "Avenir Next", "Segoe UI", system-ui, sans-serif;
+    --font: "Plus Jakarta Sans Variable", "Plus Jakarta Sans", "Avenir Next", "Segoe UI", Roboto, "Noto Sans", system-ui, sans-serif;
+    --heading-font: "Space Grotesk Variable", "Space Grotesk", "Plus Jakarta Sans Variable", "Avenir Next", "Segoe UI", system-ui, sans-serif;
     --heading-weight: 800; --heading-style: normal; --heading-transform: none; --heading-spacing: -0.02em;
     --fs: 16px; --lh: 1.65; --input-bg: #00000066; --input-ink: #f1f5f9;
     --meter-fill: linear-gradient(90deg, #ec4899, #c026d3, #6366f1); --meter-bg: #ffffff1a;
@@ -221,12 +229,18 @@ const themes = [
     min-height: 100vh;
   }
   .wrap { max-width: 860px; margin: 0 auto; padding: 0 16px; }
-  .site-header { background: var(--header-bg); color: var(--header-ink); border-bottom: var(--header-border); }
-  .site-header .bar { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px 20px; padding-block: 14px; }
+  .site-header { position: sticky; top: 0; z-index: 40; background: var(--header-bg); color: var(--header-ink); border-bottom: var(--header-border); backdrop-filter: blur(16px); }
+  .site-header .bar { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px 20px; padding-block: 12px 8px; }
   .site-header a { color: var(--header-ink); text-decoration: none; }
   .site-header select { width: auto; padding: 6px 10px; font-size: .85rem; }
-  .logo { font-family: var(--heading-font); font-weight: 700; font-size: 1.3rem; }
-  .site-header nav { display: flex; flex-wrap: wrap; gap: 6px 16px; font-size: .95rem; }
+  .logo { display: flex; align-items: center; gap: 10px; font-family: var(--heading-font); font-weight: 700; font-size: 1.3rem; line-height: 1.1; }
+  .logo-text { display: grid; }
+  .logo-name { font-weight: 800; letter-spacing: -0.01em; }
+  .logo-sub { font-family: ui-monospace, Menlo, Consolas, monospace; font-size: .55rem; font-weight: 400; letter-spacing: .18em; text-transform: uppercase; color: var(--muted); opacity: .85; }
+  [data-theme="astromatch"] .logo-name { background: linear-gradient(90deg, #fff, #e9d5ff, #f0abfc); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+  [data-theme="astromatch"] body { background-attachment: fixed; }
+  .foot-mono { font-family: ui-monospace, Menlo, Consolas, monospace; font-size: .72rem; color: var(--muted); opacity: .8; }
+  .site-header nav { order: 3; flex-basis: 100%; display: flex; flex-wrap: wrap; justify-content: center; gap: 4px 18px; font-size: .85rem; padding-bottom: 2px; }
   .site-header nav a { opacity: .9; }
   .site-header nav a:hover { opacity: 1; text-decoration: underline; }
   h1, h2, h3 { font-family: var(--heading-font); font-weight: var(--heading-weight); font-style: var(--heading-style); text-transform: var(--heading-transform); letter-spacing: var(--heading-spacing); }

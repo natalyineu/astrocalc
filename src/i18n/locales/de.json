@@ -246,6 +246,8 @@
     }
   },
   "match": {
+    "brandSub": "Globale Synastrie-Engine",
+    "superText": "{a} bringt {sa} mit; {b} bringt {sb} mit.",
     "badge": "Universeller Synastrie-Rechner",
     "title": "Wie gut passt ihr laut den Sternen zusammen?",
     "subtitle": "Entdecke die Tiefe eurer romantischen Verbindung, die Elementchemie und karmische Bande.",
@@ -293,7 +295,7 @@
     "supportHeading": "Gefällt dir dieses kostenlose Tool?",
     "coffeeTitle": "Spendiere uns einen kosmischen Kaffee",
     "coffeeDesc": "Unterstütze unabhängige Server und die Entwicklung. Jedes Trinkgeld freut uns sehr!",
-    "coffeeBtn": "Trinkgeld auf Ko-fi",
+    "coffeeBtn": "Trinkgeld auf Ko-fi ($3)",
     "communityTitle": "Tägliche astrologische Einblicke",
     "communityDesc": "Erhalte wöchentliche Transit-Analysen und persönliche Synastrien in unserer Community.",
     "communityBtn": "Der Community beitreten"

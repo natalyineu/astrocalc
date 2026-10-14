@@ -1,16 +1,17 @@
 ---
 // Two-date synastry calculator (design reference: docs/reference/astromatch-reference.html).
 // All strings come from the locale files (`match`, `compat`, `signs`, `elements`).
-import { getT, allSigns, fmt } from '../lib/content';
+import Icon from './Icon.astro';
+import { getT, allSigns } from '../lib/content';
 import { pageUrl } from '../lib/routes';
 import { SIGN_IDS, SIGN_CORE } from '../data/core';
 import { enabledLocales } from '../i18n';
 
-const { locale } = Astro.props;
+const { locale, title } = Astro.props as { locale: string; title?: string };
 const t = getT(locale);
 const m = t.match;
-const kofi = import.meta.env.PUBLIC_KOFI_URL;
-const telegram = import.meta.env.PUBLIC_TELEGRAM_URL;
+const kofi = import.meta.env.PUBLIC_KOFI_URL || 'https://ko-fi.com';
+const telegram = import.meta.env.PUBLIC_TELEGRAM_URL || 'https://t.me';
 const signs = allSigns(locale);
 
 const pairUrls: Record<string, string> = {};
@@ -24,7 +25,7 @@ const data = {
   pairUrls,
   signs: Object.fromEntries(signs.map((s) => [s.id, {
     name: s.name, symbol: s.symbol, element: SIGN_CORE[s.id].element, modality: SIGN_CORE[s.id].modality,
-    elementName: s.element, challenges: s.challenges,
+    elementName: s.element, challenges: s.challenges, strengths: s.strengths,
   }])),
   ratings: t.compat.ratings,
   elementPairs: t.compat.elementPairs,
@@ -34,32 +35,32 @@ const data = {
   ranges: Object.fromEntries(SIGN_IDS.map((id) => [id, [SIGN_CORE[id].start, SIGN_CORE[id].end]])),
 };
 const stats = [
-  { v: '78', l: m.stat1 },
-  { v: String(enabledLocales().length), l: m.stat2 },
-  { v: m.stat3Value, l: m.stat3 },
+  { v: '78', l: m.stat1, c: 'c1' },
+  { v: String(enabledLocales().length), l: m.stat2, c: 'c2' },
+  { v: m.stat3Value, l: m.stat3, c: 'c3' },
 ];
 const dims = [
-  { k: 'love', label: m.dimLove, icon: '♥', cls: 'love' },
-  { k: 'passion', label: m.dimPassion, icon: '🔥', cls: 'passion' },
-  { k: 'trust', label: m.dimTrust, icon: '🛡', cls: 'trust' },
-  { k: 'mind', label: m.dimMind, icon: '💬', cls: 'mind' },
+  { k: 'love', label: m.dimLove, icon: 'heart', fill: true, cls: 'love' },
+  { k: 'passion', label: m.dimPassion, icon: 'flame', fill: true, cls: 'passion' },
+  { k: 'trust', label: m.dimTrust, icon: 'shield-check', fill: false, cls: 'trust' },
+  { k: 'mind', label: m.dimMind, icon: 'message-circle', fill: false, cls: 'mind' },
 ];
 const first = signs[0];
 const sixth = signs[5];
 ---
 <section class="m-app" id="match-app" aria-labelledby="m-title">
   <div class="m-hero">
-    <span class="m-pill">♥ {m.badge}</span>
-    <h2 id="m-title">{m.title}</h2>
+    <span class="m-pill"><Icon name="heart" size={14} fill />{m.badge}</span>
+    <h1 id="m-title">{title ?? m.title}</h1>
     <p>{m.subtitle}</p>
   </div>
 
   <div id="m-input" class="m-stack">
     <div class="m-cards">
-      <span class="m-join" aria-hidden="true">✦</span>
+      <span class="m-join" aria-hidden="true"><Icon name="sparkles" size={16} /></span>
       {[1, 2].map((n) => (
         <div class={`m-card m-p${n}`}>
-          <div class="m-tag">● {n === 1 ? m.partner1 : m.partner2}</div>
+          <div class="m-tag"><Icon name="user" size={14} />{n === 1 ? m.partner1 : m.partner2}</div>
           <label>{m.nameLabel}
             <input type="text" id={`n${n}`} placeholder={n === 1 ? m.namePlaceholder1 : m.namePlaceholder2} maxlength="24" autocomplete="off" />
           </label>
@@ -76,9 +77,9 @@ const sixth = signs[5];
         </div>
       ))}
     </div>
-    <button type="button" class="m-go" id="m-go">✦ {m.btnCalculate} →</button>
+    <button type="button" class="m-go" id="m-go"><Icon name="sparkles" size={20} />{m.btnCalculate}<Icon name="arrow-right" size={20} /></button>
     <div class="m-stats">
-      {stats.map((s) => <div><b>{s.v}</b><span>{s.l}</span></div>)}
+      {stats.map((s) => <div><b class={s.c}>{s.v}</b><span>{s.l}</span></div>)}
     </div>
   </div>
 
@@ -92,63 +93,58 @@ const sixth = signs[5];
     <div class="m-bar"><i id="m-bar-fill" style="width:18%"></i></div>
   </div>
 
-  <div id="m-res" class="m-stack" hidden>
+  <div id="m-res" class="m-stack m-res" hidden>
     <div class="m-actions">
-      <button type="button" class="m-ghost" id="m-new">↺ {m.btnRecalc}</button>
-      <button type="button" class="m-ghost m-accent" id="m-story-open">⤴ {m.btnStory}</button>
+      <button type="button" class="m-link" id="m-new"><Icon name="rotate-ccw" size={14} />{m.btnRecalc}</button>
+      <button type="button" class="m-ghost m-accent" id="m-story-open"><Icon name="share-2" size={14} />{m.btnStory}</button>
     </div>
 
     <div class="m-score">
       <div class="m-names" id="r-names"></div>
       <div class="m-big" id="r-score">0%</div>
-      <span class="m-badge" id="r-badge"></span>
+      <span class="m-badge"><Icon name="stars" size={16} /><span id="r-badge"></span></span>
+      <p class="m-overview" id="r-overview"></p>
     </div>
 
     <div class="m-panel">
-      <h3>✧ {m.aspectsHeading}</h3>
+      <h3><Icon name="compass" size={16} />{m.aspectsHeading}</h3>
       <div class="m-dims">
         {dims.map((d) => (
           <div class={`m-dim ${d.cls}`}>
-            <div><span>{d.icon} {d.label}</span><b id={`r-${d.k}-v`}>0%</b></div>
+            <div><span><Icon name={d.icon} size={14} fill={d.fill} />{d.label}</span><b id={`r-${d.k}-v`}>0%</b></div>
             <div class="m-track"><i id={`r-${d.k}-b`} style="width:0%"></i></div>
           </div>
         ))}
       </div>
     </div>
 
-    <div class="m-ins ins-super"><span>⚡</span><div><h4>{m.insightSuper}</h4><p id="r-super"></p></div></div>
-    <div class="m-ins ins-risk"><span>⚠</span><div><h4>{m.insightRisk}</h4><p id="r-risk"></p></div></div>
-    <div class="m-ins ins-advice"><span>✦</span><div><h4>{m.insightAdvice}</h4><p id="r-advice"></p></div></div>
+    <div class="m-ins ins-super"><span><Icon name="zap" size={20} /></span><div><h4>{m.insightSuper}</h4><p id="r-super"></p></div></div>
+    <div class="m-ins ins-risk"><span><Icon name="alert-triangle" size={20} /></span><div><h4>{m.insightRisk}</h4><p id="r-risk"></p></div></div>
+    <div class="m-ins ins-advice"><span><Icon name="sparkles" size={20} /></span><div><h4>{m.insightAdvice}</h4><p id="r-advice"></p></div></div>
 
     <a class="m-more" id="r-more" href="#"></a>
 
-    {(kofi || telegram) && (
-      <div class="m-panel">
-        <h3>✦ {m.supportHeading}</h3>
-        <div class="m-support">
-          {kofi && (
-            <div class="m-sup coffee">
-              <h4>☕ {m.coffeeTitle}</h4><p>{m.coffeeDesc}</p>
-              <a href={kofi} target="_blank" rel="noopener">☕ {m.coffeeBtn}</a>
-            </div>
-          )}
-          {telegram && (
-            <div class="m-sup community">
-              <h4>👥 {m.communityTitle}</h4><p>{m.communityDesc}</p>
-              <a href={telegram} target="_blank" rel="noopener">👥 {m.communityBtn}</a>
-            </div>
-          )}
+    <div class="m-panel m-monet">
+      <h3><Icon name="sparkles" size={16} />{m.supportHeading}</h3>
+      <div class="m-support">
+        <div class="m-sup coffee">
+          <div><h4><Icon name="coffee" size={16} />{m.coffeeTitle}</h4><p>{m.coffeeDesc}</p></div>
+          <a href={kofi} target="_blank" rel="noopener"><Icon name="coffee" size={14} />{m.coffeeBtn}</a>
+        </div>
+        <div class="m-sup community">
+          <div><h4><Icon name="users" size={16} />{m.communityTitle}</h4><p>{m.communityDesc}</p></div>
+          <a href={telegram} target="_blank" rel="noopener"><Icon name="users" size={14} />{m.communityBtn}</a>
         </div>
       </div>
-    )}
+    </div>
   </div>
 
   <div id="m-modal" class="m-modal" hidden role="dialog" aria-modal="true">
     <div class="m-modal-box">
-      <button type="button" class="m-x" id="m-story-close" aria-label="×">×</button>
+      <button type="button" class="m-x" id="m-story-close" aria-label="Close"><Icon name="x" size={16} /></button>
       <div class="m-story">
         <div class="m-story-top">
-          <span class="m-pill">✦ <span id="s-title"></span></span>
+          <span class="m-pill"><Icon name="sparkles" size={12} /><span id="s-title"></span></span>
           <h3 id="s-names"></h3>
           <div class="m-mono" id="s-signs"></div>
         </div>
@@ -156,10 +152,10 @@ const sixth = signs[5];
           <div class="m-story-score" id="s-score"></div>
           <div class="m-story-badge" id="s-badge"></div>
           <div class="m-story-grid">
-            <div>{m.storyLove}: <b id="s-love"></b></div>
-            <div>{m.storyPassion}: <b id="s-passion"></b></div>
-            <div>{m.storyTrust}: <b id="s-trust"></b></div>
-            <div>{m.storyMind}: <b id="s-mind"></b></div>
+            <div>{m.storyLove}: <b id="s-love" class="love"></b></div>
+            <div>{m.storyPassion}: <b id="s-passion" class="passion"></b></div>
+            <div>{m.storyTrust}: <b id="s-trust" class="trust"></b></div>
+            <div>{m.storyMind}: <b id="s-mind" class="mind"></b></div>
           </div>
         </div>
         <div class="m-story-foot">
@@ -168,8 +164,8 @@ const sixth = signs[5];
         </div>
       </div>
       <div class="m-modal-btns">
-        <button type="button" class="m-go" id="m-copy">⤴ <span>{m.modalCopy}</span></button>
-        <button type="button" class="m-ghost" id="m-dl">⬇ {m.modalDownload}</button>
+        <button type="button" class="m-go m-go-sm" id="m-copy"><Icon name="share-2" size={14} /><span>{m.modalCopy}</span></button>
+        <button type="button" class="m-ghost" id="m-dl">{m.modalDownload}</button>
         <p>{m.modalHint}</p>
       </div>
     </div>
@@ -229,7 +225,8 @@ const sixth = signs[5];
       n1: $<HTMLInputElement>('n1').value.trim() || sa.name,
       n2: $<HTMLInputElement>('n2').value.trim() || sb.name,
       mind: c.communication,
-      superText: D.elementPairs[c.elementKey],
+      overview: D.elementPairs[c.elementKey],
+      superText: D.ui.superText.replace('{a}', sa.name).replace('{sa}', sa.strengths.join(', ')).replace('{b}', sb.name).replace('{sb}', sb.strengths.join(', ')),
       riskText: a === b ? line(sa) : `${line(sa)} ${line(sb)}`,
       adviceText: D.modalityPairs[c.modalityKey],
       url: D.pairUrls[`${a}|${b}`],
@@ -242,13 +239,14 @@ const sixth = signs[5];
     const mk = (cls: string, text: string) => { const e = document.createElement('span'); e.className = cls; e.textContent = text; nm.append(e); };
     mk('nm', r.n1); mk('sy', sa.symbol); mk('pl', '+'); mk('nm', r.n2); mk('sy', sb.symbol);
     $('r-score').textContent = r.c.overall + '%';
-    $('r-badge').textContent = '✦ ' + r.badge;
+    $('r-badge').textContent = r.badge;
     const vals: Record<string, number> = { love: r.c.love, passion: r.c.passion, trust: r.c.trust, mind: r.mind };
     for (const k of Object.keys(vals)) {
       $(`r-${k}-v`).textContent = vals[k] + '%';
       const bar = $(`r-${k}-b`); bar.style.width = '0%';
       requestAnimationFrame(() => requestAnimationFrame(() => { bar.style.width = vals[k] + '%'; }));
     }
+    $('r-overview').textContent = r.overview;
     $('r-super').textContent = r.superText;
     $('r-risk').textContent = r.riskText;
     $('r-advice').textContent = r.adviceText;
@@ -487,12 +485,49 @@ const sixth = signs[5];
   .m-modal .m-ghost { color: #e2e8f0; }
 
   /* header: logo mark + language pills (reference design) */
-  .logo-mark { display: inline-grid; place-items: center; width: 34px; height: 34px; margin-inline-end: 8px; border-radius: 11px; background: linear-gradient(135deg, #c026d3, #9333ea, #4f46e5); color: #fff; font-size: 1rem; box-shadow: 0 8px 20px -6px #a855f777; vertical-align: middle; }
+  .lang-globe { display: inline-flex; margin: 0 4px 0 8px; color: #c084fc; }
+  .logo-mark { display: inline-grid; place-items: center; width: 36px; height: 36px; flex: none; border-radius: 11px; background: linear-gradient(135deg, #c026d3, #9333ea, #4f46e5); color: #fff; font-size: 1rem; box-shadow: 0 8px 20px -6px #a855f777; vertical-align: middle; }
   .lang-pills { display: inline-flex; gap: 2px; padding: 3px; border: 1px solid var(--line); border-radius: 999px; background: #0006; }
   .lang-pills a { padding: 4px 9px; border-radius: 999px; font-size: .72rem; font-weight: 700; color: var(--muted); text-decoration: none; letter-spacing: .03em; }
   .lang-pills a[aria-current="true"] { background: #c026d3; color: #fff; box-shadow: 0 2px 8px #c026d355; }
   [data-theme="millennial"] .lang-pills, [data-theme="boomer"] .lang-pills { background: var(--tile-bg); }
   .site-header .lang-pills a { color: var(--muted); } .site-header .lang-pills a[aria-current="true"] { color: #fff; }
+
+
+  /* ---- fidelity pass against the reference ---- */
+  .icon { display: inline-flex; vertical-align: middle; flex: none; }
+  .icon svg { display: block; }
+  .icon-fill svg { fill: currentColor; }
+  .m-app { max-width: 768px; margin-inline: auto; }
+  .m-hero h1 { font-family: var(--heading-font); font-size: clamp(1.9rem, 5.5vw, 3rem); line-height: 1.1; font-weight: 800; letter-spacing: -0.02em; margin: 12px 0 10px; background: linear-gradient(180deg, #fff, #f1f5f9 40%, #94a3b8); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+  [data-theme="millennial"] .m-hero h1, [data-theme="genx"] .m-hero h1, [data-theme="boomer"] .m-hero h1 { background: none; -webkit-text-fill-color: currentColor; }
+  .m-hero p { font-size: .95rem; }
+  .m-pill { gap: 7px; }
+  .m-pill .icon-fill { color: #f472b6; }
+  .m-tag { display: flex; align-items: center; gap: 6px; }
+  .m-join { color: #fff; }
+  .m-go { display: flex; align-items: center; justify-content: center; gap: 8px; }
+  .m-go-sm { font-size: .85rem; padding: 11px; }
+  .m-stats b.c1 { color: #d8b4fe; } .m-stats b.c2 { color: #f0abfc; } .m-stats b.c3 { color: #a5b4fc; }
+  .m-link { background: none; border: 0; box-shadow: none; padding: 4px 0; color: var(--muted); font-size: .8rem; font-weight: 500; display: inline-flex; align-items: center; gap: 6px; }
+  .m-link:hover { color: #fff; filter: none; }
+  [data-theme="millennial"] .m-link:hover, [data-theme="boomer"] .m-link:hover { color: var(--ink); }
+  .m-ghost { display: inline-flex; align-items: center; gap: 6px; }
+  .m-badge { display: inline-flex; align-items: center; gap: 6px; }
+  .m-badge .icon { color: #e879f9; }
+  .m-overview { position: relative; margin: 14px auto 0; max-width: 34rem; font-size: .9rem; line-height: 1.6; color: #cbd5e1; }
+  [data-theme="millennial"] .m-overview, [data-theme="boomer"] .m-overview { color: var(--muted); }
+  .m-panel h3 { display: flex; align-items: center; gap: 8px; }
+  .m-panel h3 .icon { color: #c084fc; }
+  .m-monet h3 .icon { color: #fbbf24; }
+  .m-dim > div:first-child span { display: inline-flex; align-items: center; gap: 6px; }
+  .m-dim.love .icon { color: #f472b6; } .m-dim.passion .icon { color: #fb923c; } .m-dim.trust .icon { color: #34d399; } .m-dim.mind .icon { color: #22d3ee; }
+  .m-sup h4 { display: flex; align-items: center; gap: 8px; margin-bottom: 4px; }
+  .m-sup a { display: flex; align-items: center; justify-content: center; gap: 8px; }
+  .m-sup { align-content: stretch; }
+  .m-story-grid b.love { color: #f9a8d4; } .m-story-grid b.passion { color: #fdba74; } .m-story-grid b.trust { color: #6ee7b7; } .m-story-grid b.mind { color: #67e8f9; }
+  .m-story .m-pill { gap: 5px; }
+  ::selection { background: #d946ef; color: #fff; }
 
   @media (max-width: 640px) {
     .m-cards, .m-dims, .m-support { grid-template-columns: 1fr; }

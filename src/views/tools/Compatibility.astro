@@ -22,9 +22,7 @@ const groups = signs.map((a) => ({
 ---
 <Base locale={locale} pageId={page.id} title={tool.title} description={tool.description}>
   <p class="crumbs"><a href={pageUrl(locale, 'home')}>{t.ui.home}</a> › {tool.crumb}</p>
-  <h1>{tool.h1}</h1>
-  <p class="lead">{tool.lead}</p>
-  <MatchApp locale={locale} />
+  <MatchApp locale={locale} title={tool.h1} />
   <AdSlot slot={import.meta.env.PUBLIC_AD_SLOT_CONTENT} />
   <h2>{tool.bySignHeading}</h2>
   {groups.map((g) => (

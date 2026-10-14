@@ -246,6 +246,8 @@
     }
   },
   "match": {
+    "brandSub": "Motor global de sinastria",
+    "superText": "{a} traz {sa}; {b} traz {sb}.",
     "badge": "Calculadora universal de sinastria",
     "title": "Qual é a compatibilidade de vocês nas estrelas?",
     "subtitle": "Descubra a profundidade da conexão romântica, a química dos elementos e os laços kármicos.",
@@ -293,7 +295,7 @@
     "supportHeading": "Gostou desta ferramenta gratuita?",
     "coffeeTitle": "Pague um café cósmico para nós",
     "coffeeDesc": "Apoie servidores independentes e o desenvolvimento. Qualquer gorjeta é muito bem-vinda!",
-    "coffeeBtn": "Apoiar no Ko-fi",
+    "coffeeBtn": "Apoiar no Ko-fi ($3)",
     "communityTitle": "Insights astrológicos diários",
     "communityDesc": "Receba toda semana análises de trânsitos e sinastrias personalizadas na nossa comunidade.",
     "communityBtn": "Entrar na comunidade"

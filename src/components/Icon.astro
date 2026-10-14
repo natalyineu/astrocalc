@@ -1,0 +1,31 @@
+---
+// Inline Lucide icons (ISC license, package `lucide-static`). Add a name here to use a new icon.
+import sparkles from 'lucide-static/icons/sparkles.svg?raw';
+import heart from 'lucide-static/icons/heart.svg?raw';
+import globe from 'lucide-static/icons/globe.svg?raw';
+import user from 'lucide-static/icons/user.svg?raw';
+import arrowRight from 'lucide-static/icons/arrow-right.svg?raw';
+import share2 from 'lucide-static/icons/share-2.svg?raw';
+import rotateCcw from 'lucide-static/icons/rotate-ccw.svg?raw';
+import compass from 'lucide-static/icons/compass.svg?raw';
+import flame from 'lucide-static/icons/flame.svg?raw';
+import shieldCheck from 'lucide-static/icons/shield-check.svg?raw';
+import messageCircle from 'lucide-static/icons/message-circle.svg?raw';
+import zap from 'lucide-static/icons/zap.svg?raw';
+import triangleAlert from 'lucide-static/icons/triangle-alert.svg?raw';
+import coffee from 'lucide-static/icons/coffee.svg?raw';
+import users from 'lucide-static/icons/users.svg?raw';
+import x from 'lucide-static/icons/x.svg?raw';
+import stars from 'lucide-static/icons/stars.svg?raw';
+
+const ICONS: Record<string, string> = {
+  sparkles, heart, globe, user, 'arrow-right': arrowRight, 'share-2': share2, 'rotate-ccw': rotateCcw, compass, flame,
+  'shield-check': shieldCheck, 'message-circle': messageCircle, zap, 'alert-triangle': triangleAlert, coffee, users, x, stars,
+};
+const { name, size = 16, fill = false } = Astro.props as { name: string; size?: number; fill?: boolean };
+const svg = (ICONS[name] ?? '')
+  .replace(/<!--[\s\S]*?-->/g, '')
+  .replace('width="24"', `width="${size}"`).replace('height="24"', `height="${size}"`)
+  .replace('class="lucide', 'aria-hidden="true" class="lucide');
+---
+<span class:list={['icon', fill && 'icon-fill']} set:html={svg} />

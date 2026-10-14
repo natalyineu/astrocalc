@@ -246,6 +246,8 @@
     }
   },
   "match": {
+    "brandSub": "Moteur mondial de synastrie",
+    "superText": "{a} apporte {sa} ; {b} apporte {sb}.",
     "badge": "Calculateur universel de synastrie",
     "title": "Quelle est votre compatibilité dans les étoiles ?",
     "subtitle": "Découvrez la profondeur de votre lien amoureux, la chimie des éléments et les liens karmiques.",
@@ -293,7 +295,7 @@
     "supportHeading": "Vous aimez cet outil gratuit ?",
     "coffeeTitle": "Offrez-nous un café cosmique",
     "coffeeDesc": "Soutenez des serveurs indépendants et le développement. Chaque pourboire est très apprécié !",
-    "coffeeBtn": "Pourboire sur Ko-fi",
+    "coffeeBtn": "Pourboire sur Ko-fi ($3)",
     "communityTitle": "Éclairages astrologiques quotidiens",
     "communityDesc": "Recevez chaque semaine l'analyse des transits et des synastries personnalisées dans notre communauté.",
     "communityBtn": "Rejoindre la communauté"
