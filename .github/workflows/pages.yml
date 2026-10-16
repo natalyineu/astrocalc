@@ -22,8 +22,7 @@ jobs:
       - run: npm ci
       - run: npm run build
         env:
-          SITE_URL: https://natalyineu.github.io
-          BASE: /astrocalc
+          SITE_URL: https://astromatch.fit
           PUBLIC_THEME_SWITCHER: '1'
       - uses: actions/upload-pages-artifact@v3
         with:
